@@ -630,50 +630,22 @@ is showed in \cite{Ma} for the conductivity problem and in \cite{DC-Ro} for the 
 This emphasize the difficulty in the numerical reconstruction as small errors in the data
 can lead to enormous errors in the solution.
 In this thesis we will go through some numerical algorithms present in literature
-(linear sampling method Chapter \ref{cap2} and factorization method Chapter \ref{cap4}), 
-and propose a new method (reciprocity gap principle Chapter \ref{cap3})to reconstruct the defect.
-We will also try in Chapter \ref{cap5} to compare these methods and understand how they work.
+(linear sampling method Chapter \ref{ch:linear-sampling} and factorization method Chapter \ref{ch:factorization}), 
+and propose a new method (reciprocity gap principle Chapter \ref{ch:reciprocity})to reconstruct the defect.
+We will also try in Chapter \ref{ch:link} to compare these methods and understand how they work.
 
 Let us conclude this introduction with a final remark concerning the boundary measurements.
 It is physically meaningful prescribe the current density at the boundary and measure the corresponding voltage.
 In this we define the Neumann--to--Dirichlet map $N_D$ (or $N_\gamma$ for the conductivity case) as follows.
-
-INSERIRE DEFINIZIONE MAPPA NEUMANN--TO--DIRICHLET
-
-\begin{remark}
-Also in this case all results remain valid observing  that, denoting by $\tilde\Lambda_D$ the restriction of 
-$\Lambda_D$ to $_0H^{1/2}(\partial\Omega)$, we have the identity
-$$N_{D_1}-N_{D_2}=N_{D_2}(\tilde\Lambda_{D_2}-\tilde\Lambda_{D_1})N_{D_1}.$$
-\end{remark}
-
-\chapter{Numerical Algorithms}
-\section{Linear Sampling Method}
-\begin{assumption}
-\label{assumption:connected}
- Define $D=\bigcup_{j=1}^mD_j$ such that $\Omega\backslash D$ is connected
-\end{assumption}
-\begin{itemize}
- \item non linearity from $D$ to $u$
- \item underestimates of $D$ because the range is too small (easy proof for positive part: using Cauchy uniqueness and harmonic extension)
-\end{itemize}
-
-\subsection{Neumann-to-Dirichlet maps}
-We now introduce two Dirichlet-to-Neumann type operators, named $\Lambda$ and $\Lambda_0$, the properties of which are well summed up by Kirsch in \cite{kirsch:book}. 
-We will follow the approach of Somersalo in \cite{somersalo:preprint}, throughout the chapter, up to the formulation of the linear sampling method.
-\par
-The best framework is constituted by Sobolev spaces $H^s(\partial \Omega)$ of functions defined on boundaries, or regions.
-With the subscript zero in the notation $H^s_0(\partial\Omega)\subset H^s(\partial\Omega)$, we'll denote the closed subspace of functions with vanishing mean
-\begin{equation}
-H^s_0(\partial\Omega) = \Big\{ f \in H^s(\partial\Omega): \langle f,1\rangle = 0\Big\}
-\end{equation}
-or the closed subspace
-\begin{equation}
-H^1_0(\Omega) = \Big\{ u \in H^1(\Omega): u|_{\partial\Omega} \in H^{1/2}_0(\partial\Omega)\Big\}
-\end{equation}
-The advantage, in this last definition, is to avoid trivial constant functions, and to restore uniqueness for second order differential problems.
+We will denote throughout the chapters, with the subscript zero, $H^s_0(\partial\Omega)\subset H^s(\partial\Omega)$, the closed subspace of functions with vanishing mean on the boundary
+\begin{align}
+&H^s_0(\partial\Omega) = \Big\{ f \in H^s(\partial\Omega): \langle f,1\rangle = 0\Big\}\\
+&H^1_0(\Omega) = \Big\{ u \in H^1(\Omega): u|_{\partial\Omega} \in H^{1/2}_0(\partial\Omega)\Big\}
+\end{align}
+The advantage, in this last definition, is to avoid trivial constant functions, and to recover uniqueness for second order differential problems.
 We introduce the following notation:
 \begin{enumerate}
- \item named $u\in H^1_0(\Omega)$ the unique solution of the problem
+ \item $u\in H^1_0(\Omega)$ the unique solution of the problem
  \begin{equation}
  \label{eq:NtoD-inclusion}
   \left\{
@@ -683,10 +655,10 @@ We introduce the following notation:
   \end{aligned}
   \right.
  \end{equation}
- with $\gamma(x) = 1 \cdot \chi_{\Omega\backslash\overline{D}}(x) + k(x)\cdot\chi_D(x)$, we define
+ with $\gamma(x) = \chi_{\Omega\backslash\overline{D}} + k(x)\,\chi_D$, we define
  \begin{align}
- &T: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && Tf = u \\
- &\Lambda: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && \Lambda f = u|_{\partial\Omega}
+ &T_D: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && T_Df = u \\
+ &{N_D}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_D}f = u|_{\partial\Omega}
  \end{align}
  \item at the same way, $v\in H^1_0(\Omega)$ is the unique solution of the problem with only background space and no unknown inclusion $D$
  \begin{equation}
@@ -701,35 +673,67 @@ We introduce the following notation:
  we define
  \begin{align}
  &T_0: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && T_0f = v \\
- &\Lambda_0: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && \Lambda_0 f = v|_{\partial\Omega}
+ &{N_0}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_0} f = v|_{\partial\Omega}
  \end{align}
 \end{enumerate}
-The name Neumann-to-Dirichlet explains itself the functionality, of mapping prescribed Neumann data, solution's boundary derivative, into solution's trace, by existence and uniqueness results in $H^1_0(\Omega)$ for inclusion's problem \ref{eq:NtoD-inclusion} and Laplace's one \ref{eq:NtoD-laplace}.
-Each weak formulation, considered separately, satisfies the hypotheses of Lax-Milgram's theorem for variational formulations, by coercivity in $H^1_0(\Omega)$ and continuity of bilinear forms. Here we neglect details, and we will mean well-posedness of \ref{eq:NtoD-inclusion} and \ref{eq:NtoD-laplace} understood.
+\begin{remark}
+Also in this case all results remain valid observing  that, denoting by $\tilde\Lambda_D$ the restriction of 
+$\Lambda_D$ to $_0H^{1/2}(\partial\Omega)$, we have the identity
+$$N_{D_1}-N_{D_2}=N_{D_2}(\tilde\Lambda_{D_2}-\tilde\Lambda_{D_1})N_{D_1}.$$
+\end{remark}
+
+% \chapter{Numerical Algorithms}
+\chapter{Linear Sampling Method}
+\label{ch:linear-sampling}
+\begin{assumption}
+\label{assumption:connected}
+ Define $D=\bigcup_{j=1}^mD_j$ such that $\Omega\backslash D$ is connected
+\end{assumption}
+\begin{itemize}
+ \item non linearity from $D$ to $u$
+ \item underestimates of $D$ because the range is too small (easy proof for positive part: using Cauchy uniqueness and harmonic extension)
+\end{itemize}
+
+\section{Neumann--to--Dirichlet maps}
+In the previous chapter we presented two Dirichlet-to-Neumann type operators , named $\Lambda$ and $\Lambda_0$, 
+the properties of which are well summed up by Kirsch in \cite{kirsch:book}. 
+We will follow the approach of Somersalo in \cite{somersalo:preprint}, throughout the chapter, 
+up to the formulation of the linear sampling method.
 \par
-In the inverse inclusion problem, a crucial role is played by the \textit{relative} Dirichlet-to-Neumann map as well illustrated in \cite{somersalo:preprint}:
+Each weak formulation, considered separately, satisfies the hypotheses of Lax-Milgram's theorem for 
+variational formulations, by coercivity in $H^1_0(\Omega)$ and continuity of bilinear forms. 
+Here we neglect details, and we will mean well-posedness of \eqref{eq:NtoD-inclusion} and \eqref{eq:NtoD-laplace} 
+understood.
+\par
+In the inverse inclusion problem, a crucial role is played by the 
+\textit{relative} Dirichlet-to-Neumann map as well illustrated in \cite{somersalo:preprint}:
 \begin{equation}
  -\Lambda_r = \Lambda - \Lambda_0
 \end{equation}
 First of all we will show the goodness of the choice: for fixed $f$
 \begin{itemize}
  \item $\Lambda_0 f$ is the trace of the potential generated by sources on the boundary $\partial \Omega$ 
- \item $\Lambda f$ is generated by sources on the boundary $\partial \Omega$ and by a simple layer of zero mean on $\partial D$, induced by the presence of the field
+ \item $\Lambda f$ is generated by sources on the boundary $\partial \Omega$ and by a simple layer of 
+ zero mean on $\partial D$, induced by the presence of the field
 \end{itemize}
-Then it's reasonable to hope that the difference $\bigl(\Lambda-\Lambda_0\bigr)f$, in some cases, is able to approximate the scalar field of a dipole.
+Then it's reasonable to hope that the difference $\bigl(\Lambda-\Lambda_0\bigr)f$, in some cases, 
+is able to approximate the scalar field of a dipole.
 In adjoint, the operator has to be able to discriminates the support of the inclusion $D$.
 \par
-We need properties, like injectivity of $\Lambda - \Lambda_0$, to be guaranteed that the operators $\Lambda$ and $\Lambda_0$ map, in different ways, two geometries, with and without inclusion, yielding a non vanishing difference.
+We need properties, like injectivity of $\Lambda - \Lambda_0$, to be guaranteed that the operators 
+$\Lambda$ and $\Lambda_0$ map, in different ways, two geometries, with and without inclusion, 
+yielding a non vanishing difference.
 It can be achieved eventually by appropriate construction of quotient space with the kernel of the operator.
 \par
 To do this, we need to reformulate the problem, more precisely.
 The relative operator $\Lambda - \Lambda_0$ is strictly connected to a formulation which
 \begin{enumerate}
  \item \emph{jointly involves} both $\Lambda$ and $\Lambda_0$
- \item is \emph{located in the region} $D$, which is the real subject and responsible of different data, as will be more clear in section \ref{}
+ \item is \emph{located in the region} $D$, which is the real subject and responsible of different data, 
+ as will be more clear in section \ref{section:validation}
 \end{enumerate}
 
-\subsection{Interior Transmission Problem}
+\section{Interior Transmission Problem}
 The Interior Transmission Problem (ITP) couples two second order differential equations with Cauchy transmission conditions.
 To prove final result for the classical strong formulation, we go through a variational formulation.
 
@@ -938,7 +942,7 @@ By compact embedding of $H^1(D)$ in $L^2(D)$, both $T$ and $T+K$ are Fredholm op
  Let $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}_0(\partial D)$, then ITP \ref{} has a unique solution in $H^1(D)\times H^1_0(D)$, which depends continuously from data $f,g$.
 \end{proposition}
 
-\subsection{Linear Sampling Method}
+\section{Linear Sampling Method}
  The linear sampling method consists in sampling the region $\Omega$ with an hypothetic function singular in $z$ and trying to solve, in approximate way, the linear system:
  \begin{equation}
   \bigl(\Lambda - \Lambda_0\bigr)f=\psi_{0z}
@@ -1099,8 +1103,9 @@ which imply a \emph{stronger result}, which cannot be obtained for the counterpa
  Obviously, $\{v^{\epsilon_n}_z\}_{n\in\mathbb{N}}$ is bounded in the same norm $H^1(D)$.
 \end{remark}
 
-\section{Reciprocity Gap Principle}
-\subsection{The Fundamental Solution}
+\chapter{Reciprocity Gap Principle}
+\label{ch:reciprocity}
+\section{The Fundamental Solution}
 \label{subsection:fundamental-solution}
 We introduce the problem starting from the \emph{fundamental solution}, that's the solution of the differential operator with the forcing term equal to $\delta_{x_0}$.
 The solution is meant in the distributional sense in the unbounded open $\mathbb{R}^m$. 
@@ -1187,7 +1192,7 @@ Selecting test functions in $C^\infty_c(D)$ and in $C^\infty_c(\mathbb{R}^m\back
 \end{center}
 \end{remark}
 
-\subsection{Surface Potentials and Representation Formulas}
+\section{Surface Potentials and Representation Formulas}
 In the sequel, we will denote as $D$ a generic bounded open set contained in $\mathbb{R}^2$ or $\mathbb{R}^3$ of class $C^2$, if not differently specified.
 Most of the following notions, can be found in \cite{kirsch:book}, \cite{colton-kress:book}, \cite{salsa:book}
 \begin{definition}
@@ -1306,7 +1311,7 @@ We limit ourselves to remember that jump relations for the double layer \ref{eq:
  \end{equation}
 \end{theorem}
 
-\subsection{Direct Problem and Boundary Element Method (BEM)}
+\section{Direct Problem and Boundary Element Method (BEM)}
 The Direct Problem consists in computing the solution $u(x)$ of the following equation, for which the inclusion $D$ and the conductivity $k$ are known. The boundary condition depends on the formulation which accounts for the imposition of the potential or the current. It's widely common in scattering problems taking Dirichlet data $u=f$, so we can proceed in the analogous way.
 \begin{center}
 \colorbox{light-gray}{\color{black}\parbox{\textwidth}{
@@ -1395,7 +1400,7 @@ We show two ways, since are useful in other contexts. By the knowledge of the sp
  \end{equation*} 
 \end{proof}
 
-\subsection{The Conductor Problem}
+\section{The Conductor Problem}
 \begin{figure}
 \centering
 \subfloat[][\emph{An isolated conductor}.]
@@ -1471,7 +1476,7 @@ which has only the zero solution, since the operator on the left side is injecti
  The $\alpha_c$ is the electric density which is measured on the surface of the conductor $\partial B$ in both geometries. Indeed the potential is constant in both cases.
 \end{remark}
 
-\subsection{Reciprocity Gap Operator}
+\section{Reciprocity Gap Operator}
 From now, we fix the dimension $\mathbb{R}^2$ to develop numerical discretization. 
 For our purposes, we need to define a set of test functions $\mathcal{V}$, such that they describe the physical problem without the inclusion. The idea is to construct from data the \emph{reciprocity gap} operator, defined on $\mathcal{V}$, which measures the \emph{discrepancy}, or the \emph{gap}.
 It plays the same role in the numerical reconstruction of inverse scattering problems, like in \cite{colton-haddar:rg}, \cite{dicristo-sun:2006}, \cite{dicristo-sun:2007}
@@ -1758,7 +1763,7 @@ We simply observe equivalence of a variety of norms, which can indifferently be 
 
 \end{remark}
 
-\subsection{Technicalities}
+\section{Technicalities}
 \begin{example}
  \label{example:van-s-lay}
  In dimension $m=2$, there exists a simple layer on $\partial B_R(0)$ for any $R<1$ vanishing on a contour $\Gamma = \partial B_1(0)$:
@@ -1955,67 +1960,9 @@ Consequently, the behavior at infinity of the fundamental solution of the inclus
  Now, it's sufficient to take the limits for infinitesimal balls, and diverging $C$.
 \end{proof}
 
-
-\subsection{Link between two methods}
-In this subsection we will link the so-called \textit{reciprocity gap functional method} to the \emph{linear sampling method}.
-The former formulation was:
-\begin{equation}
- \mathcal{R}(u, v) = \mathcal{R}(u, \vec{\Psi}_z\cdot\vec{d})\quad \forall u \in \mathcal{U}
-\end{equation}
-while, the linear sampling method deals with the following equation:
-\begin{equation}
-\label{eq:eq-lsm-link}
- (\Lambda - \Lambda_0)f = \psi_{0z} \quad \text{ on }\partial \Omega
-\end{equation}
-The number of players suggest to compute the duality of \ref{eq:eq-lsm-link}, with a generic 
-${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)}$, by self-adjoint properties (named $u=Tg$, $v=T_0f$):
-\begin{align}
- \label{eq:link-duality-left}
- \langle(\Lambda - \Lambda_0)f,g\rangle & =  \langle f,\Lambda g\rangle - \langle \Lambda_0 f,g\rangle \\
-                                        & = \langle \partial_\nu v,u\rangle - \langle v,\partial_\nu u\rangle \\
-                                        & = \mathcal{R}(u,v)
-\end{align}
-\begin{proposition}
- The \textit{reciprocity gap functional method} correspond to the weak formulation of the \textit{linear sampling method} with a modified right term. Consequently, provided the choice of $\psi_z$ as right side in \ref{eq:eq-lsm-link} , the two methods are equivalent
-\end{proposition}
-\begin{proof}
- We need to prove both the implications:
-\begin{enumerate}
- \item the r.g. formulation can be obtained from the duality with a generic test function $g\in H^{\, -1/2}_0(\partial \Omega)$, with $\psi_z$ defined in \ref{def:lsm-psi}, resulting in \ref{eq:link-duality-left} and in
-\begin{align}
- \langle \psi_z , g \rangle  & = \langle \vec{\Psi}(x,z)\cdot\vec{d} - m_z - \Lambda(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}) , g \rangle \\
-                             & = \langle \vec{\Psi}(x,z)\cdot\vec{d},\partial_\nu u\rangle - 0 - \langle\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d},u\rangle
-\end{align}
- \item the l.s. formulation can be recovered from the weak one, thanks to density of $\{\partial_\nu u|_{\partial \Omega}\}=\{g\}$ in $L_0^2(\partial \Omega)$
-\end{enumerate}
-\end{proof}
-
-The approximation result for linear sampling method can be restated, exactly the same, as we could expect after approximation theorem for reciprocity gap method.
-
-\begin{remark}
- The approximation result \ref{} (constructive part for $z \in D$) holds for the modified case with $\psi_z$ as right term (instead of $\psi_{0z}$).
-\end{remark}
-\begin{proof}
- The proof is can be recycled, with some caution.
- Since $\psi_z$ is \emph{no more harmonic} in $\Omega$, in the ITP formulation, the correct choice for boundary data is $u_z = v_z + \psi_z$ and
- \begin{equation}
- \partial_\gamma u_z = \partial_\nu v_z + \partial_\nu\psi_z^+ \quad \textup{ on }\partial D
- \end{equation}
- with derivative $\partial_\nu\psi_z^+|_{\partial D}$ from the exterior of $D$. Since $\partial_\nu\psi_z = 0$ on $\partial \Omega$, even in this case $\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) = \partial_\nu u^\epsilon_z = \partial_\nu v^\epsilon_z$ on $\partial \Omega$, 
- and after having defined $u^\epsilon_z, w^\epsilon_z, r^\epsilon_z$ as before
- \begin{equation}
-   u^\epsilon_z\coloneqq\chi_Du_z + (1-\chi_D)(\psi_{z} + v^\epsilon_z) 
- \end{equation}
- the transmission conditions are
-  \begin{align}
-   [r^\epsilon_z]^+_- = [w^\epsilon_z]^+_- -[u^\epsilon_z]^+_- &=0 - (v^\epsilon_z - v_z) && \textup{ on }\partial D \\
-   [\partial_\gamma r^\epsilon_z]^+_- = [\partial_\gamma w^\epsilon_z]^+_- -[\partial_\gamma u^\epsilon_z]^+_-&= 0 - (\partial_\nu v^\epsilon_z - \partial_\nu v_z) && \textup{ on }\partial D 
-  \end{align}
-  where $\partial_\nu\psi_z^+$ cancels itself. The same previous estimates conclude the proof.
-\end{proof}
-
-\section{Factorization Method}
-\subsection{Factorization}
+\chapter{Factorization Method}
+\label{ch:factorization}
+\section{Factorization}
 Our aim is to factorize the \textit{relative} Dirichlet-to-Neumann operator $\Lambda_0 - \Lambda$, with a changed sign, in the form
 \begin{equation}
  \Lambda_0 - \Lambda = A^*TA
@@ -2103,7 +2050,7 @@ Since $v_f$ is harmonic in $\Omega$, all the derivatives $\nabla v_f$ are harmon
 By analytic extension $\nabla v_f = 0$ in $\Omega$, entailing $v_f=0$, since $v_f\in H^1_0(\Omega)$
 \end{proof}
 
-\subsection{Equivalent Characterization}
+\section{Equivalent Characterization}
 At this point, it's clear that the linear sampling method discriminates the support of $D$, according with approximation results in the image space. We remember a first result, common to scattering case, whose proof can be found in \cite{somersalo:preprint}.
 \begin{proposition}
  Let $\psi_{0z}$ be defined by \ref{def:lsm-psi}. If $\psi_{0z}\in\mathcal{R}(\Lambda_0-\Lambda)$, then $z\in D$.
@@ -2170,7 +2117,7 @@ The great advantage is that now the square root operator can be theoretically co
  \end{equation}
  according with previous characterizations.
 \end{remark}
-\subsection{Range criterion}
+\section{Range criterion}
 Taking advantage of the representation of $\Lambda_r:L^2_0(\partial \Omega)\to L^2_0(\partial \Omega)$ through the orthonormal eigensystem $\bigl\{(\lambda_j, \psi_j)\bigr\}_{j\in\mathbb{N}}$, rewritten alternatively as
 \begin{center}
 the singular system for $\Lambda_r^{1/2}$ is $\bigl\{(\sqrt{\lambda_j}, \psi_j, \psi_j)\bigr\}_{j\in\mathbb{N}}$ 
@@ -2198,7 +2145,68 @@ then the range criterion leads to comparing the slopes of the straight line inte
  z\in D \,\Longleftrightarrow\, \dfrac{R_j}{r_j} < 1 \,\Longleftrightarrow\, \log R_j < \log r_j
 \end{equation}
 
+\chapter{Link between methods}
+\label{ch:link}
+In this subsection we will link the so-called \textit{reciprocity gap functional method} to the \emph{linear sampling method}.
+The former formulation was:
+\begin{equation}
+ \mathcal{R}(u, v) = \mathcal{R}(u, \vec{\Psi}_z\cdot\vec{d})\quad \forall u \in \mathcal{U}
+\end{equation}
+while, the linear sampling method deals with the following equation:
+\begin{equation}
+\label{eq:eq-lsm-link}
+ (\Lambda - \Lambda_0)f = \psi_{0z} \quad \text{ on }\partial \Omega
+\end{equation}
+The number of players suggest to compute the duality of \ref{eq:eq-lsm-link}, with a generic 
+${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)}$, by self-adjoint properties (named $u=Tg$, $v=T_0f$):
+\begin{align}
+ \label{eq:link-duality-left}
+ \langle(\Lambda - \Lambda_0)f,g\rangle & =  \langle f,\Lambda g\rangle - \langle \Lambda_0 f,g\rangle \\
+                                        & = \langle \partial_\nu v,u\rangle - \langle v,\partial_\nu u\rangle \\
+                                        & = \mathcal{R}(u,v)
+\end{align}
+\begin{proposition}
+ The \textit{reciprocity gap functional method} correspond to the weak formulation of the \textit{linear sampling method} with a modified right term. Consequently, provided the choice of $\psi_z$ as right side in \ref{eq:eq-lsm-link} , the two methods are equivalent
+\end{proposition}
+\begin{proof}
+ We need to prove both the implications:
+\begin{enumerate}
+ \item the r.g. formulation can be obtained from the duality with a generic test function $g\in H^{\, -1/2}_0(\partial \Omega)$, with $\psi_z$ defined in \ref{def:lsm-psi}, resulting in \ref{eq:link-duality-left} and in
+\begin{align}
+ \langle \psi_z , g \rangle  & = \langle \vec{\Psi}(x,z)\cdot\vec{d} - m_z - \Lambda(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}) , g \rangle \\
+                             & = \langle \vec{\Psi}(x,z)\cdot\vec{d},\partial_\nu u\rangle - 0 - \langle\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d},u\rangle
+\end{align}
+ \item the l.s. formulation can be recovered from the weak one, thanks to density of $\{\partial_\nu u|_{\partial \Omega}\}=\{g\}$ in $L_0^2(\partial \Omega)$
+\end{enumerate}
+\end{proof}
+
+The approximation result for linear sampling method can be restated, exactly the same, as we could expect after approximation theorem for reciprocity gap method.
+
+\begin{remark}
+ The approximation result \ref{} (constructive part for $z \in D$) holds for the modified case with $\psi_z$ as right term (instead of $\psi_{0z}$).
+\end{remark}
+\begin{proof}
+ The proof is can be recycled, with some caution.
+ Since $\psi_z$ is \emph{no more harmonic} in $\Omega$, in the ITP formulation, the correct choice for boundary data is $u_z = v_z + \psi_z$ and
+ \begin{equation}
+ \partial_\gamma u_z = \partial_\nu v_z + \partial_\nu\psi_z^+ \quad \textup{ on }\partial D
+ \end{equation}
+ with derivative $\partial_\nu\psi_z^+|_{\partial D}$ from the exterior of $D$. Since $\partial_\nu\psi_z = 0$ on $\partial \Omega$, even in this case $\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) = \partial_\nu u^\epsilon_z = \partial_\nu v^\epsilon_z$ on $\partial \Omega$, 
+ and after having defined $u^\epsilon_z, w^\epsilon_z, r^\epsilon_z$ as before
+ \begin{equation}
+   u^\epsilon_z\coloneqq\chi_Du_z + (1-\chi_D)(\psi_{z} + v^\epsilon_z) 
+ \end{equation}
+ the transmission conditions are
+  \begin{align}
+   [r^\epsilon_z]^+_- = [w^\epsilon_z]^+_- -[u^\epsilon_z]^+_- &=0 - (v^\epsilon_z - v_z) && \textup{ on }\partial D \\
+   [\partial_\gamma r^\epsilon_z]^+_- = [\partial_\gamma w^\epsilon_z]^+_- -[\partial_\gamma u^\epsilon_z]^+_-&= 0 - (\partial_\nu v^\epsilon_z - \partial_\nu v_z) && \textup{ on }\partial D 
+  \end{align}
+  where $\partial_\nu\psi_z^+$ cancels itself. The same previous estimates conclude the proof.
+\end{proof}
+
+
 \section{Validation of the methods}
+\label{section:validation}
 The linear sampling method, which we implemented, terminates with the resolution of a linear equation of the first kind, namely
 \begin{equation}
 \label{eq:NtoD_firstkind}
@@ -2438,7 +2446,7 @@ This last observation implies boundedness of the sequence $f_z^{\alpha_n}$ only 
 
 \chapter{Numerical Implementation}
 \section{Regularization Theory for Inverse Problems}
-\subsection{Introduction to Inverse Formulation}
+\section{Introduction to Inverse Formulation}
 \begin{definition}
  Let $X,Y$ be Banach spaces, $K:X\to Y$ a linear and bounded operator, $X_1\subset X$ a subspace with a stronger norm, that is
  \begin{equation}
@@ -2476,7 +2484,7 @@ A regularization method with a regularization strategy $\alpha(\delta, E)$ is \e
  \|\tilde{x} - x\|_X \leq c\,\mathcal{F}(\delta, E, \|\cdot\|_1)
 \end{equation}
 
-\subsection{General Regularization Theory}
+\section{General Regularization Theory}
 For simplicity, given a linear and bounded operator $K:X\to Y$ between two Banach spaces, we will assume that
 \begin{center}
  $K$ is injective, with dense range
@@ -2595,9 +2603,9 @@ To construct a family of admissible regularization strategies, it's convenient t
  \end{enumerate}
 \end{theorem}
 
-\subsection{Tikhonov regularization}
+\section{Tikhonov regularization}
 Tikhonov
-\subsection{The discrepancy principle of Morozov}
+\section{The discrepancy principle of Morozov}
 The Tikhonov regularization substitutes to the original problem, the following modified equation in $x^{\alpha, \delta}$:
 \begin{equation}
 \label{eq:tikh-equation-2}
@@ -2696,7 +2704,7 @@ We will report some details of the numerical discretization of the linear sampli
  \item the construction of relative Neumann-to-Dirichlet map
  \item the regularization and the linear solution of the system related to the inverse problem
 \end{enumerate}
-\subsection{Boundary Integrals Discretization}
+\section{Boundary Integrals Discretization}
 In the previous chapter, we described as choice of solving Laplace and inclusion direct problems, through \emph{boundary integrals}. Their numerical computation results in the discretization of boundary functional spaces, like $L^2_0(\partial \Omega)$. 
 Discretization in finite dimension, can be done with a basis of smooth functions defined globally on $\partial \Omega$, or with a basis of functions defined each on a single element of the discretized boundary. In fact this last is called the Boundary Element Method (BEM). 
 If we directly look for a discretization of integral operators, we come to the main classification of so-called projection methods, see \cite{kirsch:book}, in Galerkin method, Least Squares method, or Collocation method. We will adopt the Nystr\"{o}m method which can be interpreted as a collocation method with quadrature nodes coincident with collocation nodes. The name BEM can be improperly used to indicate boundary integrals discretization, since the BEM with linear basis is itself a collocation method.
@@ -2713,7 +2721,7 @@ Instead main disadvantages are:
  \item same attention must be payed to boundaries with corner, for which the densities are singular. The quadrature rule requires a more sophisticated collocation of nodes.
 \end{enumerate}
 
-\subsection{Layer Potentials}
+\section{Layer Potentials}
 We make large use of integral potentials with integral kernel $K(x,y)$, and density $\phi(y)$, defined on a compact boundary $\partial \Omega$
 \begin{equation}
  A\phi(x)\coloneqq \int_{\partial \Omega} K(x,y)\phi(y)\,dy \quad x\in \partial \Omega \textup{ or }x\in\mathbb{R}^2\backslash\partial\Omega
@@ -2749,8 +2757,8 @@ with $M_2$ continuous and bounded.
 
 A quadrature rule $S_n\phi$, uniformly bounded in $x(t)$, is composed by the Discrete Fourier Transform (DFT) (obtained by the trigonometric interpolation based on an equidistant subdivision) for the first integral, and a generic convergent quadrature rule for the second one (for example the trapezoidal rule based on lagrangian interpolation with equidistant nodes) 
 
-\subsection{Numerical Integration}
-\subsection{Neumann-to-Dirichlet maps}
+\section{Numerical Integration}
+\section{Neumann-to-Dirichlet maps}
 We'll approximate error bounds for the Neumann-to-Dirichlet map discretized through the boundary Element Method (BEM).
 Considering the empty case (with no object $D$):
 \begin{equation}
