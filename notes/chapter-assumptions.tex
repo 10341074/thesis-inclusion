@@ -1,0 +1,75 @@
+\section{The physics of the problem}
+Let $\vec{\mathcal{E}}(x)$ and $\vec{\mathcal{H}}(x)$ denote time-harmonic electric and magnetic fields
+\begin{equation}
+ \vec{\mathcal{E}}(x) = \vec{E}(x)e^{-\i\omega t}\quad\vec{\mathcal{H}}(x)=\vec{H}(x)e^{-\i\omega t}
+\end{equation}
+which satisfy Maxwell's equations
+\begin{align}
+&\divergence \vec{\mathcal{D}} = \rho &&\curl\vec{\mathcal{E}} = -\frac{\partial\vec{\mathcal{B}}}{\partial t} \\
+&\divergence \vec{\mathcal{B}} = 0 &&\curl\vec{\mathcal{H}} = \vec{j} +\frac{\partial\vec{\mathcal{D}}}{\partial t}
+\end{align}
+and there holds the following constitutive relations
+\begin{equation}
+ \vec{\mathcal{D}} = \epsilon \vec{\mathcal{E}} = \epsilon_0\kappa\vec{\mathcal{E}}\quad \vec{\mathcal{B}} =\mu\vec{\mathcal{H}} = \mu_0\kappa_m\vec{\mathcal{H}}
+\end{equation}
+and Ohm's law $\vec{j} = \sigma \vec{\mathcal{E}}$
+\par
+As introduced in \cite{kirsch:book}, \cite{borcea:eit}, Maxwell's equations for harmonic fields, in the space become
+\begin{align}
+ &\curl\vec{E} = \i\omega\mu\vec{H} \\
+ &\curl\vec{H} = \gamma\vec{E} \quad\quad \gamma =\sigma -\i\omega\epsilon
+\end{align}
+where $\sigma$ is conductivity, $\epsilon$ is electric permittivity, $\mu$ is magnetic permeability
+\par
+If the length $L$ is a typical scale of $|\Omega|^{1/2}$, and in general $\omega\mu|\gamma| L^2 \ll 1$, the scaled formulation is
+\begin{center}
+ find $\vec{E}, \vec{H}$ free divergence fields which satisfy
+ \begin{align}
+  &\curl\vec{E} = 0 \\
+  &\curl\vec{H} = \gamma \vec{E}
+ \end{align}
+\end{center}
+If the domain $\Omega$ is simply connected, the first equation is solved by any $\vec{E} = -\nabla u$, and the scalar potential $u$ is the only unknown of the restated second equation
+\begin{equation}
+ \divergence(\gamma\nabla u) = - \divergence\curl \vec{H} = 0\quad \textup{ in }\Omega
+\end{equation}
+\begin{definition}
+ Some recaps:
+ \begin{itemize}
+  \item \emph{impedance} $Z$ is the generalized complex valued conductivity, and the generalized Ohm's law is 
+  \begin{equation}
+   V = IZ
+  \end{equation}
+  \item \emph{admittance} $Y$ is the reciprocal of impedance
+ \end{itemize}
+\end{definition}
+
+\begin{assumption}
+\label{assumption:admittance}
+The \emph{admittance} $\gamma(x)\in\mathbb{C}^{n\times n}$ is defined in terms of the \emph{conductivity} $\sigma(x)\in\mathbb{R}^{n\times n}$ and \emph{permittivity} $\epsilon(x)\in\mathbb{R}^{n \times n}$ with frequency $\omega$
+\begin{equation}
+ \gamma(x) = \sigma(x) - \text{i}\omega \epsilon(x)
+\end{equation}
+We reduce to the simple case
+\begin{equation}
+ \gamma(x) = 1 + (k(x) - 1 ) \cdot \chi_D(x) = 1 + h(x)\cdot\chi_D(x)
+\end{equation}
+with $h(x) \in C^1(D?;\,\mathbb{C}^{n\times n})$ and
+\begin{align}
+ &\exists\, \alpha>0\,\forall \zeta \in \mathbb{C}\quad \real(?z\overline{\zeta}\cdot\gamma(x)\zeta)     \geq\,  \alpha|\zeta|^2 \quad x\in \Omega, \text{ for some } z \in \mathbb{C}\\
+ &\exists\, \beta>0\,\forall \zeta \in \mathbb{C}\quad \imag(\overline{\zeta}\cdot\gamma(x)\zeta)        \leq\,  -\beta|\zeta|^2 \quad x\in \mathcal{O} \subset D \text{ some open set }
+\end{align}
+\end{assumption}
+\begin{assumption}
+In general, for the weak formulation it's sufficient, as in \cite{kirsch:book}
+\begin{align}
+ & \gamma(x)\in L^\infty(\Omega;\,\mathbb{R} ) \\
+ & \exists \gamma_0>0\textup{ such that the coercivity condition holds }\gamma(x)\geq \gamma_0 > 0
+\end{align}
+or
+\begin{align}
+ & h(x)\in L^\infty(D;\,\mathbb{R} ) \\
+ & \exists h_0>0\textup{ such that the coercivity condition holds }h(x)\geq h_0 > 0
+\end{align}
+\end{assumption}
+

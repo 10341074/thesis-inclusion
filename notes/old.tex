@@ -1,0 +1,147 @@
+\iffalse
+\section{Tools}
+\begin{theorem}[Banach-Steinhaus or Uniform Boundedness]
+ $X$ B-sp, $Y$ n.v.s. Let $\mathcal{F} \subset \mathcal{L}(X,Y)$: pointwise boundedness implies uniform boundedness of $\mathcal{F}$:
+ \[ \forall x \quad \exists M_x\geq 0 \quad s.t. \quad \sup_{F \in \mathcal{F}} \| Fx\|_Y \leq M_x\]
+ \[ \Rightarrow \quad \exists M>0 \quad s.t.\quad \sup_{F\in\mathcal{F}}\| F\|_{\mathcal{L}(X,Y)} \leq M\]
+\end{theorem}
+\begin{remark}
+ If hypothesis doesn't hold, $\exists G_\delta$ such that  
+\end{remark}
+\begin{proposition}
+ Under same hypotheses, given a sequence $\{F_n\}_n \subset \mathcal{L}(X,Y)$:
+ \[\forall x: \quad F_n x\to y=:Fx\quad \Rightarrow \quad F \in \mathcal{L}(X,Y)
+ \]
+\end{proposition}
+
+\begin{theorem}[Open Mapping]
+ $X,Y$ B-sp. If $F\in\mathcal{L}(X,Y)$ is surjective, then $F$ is an open map
+\end{theorem}
+\begin{theorem}[Inverse Mapping]
+ $X,Y$ B-sp. If $F\in\mathcal{L}(X,Y)$ is bijective, then $F$ has linear continuous inverse $F^{-1}\in \mathcal{L}(X,Y)$ 
+\end{theorem}
+\section{Introduction}
+\begin{definition}[Well-Posedness]
+ Let $T:U\subset X\to Y$, the equation $Tx=y$ is well-posed if the following properties hold:
+ \begin{enumerate}
+  \item Existence: surjectivity
+  \item Uniqueness: injectivity
+  \item Continuous depandance on data: continuous inverse
+ \end{enumerate}
+\end{definition}
+Not-uniqueness means \textit{lack of information}. Even instability can be solved only with \textit{further information} 
+\begin{definition}
+ A \textbf{compact} operator maps bounded sets in relatively compact sets
+\end{definition}
+\begin{definition}
+ A \textbf{completely continuous} operator is a compact continuous operator
+\end{definition}
+\begin{remark}
+ If $K$ is a completely continuous operator, than the equation of first kind $Kx=y$ is ill-posed 
+ if $U$ is of infinite dimension
+\end{remark}
+\begin{definition}
+ Let $X_1\subset X$ a subspace with stronger norm $\|\cdot\|_1$, the \textbf{worst-case error} is:
+  \[\mathcal{F}(\delta,E,\|\cdot\|_1)=\sup \{\|x\| : x\in X_1, \|x\|_1 \leq E, \| Tx\|\leq \delta\}\]
+\end{definition}
+The aim is fixed $E$: $\mathcal{F}(\delta, E, \| \cdot \|_1)$ for $\delta \to 0$
+
+\section{Regularization}
+In general to solve $Kx=y$, for $X$ quotient a non-trivial kernel, is not restrictive assuming:
+\begin{center}
+ $K:X\to Y$ is a linear compact, injective, (with dense range in $Y$) operator \\ $X,\,Y$ are H-sp (or B-sp)
+\end{center}
+\begin{remark}
+ $\mathcal{R}(K)$ is a dense NOT complete subspace in $Y$, due to the fact that Banach-Steinhaus theorem for $K^{-1}$ leads to a contradiction in the opposite case
+\end{remark}
+The best we can hope is to recover asymptotically the \textit{worst-case error} estimate speed $\mathcal{F}(\delta,E,\| \cdot \|_1)$ under a priori information on exact solution $\| x \|_1\leq E$
+\begin{definition}
+ A \textbf{regularization strategy} is a family $\{R_\alpha\}_\alpha$ of continuous, pointwise convergent operators on $\mathcal{R}(K)$ (or equivalently $\{R_\alpha K\}_\alpha$ on $X$)
+\end{definition}
+\begin{remark}
+ Some facts:
+ \begin{itemize}
+  \item[-] $\{R_\alpha\}_\alpha$ are NOT uniformly bounded
+  \item[-] $\{KR_\alpha\}_\alpha$ are uniformly bounded (Banach-Steinhaus) but NOT norm $\mathcal{L}(X)$ convergent to $I$ (i.e. uniformly pointwise convergent on bounded setx in $X$)
+ \end{itemize}
+\end{remark}
+Competition between stability vs accuracy:
+\[\|x - x_\alpha^\delta \| \leq \| R_\alpha\|\delta + \| R_\alpha K x - x\| \]
+A regularization strategy is the choice $\alpha(\delta)$
+\begin{definition}
+ A regularization strategy is \textbf{admissible} if $\alpha(\delta) \to 0$ and error $e(x,x_\alpha^\delta) \to 0$ for  $\delta\to 0$
+\end{definition}
+A regularization example is filtering singular system $(x_j,y_j,\mu_j)$ for a linear compact operator $K:X\to Y$
+\section{Appendix: complex calculus}
+We define $\| a \|^2 = (a, \overline{a})$ and use antilinearity $(a,b) = \overline{ (a,b) }$
+\[(ix,iy)=-i^2(x,y)=(x,y)\]
+\[ ( a,\overline{b} ) + (b,\overline{a}) = 2 (\Re(a)), \Re(b)) - 2(\Im(a),\Im(b)) = 2\Re((a,b)) = 2\Re((b,a))\]
+\section{Results}
+\begin{theorem}[Green Representation Formula]
+ $D$ of class $C^1$, $u\in C^2(D)\cap C^1(\overline{D})$:
+ \begin{equation}
+  u(x) = -\int_D\Delta u(y) \Phi(x,y) dy + \int_{\partial D}(u_\nu(y)\Phi(x,y)-\Phi_\nu(x,y) u(y)) dy
+ \end{equation}
+\end{theorem}
+\begin{theorem}[Reciprocity Relation]
+ Consider two problems with $0 < \gamma_0 \leq \gamma(x) \in L^\infty(\mathbb{R}^2)$:
+ \begin{equation}
+  \divergence(\gamma \nabla u_j(\cdot,x_j)) = - \delta_{x_j}\quad j = 1,2
+ \end{equation}
+\end{theorem}
+\begin{proof}
+ Apply Green formula to $\gamma$
+\end{proof}
+\fi
+
+
+\iffalse
+\section{The direct and inverse problem}
+\subsection{Fundamental Problem}
+\begin{definition}
+ Define the fundamental solution of homogeneous laplace problem in $\mathbb{R}^n$:
+ \begin{equation}
+  \Delta \Phi(x,x_0) = -\delta_{x_0} \;\textup{in}\;\mathcal{D}'(\mathbb{R}^n)
+ \end{equation}
+ \begin{equation}
+  \Phi(x,x_0)=
+  \begin{cases}
+   \frac{1}{4\pi}\frac{1}{| x |} & n=3 \\
+   \frac{1}{2\pi}\log(\frac{1}{|x|}) & n=2
+  \end{cases}
+ \end{equation}
+
+\end{definition}
+
+\begin{definition}[Fundamental Solution Problem]
+ Define the solution named Green function of the following equation in distributional sense:
+ \begin{equation}
+  \divergence((1+(k-1)\chi_D)\nabla G(x,x_0)) = - \delta_{x_0}\;\textup{in}\;\mathcal{D}'(\mathbb{R}^n)
+ \end{equation}
+ imposing vanishing at infinity for $n=3$, imposing logaritmic growth for $n=2$ (boundedness condition for exterior domain $D_e$ problem ?)
+\end{definition}
+Let $G(x,x_0)=\Phi(x,x_0)+u(x,x_0)$:
+\begin{equation*}
+  \divergence((1+(k-1)\chi_D)\nabla G(x,x_0)) = \divergence(\nabla \Phi(x,x_0)) \;\textup{in}\;\mathcal{D}'(\mathbb{R}^n)
+\end{equation*}
+\begin{equation}
+  \divergence((1+(k-1)\chi_D)\nabla u(x,x_0)) = -\divergence((k-1)\chi_D \nabla \Phi(x,x_0)) \;\textup{in}\;\mathcal{D}'(\mathbb{R}^n)
+\end{equation}
+
+\begin{lemma}
+ The following considerations are true:
+ \begin{enumerate}
+  \item if u harmonic in $\Omega$ with $B_R(\mathbf{p})\subset\subset\Omega$ then
+   \begin{equation}
+    |u_{x_j}(\mathbf{p})|\leq\frac{n}{R}\max_{\partial B_R(\mathbf{p})}|u|
+   \end{equation}
+  \item if u harmonic in outer domain $\mathbb{R}^n\backslash B_a $ and bounded $u\leq M$:
+   \[(k+1)a\leq |\mathbf{p}| \leq (k+2)a \leq 2ka \]
+   \begin{equation}
+    |u_{x_j}(\mathbf{p})|\leq\frac{n}{k\,a}\max_{\partial B_{k\,a}(\mathbf{p})}|u|\leq\frac{2n}{r}M = \frac{c}{r}
+   \end{equation}
+
+ \end{enumerate}
+\end{lemma}
+\fi
+
