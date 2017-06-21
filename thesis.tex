@@ -103,6 +103,7 @@
 \NewEnviron{mybox}{%
 \begin{center}
 \colorbox{light-gray}{\color{black}\parbox{\textwidth}{%
+% \fcolorbox{gray}{light-gray}{
 \BODY
 }}
 \end{center}
@@ -151,7 +152,7 @@ We can divide this problem into three main issues.
 \begin{enumerate}
 \item Uniqueness: this means if it is possible to determine uniquely the inclusion $D$ form the Dirichlet--to--Neumann map.
 \item Stability: how the inclusion $D$ depends on the Dirichlet--to--Neumann map. In particular it is interesting
-to determine the modulus of continuity of such a dependance.
+to determine the modulus of continuity of such a dependence.
 \item Numerical Reconstruction: provide numerical algorithm to find an approximation of the inclusion $D$ given the boundary data.
 \end{enumerate}
 In this thesis we will focus our attention on the numerical reconstruction issue.
@@ -645,7 +646,8 @@ We will denote throughout the chapters, with the subscript zero, $H^s_0(\partial
 The advantage, in this last definition, is to avoid trivial constant functions, and to recover uniqueness for second order differential problems.
 We introduce the following notation:
 \begin{enumerate}
- \item $u\in H^1_0(\Omega)$ the unique solution of the problem
+ \item $u\in H^1_0(\Omega)$ the unique solution of the \emph{Laplace problem}
+%  \begin{mybox}
  \begin{equation}
  \label{eq:NtoD-inclusion}
   \left\{
@@ -655,12 +657,14 @@ We introduce the following notation:
   \end{aligned}
   \right.
  \end{equation}
+%  \end{mybox}
  with $\gamma(x) = \chi_{\Omega\backslash\overline{D}} + k(x)\,\chi_D$, we define
  \begin{align}
- &T_D: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && T_Df = u \\
+ &T_D: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && T_Df = u \label{eq:def-T_D}\\
  &{N_D}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_D}f = u|_{\partial\Omega}
  \end{align}
- \item at the same way, $v\in H^1_0(\Omega)$ is the unique solution of the problem with only background space and no unknown inclusion $D$
+ \item at the same way, $v\in H^1_0(\Omega)$ is the unique solution of the \emph{inclusion problem} with only background space and no unknown inclusion $D$
+%  \begin{mybox}
  \begin{equation}
  \label{eq:NtoD-laplace}
   \left\{
@@ -670,9 +674,10 @@ We introduce the following notation:
   \end{aligned}
   \right.
  \end{equation}
+%  \end{mybox}
  we define
  \begin{align}
- &T_0: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && T_0f = v \\
+ &T_0: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && T_0f = v \label{eq:def-T_0}\\
  &{N_0}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_0} f = v|_{\partial\Omega}
  \end{align}
 \end{enumerate}
@@ -683,54 +688,72 @@ $$N_{D_1}-N_{D_2}=N_{D_2}(\tilde\Lambda_{D_2}-\tilde\Lambda_{D_1})N_{D_1}.$$
 \end{remark}
 
 % \chapter{Numerical Algorithms}
+
 \chapter{Linear Sampling Method}
 \label{ch:linear-sampling}
+\begin{figure}[tb]
+\begin{center}
+ \begin{tikzpicture}
+  \draw [dashed] (2,2) ellipse (3cm and 2cm);
+  \draw [dashed] (2,2) ellipse (1.5cm and 1cm);
+  \draw (2,2) circle (0.5cm);
+  %\draw (2,2) rectangle (1cm and 3cm);
+  \node at (-0.5,2){$B$};
+  \node at (1,2){$\Omega$};
+  \node at (2,2){$D,k$};
+ \end{tikzpicture}
+\end{center}
+\end{figure}
+In this chapter we will analyze first classical formulation of the linear sampling method. It composes itself 
+of a direct part, which we'll try to invert, for further applications with data in the image space, 
+depending on the sampling point $z\in\Omega$.
+\par
+We specify general assumptions for the domain, which will be valid throughout the exposition.
+Let $\Omega$ be an open simply connected domain, in which the differential problem is defined.
+To fix ideas, its boundary represents the external surface, where we usually are allowed to operate.
 \begin{assumption}
 \label{assumption:connected}
- Define $D=\bigcup_{j=1}^mD_j$ such that $\Omega\backslash D$ is connected
+ Let $\bigl\{D_j\bigr\}_{j=1}^N$ be a collection of open simply connected domains.
+ We denote $D\coloneqq\bigcup_{j=1}^ND_j$ such that $\Omega\backslash D$ is connected.
 \end{assumption}
-\begin{itemize}
- \item non linearity from $D$ to $u$
- \item underestimates of $D$ because the range is too small (easy proof for positive part: using Cauchy uniqueness and harmonic extension)
-\end{itemize}
-
-\section{Neumann--to--Dirichlet maps}
-In the previous chapter we presented two Dirichlet-to-Neumann type operators , named $\Lambda$ and $\Lambda_0$, 
+Most of analysis will assume $D=D_1$, a single simply connected open, but it's not restrictive, since results can be applied to any component of $D$, under previous assumptions.
+\section{Relative Neumann--to--Dirichlet map}
+In the previous chapter we presented two Dirichlet--to--Neumann type operators, named ${N_D}$ and ${N_0}$, 
 the properties of which are well summed up by Kirsch in \cite{kirsch:book}. 
 We will follow the approach of Somersalo in \cite{somersalo:preprint}, throughout the chapter, 
 up to the formulation of the linear sampling method.
 \par
-Each weak formulation, considered separately, satisfies the hypotheses of Lax-Milgram's theorem for 
+Each weak formulation \eqref{eq:NtoD-inclusion}--\eqref{eq:NtoD-laplace} , considered separately, satisfies the hypotheses of Lax-Milgram's theorem for 
 variational formulations, by coercivity in $H^1_0(\Omega)$ and continuity of bilinear forms. 
-Here we neglect details, and we will mean well-posedness of \eqref{eq:NtoD-inclusion} and \eqref{eq:NtoD-laplace} 
+Here, we neglect details, and we will mean well-posedness of \eqref{eq:NtoD-inclusion} and \eqref{eq:NtoD-laplace} 
 understood.
 \par
 In the inverse inclusion problem, a crucial role is played by the 
 \textit{relative} Dirichlet-to-Neumann map as well illustrated in \cite{somersalo:preprint}:
 \begin{equation}
- -\Lambda_r = \Lambda - \Lambda_0
+ -{N_r} \coloneqq {N_D} - {N_0}
 \end{equation}
-First of all we will show the goodness of the choice: for fixed $f$
-\begin{itemize}
- \item $\Lambda_0 f$ is the trace of the potential generated by sources on the boundary $\partial \Omega$ 
- \item $\Lambda f$ is generated by sources on the boundary $\partial \Omega$ and by a simple layer of 
+First of all we will show the goodness of the choice. For fixed $f\in  H^{-1/2}(\partial \Omega)$
+\begin{enumerate}
+ \item ${N_0} f$ is the trace of the potential generated by sources on the boundary $\partial \Omega$ 
+ \item ${N_D} f$ is generated by sources on the boundary $\partial \Omega$ and by a simple layer of 
  zero mean on $\partial D$, induced by the presence of the field
-\end{itemize}
-Then it's reasonable to hope that the difference $\bigl(\Lambda-\Lambda_0\bigr)f$, in some cases, 
+\end{enumerate}
+Then it's reasonable to hope that the difference $\bigl({N_D}-{N_0}\bigr)f$, in some cases, 
 is able to approximate the scalar field of a dipole.
 In adjoint, the operator has to be able to discriminates the support of the inclusion $D$.
 \par
-We need properties, like injectivity of $\Lambda - \Lambda_0$, to be guaranteed that the operators 
-$\Lambda$ and $\Lambda_0$ map, in different ways, two geometries, with and without inclusion, 
+We need properties like injectivity of ${N_D} - {N_0}$. It guarantees us that the operators 
+${N_D}$ and ${N_0}$ map, in different ways, two geometries, with and without inclusion, 
 yielding a non vanishing difference.
-It can be achieved eventually by appropriate construction of quotient space with the kernel of the operator.
+Injectivity can be achieved eventually by appropriate construction of quotient space with the kernel of the operator.
 \par
 To do this, we need to reformulate the problem, more precisely.
-The relative operator $\Lambda - \Lambda_0$ is strictly connected to a formulation which
+The relative operator ${N_D} - {N_0}$ is strictly connected to a formulation which
 \begin{enumerate}
- \item \emph{jointly involves} both $\Lambda$ and $\Lambda_0$
+ \item \emph{jointly involves} both ${N_D}$ and ${N_0}$,
  \item is \emph{located in the region} $D$, which is the real subject and responsible of different data, 
- as will be more clear in section \ref{section:validation}
+ as will be more clear in section \ref{section:validation}.
 \end{enumerate}
 
 \section{Interior Transmission Problem}
@@ -761,7 +784,7 @@ We introduce a \emph{modified} version of ITP, in order to consider Cauchy condi
 \begin{mybox}
 \begin{problem}[Modified Interior Transmission Problem (MITP)]
 \label{problem:MITP-dist}
-We name \emph{strong solution} of the MITP, the couple {$(u,v) \in (H^1(D) \times H^1(D))$} which solves
+We name \emph{strong solution} of the MITP, the couple {$(u,v) \in H^1(D) \times H^1(D)$} which solves
 \begin{align}
 -\divergence(\gamma\nabla u) & = 0\quad\text{ in }D \\
 -\Delta v + v & = 0 \quad\text{ in }D \\
@@ -771,7 +794,9 @@ We name \emph{strong solution} of the MITP, the couple {$(u,v) \in (H^1(D) \time
 given $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}(\partial D)$.
 \end{problem}
 \end{mybox}
-One possibility is to recover a variational formulation equivalent to the distributional one of the problem \ref{problem:MITP-dist}. The successful idea of the ambient space for the couple $(u,\nabla v)$ comes from the article \cite{cakoni-colton-haddar:lsm}, in which the scattering problem is considered.
+One possibility is to recover a variational formulation equivalent to the distributional one of 
+the problem \ref{problem:MITP-dist}. The successful idea of the ambient space for the couple 
+$(u,\nabla v)$ comes from \cite{cakoni-colton-haddar:lsm}, in which the scattering problem is considered.
 \par
 We define the space
 \begin{equation}
@@ -790,14 +815,6 @@ and introduce the bilinear form $a$, defined for $U,V\in H^1(D)\times H_{\diverg
  L(V)\coloneqq \langle g, \phi\rangle - \langle f, \bm{\psi}\cdot\nu\rangle
 \end{equation}
 %%
-% and introduce the sesquilinear form $a$, defined for $U,V\in H^1(D)\times H_{\divergence}(D)$, where $U=(u,\bm{w})$ and $V=(\phi,\bm{\psi})$
-% \begin{equation}
-%  a(U,V)\coloneqq \int_D \gamma \nabla u\cdot\nabla \bar{\phi}\,dy + \int_D\divergence \bm{w}\divergence\bm{\bar{\psi}} + \int_D\bm{w}\bm{\bar{\psi}} - \langle \bm{w}\cdot\nu, \bar{\phi} \rangle- \langle u,\bm{\bar{\psi}}\cdot\nu\rangle
-% \end{equation}
-% \begin{equation}
-%  L(V)\coloneqq \langle g, \bar{\phi}\rangle - \langle f, \bm{\bar{\psi}}\cdot\nu\rangle
-% \end{equation}
-%%
 We remember the identity
 \begin{equation}
  \label{eq:identity-duality}
@@ -805,16 +822,13 @@ We remember the identity
 \end{equation}
 
 \begin{proposition}
+\label{prop:MITP-variational}
  Let $H_{\divergence}(D)$ be the subspace defined above. Then the variational problem, given $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}(\partial D)$,
  \begin{equation}
+ \label{eq:MITP-variational}
   \textup{Find }U\in H^1(D)\times H_{\divergence}(D):\,a(U,V)=L(V) \quad\forall V\in H^1(D)\times H_{\divergence}(D)
  \end{equation}
 has a unique solution $U$ 
-% if and only if the compatibility condition is satisfied
-% \begin{equation}
-%  \int_{\partial D}g\,dy=0
-% \end{equation}
-% Furthermore it's unique in $H^1_0(D)\times H_{\divergence}(D)$, and in this case 
 which depends continuously from data
 \begin{equation}
  \exists C>0:\quad \|u\|_{H^1(D)} + \|\bm w\|_{H_{\divergence}(D)}\leq C\Bigl(\|f\|_{H^{1/2}(\partial D)}+\|g\|_{H^{-1/2}(\partial D)}\Bigr)
@@ -825,9 +839,8 @@ which depends continuously from data
 We divide the proof in general steps.
  \begin{enumerate}
  \item 
-%  First we note that $\mathcal{N}(a)\neq\{\emptyset\}$, since $U=(c, 0)$, with $c$ constant, solves $a(U,V)=0$ for any $V$.
- Our hope is to demonstrate weak coercivity with respect to the Hilbert triplet $(V,H,V^*)$ with roles played by $V=H^1(D)\times H_{\divergence}(D)$ and $H=L^2(D)\times H_{\divergence}(D)$.
- We use identity \ref{eq:identity-duality} to obtain the Schwarz's inequality $|\langle u ,\bm{w}\cdot\nu\rangle |\leq\|u\|_{H^1(D)}\|\bm{w}\|_{H_{\divergence}(D)}$ and
+ Our intention is to demonstrate weak coercivity with respect to the Hilbert triplet $(V,H,V^*)$ with roles played by $V=H^1(D)\times H_{\divergence}(D)$ and $H=L^2(D)\times H_{\divergence}(D)$.
+ We use identity \eqref{eq:identity-duality} to obtain the Schwarz's inequality $|\langle u ,\bm{w}\cdot\nu\rangle |\leq\|u\|_{H^1(D)}\|\bm{w}\|_{H_{\divergence}(D)}$ and
 %  \begin{align}
 %  |a(U,V)|&\geq \gamma\|\nabla u\|_{L^2(D)}^2 + \|\bm{w}\|_{H_{\divergence}(D)}-2\real\langle u ,\bm{w}\cdot\nu\rangle \\
 %  &\geq \gamma\|\nabla u\|_{L^2(D)}^2 + \|\bm{w}\|_{H_{\divergence}(D)}-2\|u\|_{H^1(D)}\|\bm{w}\|_{H_{\divergence}(D)}
@@ -842,52 +855,48 @@ We divide the proof in general steps.
  \begin{equation}
  |a(U,V)| + \gamma\|u\|_{L^2(D)} \geq \gamma\|u\|_{H^1(D)}^2 + \|\bm{w}\|_{H_{\divergence}(D)}-\epsilon\|u\|_{H^1(D)} - \frac{1}{\epsilon}\|\bm{w}\|_{H_{\divergence}(D)}
  \end{equation}
- We take $\epsilon=t\gamma$, for $t\in[0,1]$ sufficient close to $1$ such that $t\gamma>1$
+ We take $\epsilon=t\gamma$, for $t\in[0,1]$ sufficient close to $1$ such that $t\gamma>1$ (since $\gamma>1$)
  \begin{equation}
   |a(U,V)| + \gamma\|u\|_{L^2(D)}\geq (1-t)\gamma\|u\|_{H^1(D)}^2 + \frac{t\gamma - 1}{t\gamma}\|\bm{w}\|_{H_{\divergence}(D)}
  \end{equation}
  \item We proceed to the identification of the kernel of the adjoint form $a^*(U,V)$ 
-% \begin{equation*}
-%   a^*(U,V)= \int_D \gamma \nabla \phi \cdot\nabla \bar{u}\,dy + \int_D\divergence \bm{\psi}\divergence\bm{\bar{w}} + \int_D\bm{\psi}\bm{\bar{w}} - \langle \bm{\psi}\cdot\nu, \bar{u} \rangle- \langle \phi,\bm{\bar{w}}\cdot\nu\rangle
-% \end{equation*}
 \begin{equation*}
   a^*(U,V)= \int_D \gamma \nabla \phi \cdot\nabla u\,dy + \int_D\divergence \bm{\psi}\divergence\bm{w} + \int_D\bm{\psi}\cdot\bm{w} - \langle \bm{\psi}\cdot\nu, u \rangle- \langle \phi,\bm{w}\cdot\nu\rangle
 \end{equation*}
  Named the open $A_c\coloneqq\{x\in D: u>c\}$ we take $V=(\phi_c^+, \bm{0})$ with $\phi_c^+(x)\coloneqq (u(x)-c)\chi_{A_c}(x) + c$
-% \begin{equation*}
-%   0 = a^*(U,V)= \int_{A_c} |\nabla u|^2\,dy - c\int_{\partial D}\bm{\bar{w}}\cdot\nu\, dy
-% \end{equation*}
 \begin{equation*}
   0 = a^*(U,V)= \int_{A_c} |\nabla u|^2\,dy - c\int_{\partial D}\bm{w}\cdot\nu\, dy
 \end{equation*}
  Instead taking $V=(\phi_c^-,\bm{0})$ with $\phi_c^-(x)\coloneqq (2c - u(x) - c)\chi_{A_c}(x) + c$, we get the vanishing of 
  $\int_{\partial D}\bm{w}\cdot\nu\,dy$, 
-%  $\int_{\partial D}\bm{\bar{w}}\cdot\nu\,dy$, 
  and of $\nabla u=0$ in $D$. 
- Now complete arbitrary of $V=(0,\phi)$ entails 
-%  $\bm{\bar{w}}\cdot\nu =0$
+ Now complete arbitrary of $V=(\phi, \bm 0)$ entails 
  $\bm{w}\cdot\nu =0$.
  On the other end, taking $V=(0, \bm{w})$, after last substitutions, we get
 \begin{equation*}
  0=a^*(U,V)=\int_D|\divergence \bm{w}|^2\,dy + \int_D|\bm{w}|^2\,dy
 \end{equation*}
 which forces $\bm{w}=\bm{0}$. After substitution of $U=(c,\bm 0)$, arbitrary of $\bm \psi$ entails $u=c=0$. 
-% In conclusion the kernel of the adjoint form is $\mathcal{N}(a^*)=\textup{span}(\{(1,\bm{0})\})$, which turns out in the necessary condition
-%  \begin{equation}
-%   \langle L , (1,\bm0 )\rangle = \int_{\partial D} g \, dy=0
-%  \end{equation}
+In conclusion, the kernel $\mathcal{N}(a^*)=\{0\}$ is trivial.
 \item By application of Fredholm's alternative for variational formulations, 
 there exists a unique solution.
-% under above condition on $g$, all solutions of variational problem are in the form $U=U_0 + t(1,\bm{0})$ with $t\in\mathbb{R}$. Uniqueness can be restored in the subspace $H^1_0(D)$ with the same norm $\|\cdot\|_{H^1(D)}$. 
-Continuous dependence of solution from data derives from the Bounded Inverse Map's theorem, considering the continuous and bijective map from solution $U=(u,\bm w )$ in $H^1(D)\times H_{\divergence}(D)$ to data $(f,g)$.
+Continuous dependence of solution from data derives from the Bounded Inverse Map's theorem, considering the continuous and bijective map from the solution $U=(u,\bm w )$ in $H^1(D)\times H_{\divergence}(D)$ to data $(f,g)$.
 \end{enumerate}
 \end{proof}
 \begin{proposition}
- The strong formulation of MITP \ref{} and variational formulation \ref{} are equivalent.
- Namely, for any strong solution $(u,v)$ of MITP, $U=(u,\nabla v)$ satisfies the variational one. On the contrary, for any solution $U=(u,\bm w)$, we can construct a couple $(u,v({\bm w}))$ which solves MITP, such that $\nabla v(\bm w)=\bm w$.
+\label{prop:MITP-equivalence}
+ The strong formulation of MITP \ref{problem:MITP-dist} and variational formulation 
+ \eqref{eq:MITP-variational} are equivalent.
+ Namely, for any strong solution $(u,v)$ of MITP, $U\coloneqq(u,\nabla v)$ satisfies the variational one. 
+ On the contrary, for any solution $U=(u,\bm w)$, we can construct a couple $(u,v({\bm w}))$ 
+ which solves MITP, such that $\nabla v(\bm w)=\bm w$.
 \end{proposition}
 \begin{proof}
- Let $U=(u, \bm w)$ be a solution of the variational formulation \ref{}. By the fact that $\curl \bm w=0$ and $D$ is simply connected, there exists a potential $v$ for the vector field $\bm w = \nabla v$, which is determined up to an additive constant. First let $\phi$ varying in $H^1_0(\partial D)$ and in $H^1(\partial D)$ to obtain
+ We have to prove the equivalence relation. The first implication is left to the reader, since it's sufficient to multiply and integrate by parts, for any test function. Now, we prove only the converse.
+ Let $U=(u, \bm w)$ be a solution of the variational formulation \eqref{eq:MITP-variational}. 
+ By the fact that $\curl \bm w=0$ and $D$ is simply connected, there exists a potential $v$ 
+ for the vector field $\bm w = \nabla v$, which is determined up to an additive constant. 
+ First let $\phi$ varying in $H^1_0(D)$ and in $H^1(D)$ to obtain
  \begin{align}
   & -\divergence(\gamma\nabla u)=0 \\
   & \partial_\gamma u - \partial_\nu v= g
@@ -897,19 +906,20 @@ Continuous dependence of solution from data derives from the Bounded Inverse Map
  \label{eq:remaining-equivalence}
   \int_D(\Delta v - v)\divergence\bm\psi\, dy + \langle v-u + f,\bm\psi\cdot\nu\rangle = 0 \quad \forall\bm\psi\in H_{\divergence}(D)
  \end{equation}
-We follow the suggestion in \cite{cakoni-colton-haddar:lsm}, and first consider $\bm w_1 = \nabla \chi_1 $ where it's the solution, for a generic $\phi \in L^2_0(D)$, of
+We follow the suggestion in \cite{cakoni-colton-haddar:lsm}, and first consider $\bm w_1 = \nabla \chi_1 $, 
+where it's the solution, for a generic $\phi \in L^2_0(D)$, of
 \begin{align}
  \Delta \chi_1 &= \phi \, \textup{ in }D\\
  \partial_\nu \chi_1 &= 0\, \textup{ on }\partial D
 \end{align}
-which force $\Delta v - v = c_1$ to be constant, equal to $c_1$. Next, for $\bm w_2 = \nabla\chi_2$, where $\chi_2$ solves, for $\phi\in L^2_0(\partial D)$,
+which forces $\Delta v - v = c_1$ to be constant, equal to $c_1$. Next, for $\bm w_2 = \nabla\chi_2$, where $\chi_2$ solves, for $\phi\in L^2_0(\partial D)$,
 \begin{align}
  \Delta \chi_2 &= 0 \, \textup{ in }D\\
  \partial_\nu \chi_2 &= \phi\, \textup{ on }\partial D
 \end{align}
 the new founded condition is $v-u+f=c_2$ on $\partial D$, constant equal to $c_2$. 
 % Since $v$ was initially determined up to an additive constant, $c_1$ is arbitrary. 
-If we substitute two founded conditions in \ref{eq:remaining-equivalence}, then must be satisfied $c_1=c_2=c=v-u+f$. Finally the corrected couple $(u,v-c)$ solves
+If we substitute two founded conditions in \eqref{eq:remaining-equivalence}, then must be satisfied $c_1=c_2=c=v-u+f$. Finally the corrected couple $(u,v-c)$ solves
  \begin{align}
   & - \Delta v + v=0 \\
   & u-v = f
@@ -917,14 +927,21 @@ If we substitute two founded conditions in \ref{eq:remaining-equivalence}, then 
 \end{proof}
 \begin{proposition}
 \label{prop:ITP-ex-un}
- Under assumption of $\gamma(x)=1+(k-1)\chi_D$, there exist a unique solution $(u,v)\in(H^1(D) \times H^1(D))/\mathbb{C}$ of ITP. Or equivalently it's unique in the subspace $H^1(D)\times H^1_0(D)$.
+ Under assumption $\gamma(x)=1+(k-1)\chi_D$, with $k$ constant, there exist a unique solution $(u,v)\in(H^1(D) \times H^1(D))/\mathbb{C}$ of ITP. Or equivalently it's unique in the subspace $H^1(D)\times H^1_0(D)$.
 \end{proposition}
-Instead under assumptions (\ref{assumption:admittance}) for $\gamma$, uniqueness  of ITP is easily demonstrated in \cite{somersalo:preprint} under assumptions \ref{}, while existence requires a weak formulation starting from the article \cite{cakoni-colton-haddar:lsm}, where the Helmholtz equation for the scattering problem is studied
+Instead, under following assumptions for $\gamma$
+\begin{align}
+ &\exists\, \alpha>0\,\forall \zeta \in \mathbb{C}\quad \real(?z\overline{\zeta}\cdot\gamma(x)\zeta)     \geq\,  \alpha|\zeta|^2 \quad x\in \Omega, \text{ for some } z \in \mathbb{C}\\
+ &\exists\, \beta>0\,\forall \zeta \in \mathbb{C}\quad \imag(\overline{\zeta}\cdot\gamma(x)\zeta)        \leq\,  -\beta|\zeta|^2 \quad x\in \mathcal{O} \subset D \text{ some open set }
+\end{align}
+uniqueness  of ITP is easily demonstrated in \cite{somersalo:preprint}, while existence requires a weak formulation starting from the article \cite{cakoni-colton-haddar:lsm}, where the Helmholtz equation for the scattering problem is studied
 \begin{proof}
- We prove uniqueness, in the framework of proposition \ref{prop:ITP-ex-un}. We assume $f=g=0$, and define $w\coloneqq u-v$ be the difference, then it's harmonic, with zero Dirichlet data at the boundary $w=0$ on $\partial D$: uniqueness for Dirichlet data implies $w=0$. Neumann data can be rewritten, under $u=v$, as $k\partial_\nu u - \partial_\nu v = (k-1)\partial_\nu u = 0$.
+ We prove uniqueness, in the framework of proposition \ref{prop:ITP-ex-un}. 
+ We assume $f=g=0$, and define $w\coloneqq u-v$ be the difference, then it's harmonic, 
+ with homogeneous data on the boundary $w=0$ on $\partial D$: uniqueness for Dirichlet data implies $w=0$. Neumann data can be rewritten, under $u=v$, as $k\partial_\nu u - \partial_\nu v = (k-1)\partial_\nu u = 0$.
  This homogeneous Neumann condition, with Laplace equation for $u$, yields to the conclusion which $u=v=c$ must be constant, equivalent to $u=v=0$ according with the equivalence class definition.
 \end{proof}
-Now to return to initial ITP problem, we define the Sobolev space of solution, with its induced stronger norm,
+Now to return to initial ITP problem, we define the Sobolev space of solutions, with its induced stronger norm,
 \begin{equation}
  X\coloneqq\Bigl\{(u,v)\in H^1(D)\times H^1(D):\divergence(\gamma\nabla u)\in L^2(D),\,\Delta v\in L^2(D) \Bigr\}
 \end{equation}
@@ -937,24 +954,25 @@ We define the two operators $T,K:X\to Y$:
 & T \coloneqq \bigl(-\divergence(\gamma\nabla u), -\Delta v + v, (u - v)|_{\partial D}, (\partial_\gamma u -\partial_\nu v)|_{\partial D}\bigr)\\
 & K \coloneqq (0, -v, 0 , 0)
 \end{align}
-By compact embedding of $H^1(D)$ in $L^2(D)$, both $T$ and $T+K$ are Fredholm operators, with same index. Theorem \ref{} shows that $T$ is continuous bijective with bounded inverse. But since $T+K$ is not injective, by the fact that $\mathcal{N}(T+K)=\textup{span}(\{(1,1)\})$, we expect $\textup{codim}(\mathcal{R}(T+K))=1$. This is true since $\mathcal{R}(T+K)$ is equal to $Y$ after substitution of forth slot with $H^{-1/2}_0(\partial D)$. Substituting even second slot in $X$ with $H^1_0(D)$ for $v$, we construct a bijective and continuous map, with bounded inverse and we get the final result.
+By compact embedding of $H^1(D)$ in $L^2(D)$, both $T$ and $T+K$ are Fredholm operators, with same index. Theorems \ref{prop:MITP-variational}--\ref{prop:MITP-equivalence} shows that $T$ is continuous bijective with bounded inverse. But since $T+K$ is not injective, by the fact that $\mathcal{N}(T+K)=\textup{span}(\{(1,1)\})$, we expect $\textup{codim}(\mathcal{R}(T+K))=1$. This is true since $\mathcal{R}(T+K)$ is equal to $Y$ after substitution of forth slot with $H^{-1/2}_0(\partial D)$. Substituting even second slot in $X$ with $H^1_0(D)$ for $v$, we construct a bijective and continuous map, with bounded inverse and we get the final result.
 \begin{proposition}
- Let $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}_0(\partial D)$, then ITP \ref{} has a unique solution in $H^1(D)\times H^1_0(D)$, which depends continuously from data $f,g$.
+ Let $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}_0(\partial D)$, then ITP \ref{problem:ITP-dist} has a unique solution in $H^1(D)\times H^1_0(D)$, which depends continuously from data $f,g$.
 \end{proposition}
 
 \section{Linear Sampling Method}
- The linear sampling method consists in sampling the region $\Omega$ with an hypothetic function singular in $z$ and trying to solve, in approximate way, the linear system:
+ The linear sampling method consists in sampling the region $\Omega$ with an hypothetic function singular in $z$ and trying to solve, in approximate way, the linear system (we briefly will specify $\psi_{0z}$):
  \begin{equation}
-  \bigl(\Lambda - \Lambda_0\bigr)f=\psi_{0z}
+ \label{eq:lsm-approximate-lin-eq}
+  \bigl({N_D} - {N_0}\bigr)f=\psi_{0z}
  \end{equation}
- The method has been widely used: here for the inverse inclusion problem, but even for the inverse scattering problem in \cite{cakoni-colton-haddar:lsm}, \cite{colton-haddar-piana:lsm}, with different boundary conditions: homogeneous Dirichlet for sound-soft obstacle, homogeneous Neumann for sound-hard obstacle, or impedance conditions.
- Now we begin to state main properties of the relative Neumann-to-Dirichlet operator $\Lambda - \Lambda_0$.
+ The method has been widely used: here for the inverse inclusion problem, but it has been employed for the inverse scattering problem in \cite{cakoni-colton-haddar:lsm}, \cite{colton-haddar-piana:lsm}, with different boundary conditions: homogeneous Dirichlet for sound-soft obstacle, homogeneous Neumann for sound-hard obstacle, or impedance conditions.
+ Now we begin to state main properties of the relative Neumann-to-Dirichlet operator ${N_D} - {N_0}$.
  \begin{proposition}
-  The operator $\Lambda - \Lambda_0:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$ is injective and has dense range
+  The operator ${N_D} - {N_0}:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$ is injective and has dense range
  \end{proposition}
- This is proved in \cite{kirsch:book}, but we'll present the proof for injectivity in \cite{somersalo:preprint}, to highlight the link with ITP.
+ This is proved in \cite{kirsch:book}, but we'll present the proof for injectivity contained in \cite{somersalo:preprint}, to highlight the link with ITP.
  \begin{proof}
- We assume $(\Lambda - \Lambda_0)f = 0$. Named $u=Tf$ and $v=T_0f$, the difference $w=u-v$ is harmonic in $\Omega\backslash\overline{D}$ with vanishing Cauchy conditions on $\partial \Omega$, which entails $w=0$ in $\Omega\backslash\overline{D}$. Then the pair $(u|_D,v|_D)$ solves the ITP with conditions:
+ We assume $({N_D} - {N_0})f = 0$. Named $u=T_Df$ and $v=T_0f$, the difference $w=u-v$ is harmonic in $\Omega\backslash\overline{D}$ with vanishing Cauchy conditions on $\partial \Omega$, which entails $w=0$ in $\Omega\backslash\overline{D}$. Then the pair $(u|_D,v|_D)$ solves the ITP with conditions:
  \begin{align}
   u^--v^- &=u^+ - v^+ = 0 \\
   \partial_\gamma u^- - \partial_\nu v^- &= \partial_\nu u^+ - \partial_\nu v^+ = 0 
@@ -963,14 +981,17 @@ By compact embedding of $H^1(D)$ in $L^2(D)$, both $T$ and $T+K$ are Fredholm op
  \end{proof}
 
  \begin{proposition}
-  All the operators $\Lambda, \Lambda_0, \Lambda_r$ are self-adjoint
+  All the operators ${N_D}, {N_0}, {N_r}$ are self-adjoint
  \end{proposition}
+ \begin{proof}
  The result derives directly from the weak formulation, taking $\phi=u_f$ in the variational formulation for $u_g$
  \begin{align}
   \int_{\Omega}\gamma\nabla u_g \cdot \nabla \phi\,dy &= \int_{\partial\Omega}g\,\phi\,dy \quad \forall \phi\in H^1_0(\Omega) \\
-  \int_{\Omega}\gamma\nabla u_g \cdot \nabla u_f\,dy &= \langle g, \Lambda f\rangle_{L^2(\partial \Omega)}
+  \int_{\Omega}\gamma\nabla u_g \cdot \nabla u_f\,dy &= \langle g, {N_D} f\rangle_{L^2(\partial \Omega)} \label{eq:adjoint-NtoD}
  \end{align}
- As right term we consider the solution of (related to the potential generated by a dipole)
+ It's sufficient to observe symmetry on the left side of \eqref{eq:adjoint-NtoD}.
+ \end{proof}
+ As right term of \eqref{eq:lsm-approximate-lin-eq} we consider the solution of (related to the potential generated by a dipole)
  \begin{equation}
  \left\{
  \begin{aligned}
@@ -979,22 +1000,22 @@ By compact embedding of $H^1(D)$ in $L^2(D)$, both $T$ and $T+K$ are Fredholm op
  \end{aligned}
  \right.
  \end{equation}
- with unit vector $|\vec{d}\,|=1$. Using notation defined in \ref{}, with $\vec{\Psi}(x,z)\coloneqq\nabla_x\Phi(x,z)$ the derivative of the fundamental solution, we write the structure of the right term, which it has been effectively implemented numerically.
+ with unit vector $|\vec{d}\,|=1$. Using the notation $\vec{\Psi}(x,z)\coloneqq\nabla_x\Phi(x,z)$ the derivative of the fundamental solution, we write the structure of the right term, which will be effectively implemented numerically.
  \begin{definition}
  \label{def:lsm-psi}
-  We fix the notation, where the maps $T_0$ and $T$, defined above, give the subscript to names
+  We fix the notation, where the maps $T_0$ and $T_D$ are defined above in \eqref{eq:def-T_0}-\eqref{eq:def-T_D}, adding subscripts to names, as
  \begin{equation}
  \psi_{0z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - T_0\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr)
   \end{equation}
-  while a modified (non harmonic) variant is:
+  while a modified (non harmonic) variant is
   \begin{equation}
-  \psi_{z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - T\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr)
+  \psi_{z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - T_D\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr)
   \end{equation}
-  with $m_z$ the mean of $\vec{\Psi_z}\cdot\vec{d}$ on $\partial \Omega$. Note that \textit{both satisfy}:
+  with $m_z$ the mean of $\vec{\Psi_z}\cdot\vec{d}$ on $\partial \Omega$. \emph{Note that both satisfy}:
   \begin{equation*}
   \partial_\nu \psi_{0z} = \partial_\nu \psi_z = 0\quad\text{on}\,\partial \Omega
   \end{equation*}
-  We will use the same notation for their traces on $\partial \Omega$
+  We will use the same notation for their traces on $\partial \Omega$.
  \end{definition}
  Kirsch in \cite{kirsch:book} presents the same function, starting from the \emph{Green's function for Neumann boundary problem}: $N(x,z)=\Phi(x,z)-\tilde{N}(x,z)$, with harmonic $\tilde{N}(x,z)$ such that
  \begin{equation}
@@ -1005,19 +1026,44 @@ By compact embedding of $H^1(D)$ in $L^2(D)$, both $T$ and $T+K$ are Fredholm op
  \end{aligned}
  \right.
  \end{equation}
- By uniqueness
+ By uniqueness, since both satisfy $\partial_\nu\psi_{0z}(x)=0$ on $\partial \Omega$, there holds the equality
  \begin{equation}
   \psi_{0z}(x) = \nabla_zN(x,z) \cdot \vec{d}
  \end{equation}
- such that it satisfies $\partial_\nu\psi_{0z}(x)=0$ on $\partial \Omega$.
+ \begin{definition}
+ We define the following integral functions, for a given density $\psi\in C(\partial D)$ and $\partial D$ of class $C^2$.
+ \begin{enumerate}
+  \item the \emph{single layer} potential
+   \begin{equation}
+    \mathcal{S}(\partial D,\psi)(x)\coloneqq \int_{\partial D} \Phi(x, y)\psi(y)\, dy\quad x\in\mathbb{R}^m \backslash\partial D     \label{eq:definition-single-layer}
+   \end{equation}
+  \item the \emph{double layer} potential
+   \begin{equation}
+    \mathcal{D}(\partial D,\psi)(x)\coloneqq \int_{\partial D} \partial_{\nu(y)}\Phi(x, y)\psi(y)\, dy\quad x\in\mathbb{R}^m \backslash\partial D  \label{eq:definition-double-layer}
+   \end{equation}
+ \end{enumerate}
+\end{definition}
+\begin{remark}
+The single layer and the double layer potentials solve the same differential equation of the fundamental solution. In our case, they are harmonic, and so analytic $\mathbb{R}^m\backslash \partial D$. The same regularity holds true even for less regular curves, for example the Lipschitz regular ones.
+\end{remark}
+\begin{remark}
+\label{rem:dimension}
+The asymptotic behavior of the layer potential depends on dimension of $\mathbb{R}^m$.
+The interpretation of the space $\mathbb{R}^2$ as the parametrization of $\mathbb{R}^3$ 
+when there's no dependence on the third coordinate, reflects itself on the logarithmic 
+behavior and no uniqueness results in $\mathbb{R}^2$. Indeed the curve $\partial D$ is the section of an infinite cylindric surface in $\mathbb{R}^3$, which is unbounded in $\mathbb{R}^3$.
+\end{remark}
+
+ Before the main theorem, we state a density lemma which will be useful later in the proof. For convenience's sake, we consider the $\mathbb{R}^3$ case, 
+ where any single layer potential $\mathcal{S}(x)\to0$ as $|x|\to \infty$.
  \par
- Before the main theorem, we state a density lemma which will be useful later in the proof. For convenience's sake we consider the $\mathbb{R}^3$ case, where any single layer potential $s(x)\to0$ as $|x|\to \infty$
+ In the sequel, let $B$ be an bounded simply connected open set such that $\Omega\subset B$.
 \begin{lemma}[Density]
  \label{lemma:lsm-density}
  In $\mathbb{R}^3$ let $v\in H^1(D)$ be harmonic $\Delta v=0$, then for any $\epsilon>0$ there exists 
- a single layer potentials $v^\epsilon\coloneqq\mathcal{S}(\partial B, \sigma^\epsilon)$ such that $\|v-v^\epsilon\|_{H^1(D)}<\epsilon$
+ a single layer potential $v^\epsilon\coloneqq\mathcal{S}(\partial B, \sigma^\epsilon)$ such that $\|v-v^\epsilon\|_{H^1(D)}<\epsilon$
 \end{lemma}
-The proof can be found in \cite{somersalo:preprint}, which take advantage of the density result \ref{}.
+The proof can be found in \cite{somersalo:preprint}, which take advantage of the density result \ref{lemma:density-V-0}.
 \begin{remark}
  In $\mathbb{R}^2$ the same density result holds for the set of layers $\mathcal{S}(\partial B, \sigma)+ \mathcal{D}(\partial B,\mu)$ 
 \end{remark}
@@ -1026,33 +1072,34 @@ We split the main result in two propositions.
 \label{prop:lsm-constructive}
 Fix $z \in D$. Then for any $\epsilon > 0$ there exists an approximating harmonic layer $\mathcal{S}(\partial B, \omega^\epsilon_z)$ with density $\omega^\epsilon_z\in L^2(\partial B)$  such that:
 \begin{equation}
- \|(\Lambda - \Lambda_0)\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \epsilon
+ \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \epsilon
 \end{equation}
 furthermore, when $z$ approaches the boundary $\partial D$, $\|\omega^\epsilon_z\|_{L^2(\partial B)}\to + \infty$
 \end{proposition}
 \begin{proposition}[Counterpart]
+\label{prop:lsm-counterpart}
 Fix $z \in \Omega\backslash\overline{D}$. Then for any $\delta>0$ and $\epsilon > 0$ there exists an harmonic layer $\mathcal{S}(\partial B, \omega^{\delta, \epsilon}_z)$ with density $\omega^{\delta, \epsilon}_z\in L^2(\partial B)$ such that:
 \begin{equation}
- \|(\Lambda - \Lambda_0)\partial_\nu\mathcal{S}(\partial B, \omega^{\delta,\epsilon}_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \delta + \epsilon
+ \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^{\delta,\epsilon}_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \delta + \epsilon
 \end{equation}
 and $\partial D$, $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\to 0$
 \end{proposition}
 \begin{proof}
  [Partial Proof of \ref{prop:lsm-constructive}]
- All the details can be found in \cite{somersalo:preprint}, while we split the proof in more steps, such that some ones can be adapted to variants of the statement:
+ All the details can be found in \cite{somersalo:preprint}, while we split the proof in more steps, such that some can be adapted to variants of the statement.
  \begin{enumerate}
-  \item fixed $z\in D$, let $(u_z, v_z)$ be the solution of the ITP with boundary data $(\psi_{0z}|_{\partial D}, \partial_\nu\psi_{0z}|_{\partial D})$
+  \item Fixed $z\in D$, let $(u_z, v_z)$ be the solution of the ITP with boundary data $(\psi_{0z}|_{\partial D}, \partial_\nu\psi_{0z}|_{\partial D})$
   \begin{subequations}
   \begin{align}
    u_z &= v_z + \psi_{0z} &&\textup{ on }\partial D  \label{eq:proof-ITP-0} \\
    \partial_\gamma u_z &= \partial_\nu v_z + \partial_\nu \psi_{0z}   &&\textup{ on }\partial D \label{eq:proof-ITP-1}
   \end{align}
   \end{subequations}
-  \item by density result \ref{lemma:lsm-density}, for any $\delta(\epsilon)>0$ there exists $v^\epsilon_z\coloneqq\mathcal{S}(\partial B, \omega^\epsilon_z)$ such that
+  \item By density result \ref{lemma:lsm-density}, for any $\delta(\epsilon)>0$ there exists $v^\epsilon_z\coloneqq\mathcal{S}(\partial B, \omega^\epsilon_z)$ such that
   \begin{equation}
    \|v_z-v_z^\epsilon\|_{H^1(D)}<\delta
   \end{equation}
-  \item furthermore, define in $\Omega$ the auxiliary 
+  \item Furthermore, define in $\Omega$ the auxiliary 
   \begin{equation}
    u^\epsilon_z\coloneqq\chi_Du_z + (1-\chi_D)(\psi_{0z} + v^\epsilon_z) 
   \end{equation}
@@ -1072,7 +1119,7 @@ and $\partial D$, $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty
    [r^\epsilon_z]^+_- = [w^\epsilon_z]^+_- -[u^\epsilon_z]^+_- &=0 - (v^\epsilon_z - v_z) && \textup{ on }\partial D \\
    [\partial_\gamma r^\epsilon_z]^+_- = [\partial_\gamma w^\epsilon_z]^+_- -[\partial_\gamma u^\epsilon_z]^+_-&= 0 - (\partial_\nu v^\epsilon_z - \partial_\nu v_z) && \textup{ on }\partial D 
   \end{align}
-  \item by Green's formula and trace theorem, there follows the estimate
+  \item By Green's formula and trace theorem, there follows the estimate
   \begin{align}
    \|r^\epsilon_z\|_{H^{1/2}(\partial \Omega} & \leq C_T\|r^\epsilon_z\|_{H^1(\Omega)} \\
    & \leq C\bigl(\|v_z - v^\epsilon_z\|_{H^{1/2}(\partial D)} + \|\partial_\nu v_z - \partial_\nu v^\epsilon_z\|_{H^{\, -1/2}(\partial D)}\bigr) \\
@@ -1080,21 +1127,21 @@ and $\partial D$, $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty
   \end{align}
   and finally, since $\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) = \partial_\nu u^\epsilon_z = \partial_\nu v^\epsilon_z$ on $\partial \Omega$
   \begin{align}
-   \|(\Lambda - \Lambda_0)\partial_\nu u^\epsilon_z - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} &\leq \|(w^\epsilon_z- v^\epsilon_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} \\
+   \|({N_D} - {N_0})\partial_\nu u^\epsilon_z - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} &\leq \|(w^\epsilon_z- v^\epsilon_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} \\
    &\leq\|r^\epsilon_z\|_{H^{1/2}(\partial \Omega)}\leq C\delta
   \end{align}
-  with arbitrary small $\delta(\epsilon)>0$
+  with arbitrary small $\delta(\epsilon)>0$.
  \end{enumerate}
 \end{proof}
-We note that in the step 2 of the last proof, \emph{for fixed $z \in D$} we could have construct a sequence $v^{\epsilon_n}_z$ converging to $v_z$ in $H^1(D)$
+We note that in the step 2 of the last proof, \emph{for fixed $z \in D$}, we could have construct a sequence $v^{\epsilon_n}_z$ converging to $v_z$ in $H^1(D)$
 \begin{equation}
  \|v^{\epsilon_n}_z - v_z\|_{H^1(D)} < \delta_n \quad \textup{ for }\delta_n \to 0
 \end{equation}
-which imply a \emph{stronger result}, which cannot be obtained for the counterpart, when $z\in\Omega\backslash\overline{D}$.
+which implies a \emph{stronger result} that can't be obtained for the counterpart, when $z\in\Omega\backslash\overline{D}$.
 \begin{remark}
  For fixed $z\in D$, there exist a sequence $v^{\epsilon_n}_z\coloneqq\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$ such that it's approximating, as previously,
 \begin{equation}
- \|(\Lambda - \Lambda_0)\partial_\nu v^{\epsilon_n}_z - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \epsilon_n \quad \textup{ for }\epsilon_n\to 0
+ \|({N_D} - {N_0})\partial_\nu v^{\epsilon_n}_z - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \epsilon_n \quad \textup{ for }\epsilon_n\to 0
 \end{equation}
  and furthermore, is converging to some function in $H^1(D)$
 \begin{equation}
@@ -1137,7 +1184,7 @@ In the first case, $\Phi(x,x_0)$ can be explicitly obtained, up to any harmonic 
 while, in the second case, it has to be computed numerically when needed.
 \par
 \begin{remark}
- The fundamental solution $\Phi(x,x_0)\in L^2_{loc}(\mathbb{R}^m)$ but not $\Phi(x,x_0)\notin H^1_{loc}(\mathbb{R}^m)$
+ The fundamental solution $\Phi(x,x_0)\in L^2_{loc}(\mathbb{R}^m)$, but $\Phi(x,x_0)\notin H^1_{loc}(\mathbb{R}^m)$.
 \end{remark}
 This fact can be circumvented, eliminating the singularity and looking for the potential $\Sigma(x,x_0)$ where
 \begin{equation}
@@ -1162,7 +1209,7 @@ or equivalently
 }}
 \end{center}
 
-Selecting test functions in $C^\infty_c(D)$ and in $C^\infty_c(\mathbb{R}^m\backslash \overline{D})$, and using trace's theorems for smooth boundary, the problem can be restated:
+Selecting test functions in $C^\infty_c(D)$ and in $C^\infty_c(\mathbb{R}^m\backslash \overline{D})$, and using trace's theorems for smooth boundary, the problem can be restated as
 \begin{center}
 \colorbox{light-gray}{\color{black}\parbox{\textwidth}{
 \begin{align}
@@ -1193,40 +1240,20 @@ Selecting test functions in $C^\infty_c(D)$ and in $C^\infty_c(\mathbb{R}^m\back
 \end{remark}
 
 \section{Surface Potentials and Representation Formulas}
-In the sequel, we will denote as $D$ a generic bounded open set contained in $\mathbb{R}^2$ or $\mathbb{R}^3$ of class $C^2$, if not differently specified.
-Most of the following notions, can be found in \cite{kirsch:book}, \cite{colton-kress:book}, \cite{salsa:book}
-\begin{definition}
- We define the following integral functions, for a given density $\psi\in C(\partial D)$ and $\partial D$ of class $C^2$
- \begin{itemize}
-  \item the \emph{single layer} potential
-   \begin{equation}
-    \mathcal{S}(\partial D,\psi)(x)\coloneqq \int_{\partial D} \Phi(x, y)\psi(y)\, dy\quad x\in\mathbb{R}^m \backslash\partial D 
-   \end{equation}
-  \item the \emph{double layer} potential
-   \begin{equation}
-    \mathcal{D}(\partial D,\psi)(x)\coloneqq \int_{\partial D} \partial_{\nu(y)}\Phi(x, y)\psi(y)\, dy\quad x\in\mathbb{R}^m \backslash\partial D 
-   \end{equation}
- \end{itemize}
-\end{definition}
-\begin{remark}
-The single layer and the double layer potentials solve the same differential equation of the fundamental solution: in our case they are harmonic, and so analytic, in $\mathbb{R}^m\backslash \partial D$. The same regularity holds true even for less regular curves, for example of Lipschitz class.
-\end{remark}
-\begin{remark}
-\label{rem:dimension}
-The asymptotic behaviour of the layer potential depends on dimension of $\mathbb{R}^m$.
-As long as the space $\mathbb{R}^2$ is the parametrization of $\mathbb{R}^3$ when there's no dependence on the third coordinate. This reflects on the logarithmic behavior and no uniqueness results in $\mathbb{R}^2$, since the curve $\partial D$ is the section of an infinite cylindric surface in $\mathbb{R}^3$ 
-\end{remark}
+In the sequel, the domain $D$, under assumptions \ref{assumption:connected}, will be of class $C^2$, if not differently specified.
+Most of the following notions, can be found in \cite{kirsch:book}, \cite{colton-kress:book}, \cite{salsa:book}.
+We refer to previous definition of layer potentials \eqref{eq:definition-single-layer}--\eqref{eq:definition-double-layer}.
 \begin{remark}
 The physical interpretation in electrostatics helps the description:
-\begin{itemize}
- \item the single layer potential represents the potential generated by a density $\psi$ of electric charges on $\partial D$
- \item the double layer potential represents the potential of a layer of dipoles on $\partial D$ of momentum $\psi$, oriented along the normal $\nu$
-\end{itemize}
+\begin{enumerate}
+ \item the single layer potential represents the potential generated by a density $\psi$ of electric charges on $\partial D$,
+ \item the double layer potential represents the potential of a layer of dipoles on $\partial D$ of momentum $\psi$, oriented along the normal $\nu$.
+\end{enumerate}
 \end{remark}
-For further properties of single and double layer potentials, it's convenient define the following operators
+For further properties of single and double layer potentials, it's convenient to define the following operators.
 \begin{definition}
- We define these integral operators for $\psi\in C(\partial D)$ and $\partial D$ of class $C^2$
- \begin{itemize}
+ We define these integral operators for $\psi\in C(\partial D)$ and $\partial D$ of class $C^2$:
+ \begin{enumerate}
   \item  $ S: C(\partial D) \to C(\partial D)$
   \begin{equation}
   S\psi(x)\coloneqq\int_{\partial D}\psi(y) \Phi(x,y)\,dy\label{def:operator-S}
@@ -1236,19 +1263,19 @@ For further properties of single and double layer potentials, it's convenient de
   & K\psi(x)\coloneqq\int_{\partial D} \psi(y) \partial_{\nu(y)} \Phi(x, y) \,dy =\int_{\partial D} \psi(y) \nabla_y\Phi(x, y)\cdot\nu(y) \,dy\label{def:operator-K}\\
   & K'\psi(x)\coloneqq\int_{\partial D} \psi(y) \partial_{\nu(x)} \Phi(x, y) \,dy =\int_{\partial D} \psi(y) \nabla_x\Phi(x, y)\cdot\nu(x) \,dy\label{def:operator-K'}
   \end{align}
- \end{itemize}
+ \end{enumerate}
 \end{definition}
 \begin{remark}
- As notation highlights, interchanging, the order of integration, the operator $K'$ is the adjoint of $K$, with respect the dual system $\langle C(\partial D), C(\partial D)\rangle$ with duality
+ As notation highlights, interchanging the order of integration, the operator $K'$ is the adjoint of $K$, with respect the dual system $\langle C(\partial D), C(\partial D)\rangle$, equipped with the natural duality
  \begin{equation}
   \langle\phi,\psi\rangle\coloneqq\int_{\partial D}\phi\psi\,dy
  \end{equation}
 \end{remark}
 
-The behaviour of layer potentials across the surface $\partial D$ is described by the \emph{jumps relations}
+The behavior of layer potentials across the surface $\partial D$ is described by the \emph{jumps relations}.
 \begin{theorem}
- If $\psi\in C(\partial D)$, $\partial D$ of class $C^2$, and let $\mathcal{S}(\psi,\partial D)$, $\mathcal{D}(\psi,\partial D)$ be the above defined potentials, than
- \begin{itemize}
+ Let $\psi\in C(\partial D)$, $\partial D$ be of class $C^2$, and let $\mathcal{S}(\psi,\partial D)$, $\mathcal{D}(\psi,\partial D)$ be the above defined potentials, than
+ \begin{enumerate}
   \item the single layer is continuous and 
   \begin{subequations}
   \begin{align}
@@ -1263,10 +1290,9 @@ The behaviour of layer potentials across the surface $\partial D$ is described b
    \partial_\nu\mathcal{D}^+(z) &= \partial_\nu\mathcal{D}^-(z) \quad z\in\partial D\label{eq:double-pm-1}
   \end{align}
   \end{subequations}
- \end{itemize}
+ \end{enumerate}
 \end{theorem}
-
-Now, we will state essential results for our continuation.
+Now, we will state some results essentials for our continuation.
 All details and proofs can be found in \cite{kress:book}.
 \begin{definition}
  Let $X,Y$ be Banach spaces of functions defined on $[a,b]$, and $A:X\to Y$ be a \emph{Fredholm integral operator} with kernel $k(x,y)$:
@@ -1284,16 +1310,17 @@ All details and proofs can be found in \cite{kress:book}.
     \phi - A\phi=f
    \end{equation}
  \end{enumerate}
-\emph{In most of cases $A$ is a compact operator}
+\emph{In most of cases, $A$ is a compact operator}.
 \end{definition}
 
 \begin{lemma}
+\label{lemma:K-K'-compact}
  Let $\partial D$ be a smooth domain, then the operators $K$ and $K'$ are integral operators with a weakly singular kernel and so are compact.
 \end{lemma}
 \begin{remark}
  Actually, in two dimensions, for boundary $\partial D$ of class $C^2$, the operators $K$ and $K'$ turn out to be continuous.
 \end{remark}
-We limit ourselves to remember that jump relations for the double layer \ref{eq:double-pm-0}-\ref{eq:double-pm-1} can be put in correspondence with the interior and the exterior Laplace problem with Dirichlet data.
+We limit ourselves to remember that \emph{jump relations for the double layer \eqref{eq:double-pm-0}--\eqref{eq:double-pm-1} can be put in correspondence with the interior and the exterior Laplace problem with Dirichlet data}.
 \begin{theorem}
 \label{theo:K-nullspace}
  The operators $I-2K$ and $I-2K'$ have trivial nullspaces
@@ -1311,7 +1338,7 @@ We limit ourselves to remember that jump relations for the double layer \ref{eq:
  \end{equation}
 \end{theorem}
 
-\section{Direct Problem and Boundary Element Method (BEM)}
+\section{Direct Problem and Boundary Integrals}
 The Direct Problem consists in computing the solution $u(x)$ of the following equation, for which the inclusion $D$ and the conductivity $k$ are known. The boundary condition depends on the formulation which accounts for the imposition of the potential or the current. It's widely common in scattering problems taking Dirichlet data $u=f$, so we can proceed in the analogous way.
 \begin{center}
 \colorbox{light-gray}{\color{black}\parbox{\textwidth}{
@@ -1322,11 +1349,11 @@ Find $u \in H^1(\Omega)$ such that:
   u = f & \textup{on}\;\partial\Omega
  \end{cases}
 \end{equation}
-with $f(x) \in H^{1/2}(\partial\Omega)$
+with $f(x) \in H^{1/2}(\partial\Omega)$.
 }}
 \end{center}
 Actually in concrete applications, the function $u$ is not computed, though it's observed on the surface $\partial\Omega$ and the measures $u|_{\partial \Omega}$, $\partial_\nu u|_{\partial \Omega}$ are considered for the construction of the reciprocity gap operator. Dirichlet data $f$ are the values of the generic potential which we are able to generate from the exterior: it can be a plane wave in the scattering case, or the potential generated by a point source $\delta_{x_0}$. In the latter case we are referring to the fundamental solution, and by uniqueness, the same $u$ is equal to $u(x)=\Phi_D(x,x_0)$ for $x\in \Omega$.
-In the sequel $B$ is the background medium which contains $\Omega\subset B$
+In the sequel $B$ is the background medium which contains $\Omega\subset B$.
 \begin{definition}
 \label{def:setU}
 We will denote as $\mathcal{U}$ the set of functions $u(x)$ defined on $B$ which can be measured starting from a basis of generating functions.
@@ -1334,51 +1361,49 @@ In our case
 \begin{equation}
  \mathcal{U}\coloneqq\bigl\{\Phi_D(x, x_0): x_0\in \partial B\bigr\}
 \end{equation}
-where $\Phi_D$ is the fundamental solution, which solves \ref{eq:fundamental-D-in-dist}
+where $\Phi_D$ is the fundamental solution, which solves \eqref{eq:fundamental-D-in-dist}.
 \end{definition}
-\begin{center}
- \begin{tikzpicture}
-  \draw (2,2) ellipse (3cm and 2cm);
-  \draw (2,2) ellipse (1.5cm and 1cm);
-  \draw (2,2) circle (0.5cm);
-  %\draw (2,2) rectangle (1cm and 3cm);
-  \node at (-0.5,2){$B$};
-  \node at (1,2){$\Omega$};
-  \node at (2,2){$D,k$};
- \end{tikzpicture}
-\end{center}
+% \begin{figure}[tb]
+% \begin{center}
+%  \begin{tikzpicture}
+%   \draw [dashed] (2,2) ellipse (3cm and 2cm);
+%   \draw [dashed] (2,2) ellipse (1.5cm and 1cm);
+%   \draw (2,2) circle (0.5cm);
+%   %\draw (2,2) rectangle (1cm and 3cm);
+%   \node at (-0.5,2){$B$};
+%   \node at (1,2){$\Omega$};
+%   \node at (2,2){$D,k$};
+%  \end{tikzpicture}
+% \end{center}
+% \end{figure}
+At this point we have to decide which method to use to compute the solution of \eqref{eq:laplacian-D}--\eqref{eq:transmissionF1}. The natural choice, for this differential problem, is the Boundary Integrals method, which expresses the solution in terms of surface integrals, and looks for integral equations for unknown densities. 
 \par
-At this point we have to decide which method to use to compute the solution of \ref{eq:laplacian-D}-\ref{eq:transmissionF1}. The natural choice, for this differential problem, is the Boundary Element Method (BEM), which expresses the solution in terms of surface integrals, and looks for integral equations for unknown densities. 
+The crucial step is to select the most suitable open set and representation formula. It's easy in this case, since the constant valued conductivity $k(x)=k$ implies Laplace equation \eqref{eq:laplacian-D} inside $D$, other than outside, for which the fundamental solution is well known.
 \par
-The crucial step is to select the most suitable open set and representation formula. It's easy in this case, since the constant valued conductivity $k(x)=k$ implies Laplace equation \ref{eq:laplacian-D} inside $D$, other than outside, for which the fundamental solution is well known.
-\par
-In conclusion, it's possible to represent a generic solution of \ref{eq:variational-F} in the whole open $\mathbb{R}^m\backslash\partial D$, with prescribed asymptotic behaviour at infinity depending on the dimension of $\mathbb{R}^m$, as the sum of a single and a double layer potential with densities equal to the correspondent jumps 
+In conclusion, it's possible to represent a generic solution of \eqref{eq:variational-F} in the whole open $\mathbb{R}^m\backslash\partial D$, with prescribed asymptotic behavior at infinity depending on the dimension of $\mathbb{R}^m$, as the sum of a single and a double layer potential with densities equal to the correspondent jumps 
 \begin{equation}
  \Sigma(x) = \int_{\partial D}\partial_{\nu(y)}\Phi(x,y)\bigl[\Sigma(y)\bigr]_{\partial D}\,dy-\int_{\partial D}\Phi(x,y)\bigl[\partial_\gamma \Sigma(y)\bigr]_{\partial D}\,dy
 \end{equation}
-The condition \ref{eq:transmissionF0} implies continuity of $\Sigma$. Finally the problem reduces to derive an integral equation from \ref{eq:transmissionF1} for the density $\psi$
+The condition \eqref{eq:transmissionF0} implies continuity of $\Sigma$. Finally the problem reduces to derive an integral equation from \eqref{eq:transmissionF1} for the density $\psi$, where
 \begin{equation}
  \Sigma(x)=\int_{\partial D}\Phi(x,y)\psi(y)\,dy = \mathcal{S}(\partial D, \psi)
 \end{equation}
-It's sufficient to substitute jump relations \ref{eq:single-pm-1} of $\partial\mathcal{S}$ in \ref{eq:transmissionF1} to derive the necessary \emph{integral equation of the second kind} for the unknown density
+It's sufficient to substitute jump relations \eqref{eq:single-pm-1} of $\partial\mathcal{S}$ in \eqref{eq:transmissionF1} to derive the necessary \emph{integral equation of the second kind} for the unknown density
 \begin{center}
-\colorbox{light-gray}{\color{black}\parbox{\textwidth}{
 \begin{equation}
  \label{eq:eq-psi-ck}
  \Bigl(K' + \frac{\hat{c}(k)}{2} I\Bigr)\psi = -\partial_\nu \Phi_{x_0}\quad\textup{ on }\partial D
 \end{equation}
-}}
 \end{center}
 with 
 \begin{equation}
  \hat{c}(k)\coloneqq\dfrac{k+1}{k-1} > 1 \quad \textup{ for } k>1
 \end{equation}
-
 \begin{lemma}
- The integral equation \ref{eq:eq-psi-ck} has a unique solution $\psi(y,x_0)=\psi(y) \in C(\partial D) \subset L^2(\partial D)$ for any $x_0 \in \partial B$
+ The integral equation \eqref{eq:eq-psi-ck} has a unique solution $\psi(y,x_0)=\psi(y) \in C(\partial D) \subset L^2(\partial D)$ for any $x_0 \in \partial B$.
 \end{lemma}
 \begin{proof}
- We classify \ref{eq:eq-psi-ck} as an integral equation of the second kind, which involves a compact operator $K'$, as stated previously \ref{}. The knowledge of the spectrum $-1/2 \in \sigma(K')=\sigma(K) \subset [-1/2,1/2)$ and the condition $\hat{c}(k)>1$ imply injectivity of the operator in the equation.
+ We classify \eqref{eq:eq-psi-ck} as an integral equation of the second kind, which involves a compact operator $K'$, as stated previously \ref{lemma:K-K'-compact}. The knowledge of the spectrum $-1/2 \in \sigma(K')=\sigma(K) \subset [-1/2,1/2)$ and the condition $\hat{c}(k)>1$ imply injectivity of the operator in the equation \eqref{eq:eq-psi-ck}. 
  By the Fredholm's alternative, the operator $K'+(\hat{c}(k)/2)I:C(\partial D)\to C(\partial D)$ is continuous and bijective, with bounded inverse.
  Therefore the equation is well-posed and there exists a unique solution $\psi$.
 \end{proof}
@@ -1390,11 +1415,11 @@ According with the fact that the charge density on $\partial D$ is induced by th
  \end{equation}
 \end{lemma}
 \begin{proof}
-We show two ways, since are useful in other contexts. By the knowledge of the spectrum
+We show two ways, since they are useful in other contexts. By the knowledge of the spectrum,
  \begin{equation*}
   -\frac{\hat{c}}{2} \int_{\partial D} \psi\,dy = -\frac{\hat{c}}{2} \langle \psi,1\rangle = \langle K'\psi,1\rangle + \langle \partial_\nu\Phi_{x_0},1\rangle = \langle \psi,K 1\rangle + 0 = -\frac{1}{2}\int_{\partial D} \psi
  \end{equation*}
- or more directly by transmission conditions \ref{eq:transmissionPhiD1}, with harmonicity of $\Phi_D(\cdot,x_0)$ in $\mathbb{R}^2\backslash(\partial D\cup\{x_0\})$:
+ In alternative, more directly by transmission conditions \eqref{eq:transmissionPhiD1}, with harmonicity of $\Phi_D(\cdot,x_0)$ in $\mathbb{R}^2\backslash(\partial D\cup\{x_0\})$,
  \begin{equation*}
   -\psi=\partial_\nu \Phi_D^+-\partial_\nu \Phi_D^-=(1-\frac{1}{k})\partial_\nu \Phi_D^+ = (k-1)\partial_\nu \Phi_D^-
  \end{equation*} 
@@ -1428,19 +1453,19 @@ We show two ways, since are useful in other contexts. By the knowledge of the sp
 In this subsection we describe a common physical experiment to show a particular solution, which will be useful later.
 \par
 In electrostatics, we define \emph{conductor} a material in which electric charges are free to move. In \emph{static} configurations,
-charges arrange themselves on the surface of the conductor, such that the \emph{electric potential $u$ is constant inside} the conductor. This entails vanishing of the electric field $\nabla u$ inside it.
+charges arrange themselves on the surface of the conductor, such that the \emph{electric potential $u$ is constant inside the conductor}. This entails vanishing of the electric field $\nabla u$ inside it.
 \par
-We name $\alpha_{c}$ the charge density of the simple layer which describes this specific problem. We borrow the notation from previous geometry and name $\partial B$ the surface of the conductor.
+We name $\alpha_{c}$ the charge density of the simple layer which describes this specific problem. We adopt the notation from previous geometry and name $\partial B$ the surface of the conductor.
 \begin{equation}
  \mathcal{S}_{c}(\partial B, \alpha_c)\coloneqq\int_{\partial B}\Phi(x,x_0)\alpha_{c}(x_0)\,dx_0
 \end{equation}
 We compute it, by imposing $\partial_\nu \mathcal{S}_{c}^- = 0$ on $\partial B$
 \begin{equation}
- \partial_\nu\mathcal{S}_{c}^-=\Bigl(K'+\dfrac{1}{2}I\Bigr)\alpha_{c}= 0\quad\textup{ on }\partial B
+ \partial_\nu\mathcal{S}_{c}^-=\Bigl(K'+\dfrac{1}{2}I\Bigr)\alpha_{c}= 0\quad\textup{ on }\partial B \label{eq:alpha_c-equation}
 \end{equation}
-The kernel $\mathcal{N}(K' + 1/2 I)=\textup{span}(\{\alpha_{c}\})$ is one dimensional as stated in \ref{}, and the integral $\alpha_{cm} \cdot|\partial B|$ of any non trivial solution, where $\alpha_{cm}$ is the mean value, is equal to the total amount of electric charge.
+The kernel $\mathcal{N}(K' + 1/2 I)=\textup{span}(\{\alpha_{c}\})$ is one dimensional as stated in \ref{theo:K-nullspace}, and the integral $\alpha_{cm} \cdot|\partial B|$ of any non trivial solution, where $\alpha_{cm}$ is the mean value, is equal to the total amount of electric charge.
 \par
-Now we imagine the same conductor containing an inclusion with impedance $\gamma(x)=k$ inside $D$. The electric potential $\mathcal{E}$ generated by source charges on $\partial B$ is described by the single layer constructed with the fundamental solution $\Phi_D(x,x_0)$, which solves \ref{eq:fundamental-D-in-dist}
+Now we imagine the same conductor containing an inclusion with impedance $\gamma(x)=k$ inside $D$. The electric potential $\mathcal{E}$ generated by source charges on $\partial B$ is described by the single layer constructed with the fundamental solution $\Phi_D(x,x_0)$, which solves \eqref{eq:fundamental-D-in-dist}
 \begin{equation}
  \Phi_D(x,x_0)\coloneqq\Phi(x,x_0)+\mathcal{S}(\partial D,\psi_{x_0})\label{eq:decomposition-Phi-D}
 \end{equation}
@@ -1448,29 +1473,30 @@ We substitute it in the integral of the electric potential expressed in the form
 \begin{align}
  \mathcal{E}(x)&\coloneqq\int_{\partial B}\Phi_D(x,x_0)\alpha(x_0)\,dx_0= \label{eq:definition-E-c}\\
   &=\mathcal{S}(\partial B, \alpha)(x) + \int_{\partial D} \Big(\int_{\partial B}\psi(y,x_0)\alpha(x_0)\,dx_0\Big)\Phi(x,y)\,dy = \\
-  &=\mathcal{S}(\partial B, \alpha)(x) + \mathcal{S}(\partial D, \psi_{\alpha})(x)\label{eq:decomposition-E-c}
+  &=\mathcal{S}(\partial B, \alpha)(x) + \mathcal{S}(\partial D, \psi_{\alpha})(x) \label{eq:decomposition-E-c}
 \end{align}
 Now we state a proposition which explain the interest of $\alpha_{c}$.
 \begin{proposition}
+\label{prop:alpha_c-both-problems}
  We denote as $\alpha_{c}$ the density which makes the single layer $\mathcal{S}(\partial B, \alpha_{c})$ constant inside $\overline{B}$.
- Than the electric potential $\mathcal{E}_{c}$ \ref{eq:definition-E-c}, constructed with the same $\alpha_{c}$, is constant inside $\overline{B}$
+ Than the electric potential $\mathcal{E}_{c}$ \eqref{eq:definition-E-c}, constructed with the same $\alpha_{c}$, is constant inside $\overline{B}$.
 \end{proposition}
 \begin{proof}
-We will prove that the unknown density $\psi_{\alpha_c}$ in the decomposition \ref{eq:decomposition-E-c} is actually zero. To show this, we take advantage of transmission conditions on $\partial D$. 
+We will prove that the unknown density $\psi_{\alpha_c}$ in the decomposition \eqref{eq:decomposition-E-c} is actually zero. To show this, we take advantage of transmission conditions on $\partial D$. 
 Indeed from definition we can derive two weak formulations for $\mathcal{S}(\partial B, \alpha_c)$ and $\mathcal{E}$ exactly as in section \ref{subsection:fundamental-solution}:
 \begin{align}
  &-\Delta\mathcal{S}(\partial B,\alpha_c) = 0\quad\textup{ in }B\\
  &-\divergence\bigl(\gamma\nabla\mathcal{E}\bigr) = 0\quad\textup{ in }B
 \end{align}
-Taking transmission conditions of the two equations on $\partial D$, we note that it's sufficient to change the forcing term equal to $(k-1)\,\partial_\nu\mathcal{S}(\partial B, \alpha_{c})$ in \ref{eq:transmissionF1} to obtain the desired equation:
+Taking transmission conditions of the two equations on $\partial D$, we note that it's sufficient to change the forcing term equal to $(k-1)\,\partial_\nu\mathcal{S}(\partial B, \alpha_{c})$ in \eqref{eq:transmissionF1} to obtain the desired equation
 \begin{equation}
  \bigl[\partial_\gamma \mathcal{S}(\partial D,\psi_{\alpha_{c}})\bigr]^+_-\bigl(y\bigr) = (k - 1)\partial_\nu \mathcal{S}(\partial B,\alpha_{c})=0 \quad y \in\partial D
 \end{equation}
-which vanishes, since $\alpha_{c}$ generates constant potential $\mathcal{S}(\partial B,\alpha_{c})$ in $B$. The last transmission condition, can be rewrite, by substitution of integral boundary operators:
+which vanishes, since $\alpha_{c}$ generates constant potential $\mathcal{S}(\partial B,\alpha_{c})$ in $B$. The last transmission condition, can be rewritten, by substitution of integral boundary operators:
 \begin{equation}
  \Bigl(K' + \frac{\hat{c}(k)}{2} I\Bigr)\psi_{\alpha_c} = -\partial_\nu \mathcal{S}(\partial B, \alpha_c) = 0
 \end{equation}
-which has only the zero solution, since the operator on the left side is injective, as stated in \ref{}
+which has only the zero solution, since the operator on the left side is injective, as stated in \ref{theo:K-nullspace}.
 \end{proof}
 \begin{remark}
  The $\alpha_c$ is the electric density which is measured on the surface of the conductor $\partial B$ in both geometries. Indeed the potential is constant in both cases.
@@ -1479,12 +1505,12 @@ which has only the zero solution, since the operator on the left side is injecti
 \section{Reciprocity Gap Operator}
 From now, we fix the dimension $\mathbb{R}^2$ to develop numerical discretization. 
 For our purposes, we need to define a set of test functions $\mathcal{V}$, such that they describe the physical problem without the inclusion. The idea is to construct from data the \emph{reciprocity gap} operator, defined on $\mathcal{V}$, which measures the \emph{discrepancy}, or the \emph{gap}.
-It plays the same role in the numerical reconstruction of inverse scattering problems, like in \cite{colton-haddar:rg}, \cite{dicristo-sun:2006}, \cite{dicristo-sun:2007}
+It plays the same role in the numerical reconstruction of inverse scattering problems, like in \cite{colton-haddar:rg}, \cite{dicristo-sun:2006}, \cite{dicristo-sun:2007}.
 \begin{definition}
 \label{def:setV}
-Let $u\in\mathcal{U}$, the set defined in \ref{def:setU}. In our case $u(x,x_0)=\Phi_D(x,x_0)$, with $x_0 \in \partial B$, then:
-\begin{itemize}
- \item let $\mathcal{V}(\overline{B})$ denote the set of harmonic function, continuously defined on $\overline{B}$
+Let $u\in\mathcal{U}$, the set defined in \ref{def:setU}. In our case $u(x,x_0)=\Phi_D(x,x_0)$, with $x_0 \in \partial B$, then
+\begin{enumerate}
+ \item let $\mathcal{V}(\overline{B})$ denote the set of harmonic function, continuously defined on $\overline{B}$,
  \item let $\mathcal{V}_0(\overline{B})$ be the subspace of vanishing mean functions
  \begin{equation}
   \mathcal{V}_0(\overline{B})\coloneqq\Bigl\{v\in\mathcal{V}(\overline{B}):\int_{\partial B} v = 0\Bigr\}=\mathcal{V}(\overline{B})/\textup{span}\Bigl(\{1\}\Bigr)
@@ -1493,12 +1519,13 @@ Let $u\in\mathcal{U}$, the set defined in \ref{def:setU}. In our case $u(x,x_0)=
 \begin{equation}
  \textup{R}(v)(x_0)\coloneqq \mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr)\coloneqq \int_{\partial \Omega}\bigl(u(y,x_0)v_\nu (y) - u_\nu(y,x_0)v(y)\bigr)dy
 \end{equation}
-\end{itemize}
+\end{enumerate}
 \end{definition}
+\begin{figure}[tb]
 \begin{center}
  \begin{tikzpicture}
-  \draw (2,2) ellipse (3cm and 2cm);
-  \draw (2,2) ellipse (1.5cm and 1cm);
+  \draw [dashed] (2,2) ellipse (3cm and 2cm);
+  \draw [dashed] (2,2) ellipse (1.5cm and 1cm);
   \draw (2,2) circle (0.5cm);
   %\draw (2,2) rectangle (1cm and 3cm);
   \node at (-0.5,2){$B$};
@@ -1506,13 +1533,14 @@ Let $u\in\mathcal{U}$, the set defined in \ref{def:setU}. In our case $u(x,x_0)=
   \node at (2,2){$D,k$};
  \end{tikzpicture}
 \end{center}
+\end{figure}
 \begin{remark}
  \label{rem:kernel-R}
- Observe, by simple substitution, that for any constant function, $\textup{R}(v_c)=0$, where $v_c(x)\coloneqq c$, $c\in\mathbb{C}$, $x\in\overline{B}$, using \ref{}, vanishing flux property
+ Observe, by simple substitution, that for any constant function, $\textup{R}(v_c)=0$, where $v_c(x)\coloneqq c$, $c\in\mathbb{C}$, $x\in\overline{B}$.
 \end{remark}
 \begin{proposition}[Injectivity]
 \label{prop:injectivity}
- The operator $\textup{R}$ is injective in $\mathcal{V}_0(\overline{B})$: the kernel of $\textup{R}$ is the one dimensional vector space spanned by the constant function $\{1\}$
+ The operator $\textup{R}$ is injective in $\mathcal{V}_0(\overline{B})$: the kernel of $\textup{R}$ is the one dimensional vector space $\mathcal{N}(R)=\textup{span}(\{1\})$, spanned by the constant.
 \end{proposition}
 \begin{proof}
 \label{proof:injectivity}
@@ -1522,7 +1550,7 @@ Let $v\in\mathcal{V}(\overline{B})$ and assume $\textup{R}(v)=0$. Apply the Gree
 \begin{equation}
   \text{R}(v)(x_0)\coloneqq\mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr) = \mathcal{R}_{\partial D}\bigl(u^+(\cdot,x_0),v(\cdot)\bigr) = 0
  \end{equation}
- By transmission conditions \ref{eq:} of $u$ and by Green's identity in $D$:
+ By transmission conditions \eqref{eq:transmissionPhiD0}--\eqref{eq:transmissionPhiD1} of $u$ and by Green's identity in $D$:
  \begin{align*}
   \mathcal{R}_{\partial D}\bigl(u^+(\cdot,x_0),v(\cdot)\bigr) &= \int_{\partial D}\bigl(u^-(y,x_0)v_\nu (y) - k \cdot u^-_\nu(y,x_0)v(y)\bigr)dy = \\
   &= \int_{\partial D}u^-(y,x_0)v_\nu (y)\,dy - k\int_{\partial D}u^-(y,x_0)v_\nu (y)\,dy = \\
@@ -1533,33 +1561,33 @@ Let $v\in\mathcal{V}(\overline{B})$ and assume $\textup{R}(v)=0$. Apply the Gree
   f(x_0)\coloneqq \int_{\partial D} u(y,x_0)v_\nu(y)dy\quad x_0 \in \mathbb{R}^2\backslash\partial D
  \end{equation}
  We have just shown that $f(x_0)=0$ on $\partial B$ and 
- by reciprocity relation \ref{}, $f(x_0)$ is harmonic in $\mathbb{R}^2\backslash\overline{D}$.
+ by reciprocity relation \ref{prop:reciprocity}, $f(x_0)$ is harmonic in $\mathbb{R}^2\backslash\overline{D}$.
  Note that the density $v_\nu(y)$ has vanishing mean, since $v$ is harmonic. This implies that in $\mathbb{R}^2$, $f(x_0)$ is bounded at infinity, while in $\mathbb{R}^3$ boundedness of $D$ prevents any kind of this bad growth.
  \par
  By uniqueness of exterior boundary value problem \ref{} in $\mathbb{R}^2\backslash\overline{B}$, and by continuation principle of analytic functions \ref{} from the open $\mathbb{R}^2\backslash\overline{B}$ to the open $\mathbb{R}^2\backslash\overline{D}$, we conclude $f=0$ in $\mathbb{R}^2\backslash\overline{D}$.
  At the end, by continuity on $\partial D$, and by uniqueness in $D$, we arrive at $f(x_0)=0$ in $\mathbb{R}^2$.
  \par
- By jump relation \ref{} $v_\nu = 0$. Finally, impose homogeneous Neumann condition to interior problem in $D$, and we conclude that $v$ is constant in $D$ and in $\overline{B}$
+ By jump relations \ref{} $v_\nu = 0$. Finally, impose homogeneous Neumann condition to interior problem in $D$, and we conclude that $v$ is constant in $D$ and in $\overline{B}$.
 \end{proof}
 
 \begin{lemma}[Density]
 \label{lemma:density-V-0}
- Consider $v\in \mathcal{V}(\overline{B})$, than the set $\{v|_{\partial D}\}$ is dense in $L^2(\partial D)$
+ Consider $v\in \mathcal{V}(\overline{B})$, than the set $\{v|_{\partial D}\}$ is dense in $L^2(\partial D)$.
 \end{lemma}
 \begin{proof}
  We fix a generic $\beta \in L^2(\partial D)$ and we assume that the product, with all the harmonics in the form of the sum of two layers $v=\mathcal{S}(\partial B,\sigma) + \mathcal{D}(\partial B, \mu)$, vanishes. Our aim is to show that $\beta=0$.
- \begin{itemize}
-  \item first, integrate with a single layer, $\forall\sigma\in C(\partial B)$
+ \begin{enumerate}
+  \item First, integrate with a single layer, $\forall\sigma\in C(\partial B)$
  \begin{align*}
   0=\langle\mathcal{S}({\partial B},\sigma), \beta\rangle_{L^2(\partial D)} &= \int_{\partial D} \int_{\partial B} \sigma(y) \Phi(x,y)\,dy\,\beta(x)\,dx \\ &= \langle\sigma, \mathcal{S}({\partial D},\beta)\rangle_{L^2(\partial B)}
  \end{align*}
- which implies $\mathcal{S}(\partial D,\beta) = 0$ on $\partial B$ (but it's not enough, as example \ref{example:van-s-lay} shows)
- \item then, test the product with a double layer, $\forall \mu\in C(\partial B)$
+ which implies $\mathcal{S}(\partial D,\beta) = 0$ on $\partial B$ (but it's not enough, as example \ref{example:van-s-lay} shows).
+ \item Then, test the product with a double layer, $\forall \mu\in C(\partial B)$
  \begin{align*}
   0=\langle\mathcal{D}({\partial B},\mu), \beta\rangle_{L^2(\partial D)} &= \int_{\partial D} \int_{\partial B} \mu(y) \partial_{\nu(y)}\Phi(x,y)\,dy\,\beta(x)\,dx \\&= \int_{\partial B} \partial_\nu \mathcal{S}(\partial D, \beta)(y) \mu(y)\, dy
  \end{align*}
- which implies $\partial_\nu \mathcal{S}(\partial D, \beta) = 0$ on $\partial B$, and vanishing total flux:
- \end{itemize}
+ which implies $\partial_\nu \mathcal{S}(\partial D, \beta) = 0$ on $\partial B$, and vanishing total flux
+ \end{enumerate}
  \begin{equation*}
   0=\int_{\partial B} \partial_\nu \mathcal{S}(\partial D,\beta)(y)\,dy =\int_{\partial D} \int_{\partial B} \partial_{\nu(y)} \Phi(x,y)\, dy \, \beta(x) dx = - \int_{\partial D} \beta(x) \, dx
  \end{equation*}
@@ -1573,7 +1601,7 @@ Let $v\in\mathcal{V}(\overline{B})$ and assume $\textup{R}(v)=0$. Apply the Gree
 \end{proof}
 \begin{lemma}[Density]
 \label{lemma:density-V-1}
- Consider $v\in \mathcal{V}(\overline{B})$, then the set $\{(\partial_\nu v )|_{\partial D}\}$ is dense in $L^2_0(\partial D)\coloneqq L^2(\partial D)/\textup{span}(\{1\})$ (closure of vanishing mean smooth functions)
+ Consider $v\in \mathcal{V}(\overline{B})$, then the set $\{(\partial_\nu v )|_{\partial D}\}$ is dense in $L^2_0(\partial D)\coloneqq L^2(\partial D)/\textup{span}(\{1\})$ (closure of vanishing mean smooth functions).
 \end{lemma}
 \begin{proof}
  First of all, we observe that any constant function defined on $\partial D$, is orthogonal to all $\partial_\nu v$
@@ -1581,7 +1609,7 @@ Let $v\in\mathcal{V}(\overline{B})$ and assume $\textup{R}(v)=0$. Apply the Gree
   \langle \partial_\nu v, 1\rangle_{L^2(\partial D)} = \int_{\partial D}\partial_\nu v\,dy=0
  \end{equation*}
  Now we fix a generic $\beta\in L^2(\partial D)$ and assume vanishing of the product of $\beta$ with all test functions in $\mathcal{V}(\overline{B})$. 
- We consider only some of them, in particular the set:
+ We consider only some of them, in particular the set
  \begin{equation}
   \Bigl\{\mathcal{S}(\partial B, \sigma)(x) = \int_{\partial B} \sigma(y)\Phi(x,y)\,dy\,:\, \sigma \in C(\partial B)\Bigr\} \subset \mathcal{V}(\overline{B})
  \end{equation}
@@ -1595,15 +1623,15 @@ Let $v\in\mathcal{V}(\overline{B})$ and assume $\textup{R}(v)=0$. Apply the Gree
   f(y)\coloneqq \mathcal{D}(\partial D, \beta)(y)=\int_{\partial D}\partial_{\nu(x)} \Phi(x,y) \beta(x)\,dx
  \end{equation}
  which vanishes $f(y)=0$ on $y\in\partial B$, as we have previously found.
- It is harmonic in $\mathbb{R}^2\backslash\partial D$ and bounded $O(1)$, as any double layer potential \ref{}. By uniqueness result for bounded harmonics for exterior Dirichlet problem and by continuation principle, we obtain $f=0$ in $\mathbb{R}^2\backslash\overline{D}$. At this point, the double layer potential $f$ vanishes outside $D$, and the boundary integral operator has $\mathcal{N}(K+1/2\,I)=\textup{span}(\{1\})$. This force $\beta$ to be a generic constant. 
+ It is harmonic in $\mathbb{R}^2\backslash\partial D$ and bounded $O(1)$, as any double layer potential. By uniqueness result for bounded harmonics for exterior Dirichlet problem and by continuation principle, we obtain $f=0$ in $\mathbb{R}^2\backslash\overline{D}$. At this point, the double layer potential $f$ vanishes outside $D$, and the boundary integral operator has $\mathcal{N}(K+1/2\,I)=\textup{span}(\{1\})$. This force $\beta$ to be a generic constant. 
  We have just shown that $\{(\partial_\nu v )|_{\partial D}\}^\perp \subset \textup{span}(\{1\})$. Actually, at the beginning, we proved the inverse inclusion, so the statement holds.
 \end{proof}
 \begin{remark}
- If we consider $v\in\mathcal{V}_0(\overline{B})$ in alternative to $\mathcal{V}(\overline{B})$,  since the set $\{(\partial_\nu v )|_{\partial D}\}$ is the same in both cases, than the previous density result is still valid
+ If we consider $v\in\mathcal{V}_0(\overline{B})$ in alternative to $\mathcal{V}(\overline{B})$,  since the set $\{(\partial_\nu v )|_{\partial D}\}$ is the same in both cases, than the previous density result is still valid.
 \end{remark}
 \begin{proposition}[Surjectivity]
 \label{prop:surjectivity}
- The range of the operator $\textup{R} : \mathcal{V}(\overline{B})\to L^2(\partial B)$  has codimension one
+ The range of the operator $\textup{R} : \mathcal{V}(\overline{B})\to L^2(\partial B)$  has codimension one, indeed $\mathcal{R}(R)^\perp=\textup{span}(\{\alpha_c\})$, where $\alpha_c$ is the solution of \eqref{eq:alpha_c-equation}.
 \end{proposition}
 \begin{proof}
 \label{proof:surjectivity}
@@ -1615,11 +1643,11 @@ Let $v\in\mathcal{V}(\overline{B})$ and assume $\textup{R}(v)=0$. Apply the Gree
  \begin{equation}
   0 = \mathcal{R}_{\partial \Omega}(\mathcal{E},v)\quad\textup{ where }\quad\mathcal{E}(x):=\int_{\partial B}u(x,x_0)\alpha(x_0)\, dx_0
  \end{equation}
- By Green's identity and same transmission conditions of $u$ \ref{eq:transmissionPhiD0}-\ref{eq:transmissionPhiD1} for $\mathcal{E}$, exactly as in the injectivity's proof \ref{proof:injectivity}, $\forall v \in \mathcal{V}(\overline{B})$:
+ By Green's identity and same transmission conditions of $u$ \eqref{eq:transmissionPhiD0}--\eqref{eq:transmissionPhiD1} for $\mathcal{E}$, exactly as in the injectivity's proof \ref{proof:injectivity}, $\forall v \in \mathcal{V}(\overline{B})$:
  \begin{equation}
   0 = \mathcal{R}_{\partial \Omega}(\mathcal{E},v)=(1-k)\int_{\partial D} \partial_\nu\mathcal{E}^-(y)v(y)\,dx
  \end{equation}
- By density results \ref{lemma:density-V-1}, obtain $\partial_\nu\mathcal{E}^- = k\,\partial_\nu\mathcal{E}^+= 0$ on $\partial D$. 
+ By density results \ref{lemma:density-V-1}, we obtain $\partial_\nu\mathcal{E}^- = k\,\partial_\nu\mathcal{E}^+= 0$ on $\partial D$. 
  Now we explicit $u(x,x_0)=\Phi(x,x_0)+\mathcal{S}(\partial D, \psi_{x_0})$, and write the superimposition $\mathcal{E}$ at the same way
  \begin{align}
   \mathcal{E}(x)&=\mathcal{S}(\partial B, \alpha) + \int_{\partial D} \Big(\int_{\partial B}\psi(y,x_0)\alpha(x_0)\,dx_0\Big)\Phi(x,y)\,dy = \\
@@ -1635,7 +1663,7 @@ Let $v\in\mathcal{V}(\overline{B})$ and assume $\textup{R}(v)=0$. Apply the Gree
   \partial_\nu\mathcal{E}_{c}^-=\Bigl(K'+\dfrac{1}{2}I\Bigr)\alpha_{c}= 0\quad\textup{ on }\partial B
  \end{equation}
  We know that the kernel $\mathcal{N}(K' + 1/2 I)=\textup{span}(\{\alpha_{c}\})$ is one dimensional, where we have named $\alpha_{c}$ the physical charge layer of total amount $\alpha_m \cdot |\partial B|$  which can be measure on the surface of a \emph{conductor}, with the property of a constant potential inside it.
-Actually in proposition \ref{} we showed that if $\mathcal{S}(\partial B, \alpha_{c})$ is constant in $\overline{B}$ than
+Actually in proposition \ref{prop:alpha_c-both-problems} we showed that if $\mathcal{S}(\partial B, \alpha_{c})$ is constant in $\overline{B}$ than
 \begin{equation}
  \mathcal{E}_{c}(x)\coloneqq\int_{\partial B}u(x,x_0)\alpha_{c}(x_0)\,dx_0\label{eq:definition-E-pc}
 \end{equation}
@@ -1652,11 +1680,11 @@ We will examine the image of the operator $\textup{R}$, constructed from the fun
 \begin{equation}
  \tilde{R}(\Phi_z)(x_0) \coloneqq \mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),\Phi_z(\cdot)\bigr)\coloneqq \int_{\partial \Omega}\bigl(u(y,x_0){\Phi_z}_\nu (y) - u_\nu(y,x_0)\Phi_z(y)\bigr)dy
 \end{equation}
-Now we evaluate the scalar product of $\tilde{R}(\Phi_z)$ with $\alpha_{c}$, which solves \ref{}
+Now we evaluate the scalar product of $\tilde{R}(\Phi_z)$ with $\alpha_{c}$, which solves \eqref{eq:alpha_c-equation}
 \begin{equation}
  \langle \, \tilde{\textup{R}}(\Phi_z) ,\alpha_{c}\rangle_{L^2(\partial B)}=\mathcal{R}_{\partial \Omega}(\mathcal{E}_{c}, \Phi_z)=\int_{\partial\Omega}\bigl(\mathcal{E}_{c}\,\partial_\nu \Phi_z - \partial_\nu\mathcal{E}_{c}\, \Phi_z\bigr)\,dy
 \end{equation}
-and by the properties of $\mathcal{E}_{c}$ defined in \ref{}, as reported in proposition \ref{}
+and by the properties of $\mathcal{E}_{c}$ defined in \eqref{eq:definition-E-c}, as reported in proposition \ref{prop:alpha_c-both-problems}
 \begin{align}
  &\mathcal{E}_{c}=c \quad\textup{ on }\partial\Omega\\
  &\partial_\nu\mathcal{E}_{c}=0\quad \textup{ on }\partial\Omega
@@ -1671,7 +1699,7 @@ while in the proof of surjectivity \ref{proof:surjectivity}, we concluded $\fora
 \end{equation}
 Now, \emph{it's clear the impossibility to approximate the right hand term $\tilde{\textup{R}}(\Phi_z)$ with $\textup{R}(v)$ for some $v$}
 \par
-We need to modify the right hand side: we will look for a scalar function $\Psi_z$ such to preserve these \emph{necessary conditions}:
+We need to modify the right hand side, and so we will look for a scalar function $\Psi_z$ such to preserve these \emph{necessary conditions}:
 \begin{enumerate}
  \item it has to present some kind of \emph{singularity in $z$}, for further reasons, which will be clear in the proof. We want to exclude, from the approximation, all points outside $D$
  \begin{equation}
@@ -1683,21 +1711,21 @@ We need to modify the right hand side: we will look for a scalar function $\Psi_
  \end{equation}
 \end{enumerate}
 If we invoke the physical counterpart of the electrostatics one more time, Gauss's theorem states that the total flux of the electric potential, across a surface, is equal to the total amount of electric charge contained in it, times some constant.
-The idea most near to the unit electric charge source, is the unit electric dipole, which indeed, can be approximated by the limit of two infinitesimal charges $q=\pm/(2\epsilon)$, of opposite sign, located in $\pm\epsilon\vec{d}$, with displacement unit vector $|\vec{d}\,|=1$, with constant electrical momentum:
+The idea closest to some electric charge source with total charge vanishing, is the unit electric dipole, which indeed, can be approximated by the limit of two infinitesimal charges $q=\pm/(2\epsilon)$, of opposite sign, located in $\pm\epsilon\vec{d}$, with displacement unit vector $|\vec{d}\,|=1$, with constant electrical momentum
 \begin{equation}
  \vec{\mu}\coloneqq \sum_{j=1}^2 q_jr_j\vec{d}_j=\dfrac{1}{2\epsilon}\epsilon\vec{d} -\dfrac{1}{2\epsilon}(-\epsilon\vec{d})=\vec{d}
 \end{equation}
-The distributional description of the electric dipole is constructed, as the same way, taking the limit in distributions of two unit deltas $\pm1/(2\epsilon)\delta_{\pm\epsilon\vec{d}}\,$:
+The distributional description of the electric dipole is constructed, as the same way, taking the limit in distributions of two unit deltas $\pm1/(2\epsilon)\delta_{\pm\epsilon\vec{d}}\,$
 \begin{equation}
  \dfrac{\delta_{\epsilon\vec{d}} - \delta_{-\epsilon\vec{d}}}{2\epsilon}=\dfrac{\delta(\vec{x} - \epsilon\vec{d}) - \delta(\vec{x}+\epsilon\vec{d})}{2\epsilon}\to -\nabla\delta(\vec{x})\cdot\vec{d}\, \textup{ for }\epsilon\to0^+
 \end{equation}
-In view of these considerations, we will consider the electric potential generated by a dipole of momentum $\vec{d}$:
+In view of these observations, we will consider the electric potential generated by a dipole of momentum $\vec{d}$
 \begin{equation}
  -\nabla\delta_{\vec{x_0}}\cdot\vec{d}\, \Longrightarrow\, -\nabla\Phi(x,x_0) \cdot \vec{d}
 \end{equation}
 \begin{definition}
 \label{def:fund-sol-deriv-Psi}
-In the sequel we will use the following notation, where $\Phi$ is the fundamental solution \ref{eq:definition-Phi-23} :
+In the sequel we will use the following notation, where $\Phi$ is the fundamental solution of \ref{eq:definition-Phi-23}
 \begin{align}
  &\vec{\Psi}_z(x) = \vec{\Psi}(x,z) \coloneqq \nabla\Phi(x,z)\\
  &\Psi_z(x,\vec{d})= \Psi(x,z,\vec{d}) \coloneqq \vec{\Psi}(x,z)\cdot \vec{d} = \partial_{\vec{d}\,\,}\Phi(x,z)
@@ -1707,15 +1735,15 @@ for some unit vector $|\vec{d}\,|=1$
 Finally we get the key theorem which provides a binary criterion to discriminate the inclusion from the background.
 \begin{theorem}[Reciprocity Gap Approximation Theorem]
  \label{theo:approximation-rg} 
- The framework is constituted by a finite number of simply connected unknown inclusions as in hypotheses \ref{}, all them called $D$, a set of measured data $\{(u|_{\partial \Omega},\partial_\nu u|_{\partial \Omega})\}$ with $u\in\mathcal{U}$ defined in \ref{def:setU}, and a set of harmonic test functions $\mathcal{V}(\overline{B})$ defined in \ref{def:setV}. At the right hand side, we
- consider the directional derivative along some unit vector $\vec{d}$ of the fundamental solution, defined above in \ref{def:fund-sol-deriv-Psi}, then:
+ The framework is constituted by an inclusion $D\subset\Omega\subset B$, under assumptions \ref{assumption:connected}, a set of measured data $\{(u|_{\partial \Omega},\partial_\nu u|_{\partial \Omega})\}$ with $u\in\mathcal{U}$ defined in \ref{def:setU}, and a set of harmonic test functions $\mathcal{V}(\overline{B})$ defined in \ref{def:setV}. At the right hand side, we
+ consider the directional derivative along some unit vector $\vec{d}$ of the fundamental solution, defined above in \ref{def:fund-sol-deriv-Psi}. Then
  \begin{enumerate}
-  \item if $z \in D$ then there exists a sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that:
+  \item if $z \in D$ then there exists a sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
    \begin{equation}
      \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U}
    \end{equation}
    and $v_n|_{\partial D}\to g$ in $L^2(\partial D)$ and consequently  it's bounded in the same norm $\|v_n\|_{L^2(\partial D)}$
-  \item if $z \in \Omega \backslash D$ then any sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that:
+  \item if $z \in \Omega \backslash D$ then any sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
    \begin{equation}
      \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U}
    \end{equation}
@@ -1723,27 +1751,27 @@ Finally we get the key theorem which provides a binary criterion to discriminate
  \end{enumerate}
 \end{theorem}
 \begin{proof}
-We split the proof in two parts: the constructive and the counterpart.
+We split the proof in two parts, the constructive part and the counterpart.
  \begin{enumerate}
-  \item Fixed $z \in D$, and using Neumann-to-Dirichlet operator of Laplace equation $\Lambda_{0D}:H^{\,-1/2}_0(\partial D)\to H^{1/2}(\partial D)$, defined as \ref{}, but referred to region $D$, 
+  \item Fixed $z \in D$, and using Neumann-to-Dirichlet operator of Laplace equation ${N_0}:H^{\,-1/2}_0(\partial D)\to H^{1/2}(\partial D)$, but referred to region $D$, 
     at the right side, we have
     \begin{align}
     \mathcal{R}_{\partial \Omega}(u,\Psi_z) &= \mathcal{R}_{\partial D}(u,\Psi_z) \\
     &= \int_{\partial D}(u\partial_\nu\Psi_z - \partial_\nu u^+ \Psi_z) \,dy\\
-    &= \int_{\partial D}\bigl(\partial_\nu u^- \Lambda_{0D}(\partial_\nu\Psi_z) - k \partial_\nu u^- \Psi_z\bigr) \,dy \\
-    &= \int_{\partial D}\partial_\nu u^-\Big( \Lambda_{0D}(\partial_\nu\Psi_z) - k \Psi_z)\Big) \,dy
+    &= \int_{\partial D}\bigl(\partial_\nu u^- {N_0}(\partial_\nu\Psi_z) - k \partial_\nu u^- \Psi_z\bigr) \,dy \\
+    &= \int_{\partial D}\partial_\nu u^-\Big( {N_0}(\partial_\nu\Psi_z) - k \Psi_z)\Big) \,dy
     \end{align}
-  on the other end, the sharpest expression of the operator $Rv$ for $v\in\mathcal{V}(\overline{B})$ is
+  on the other end, the sharpest expression of the operator $R$ for $v\in\mathcal{V}(\overline{B})$ is
   \begin{equation}
    \mathcal{R}_{\partial \Omega}(u,v) = \mathcal{R}_{\partial D}(u,v) = \int_{\partial D}(1-k)(\partial_\nu u^- )v\,dy
   \end{equation}
-  By density result \ref{}, there exists a sequence $\{v_n\}\subset \mathcal{V}(\overline{B})$ converging strongly and weakly in $L^2(\partial D)$ to the argument in the right integral $\bigl( A(\partial_\nu\Psi_z) - k \Psi_z)\bigr)(1-k)^{-1}\in H^{1/2}(\partial D)$.
+  By density result \ref{lemma:density-V-0}, there exists a sequence $\{v_n\}\subset \mathcal{V}(\overline{B})$ converging strongly and weakly in $L^2(\partial D)$ to the argument in the right integral $\bigl( {N_0}(\partial_\nu\Psi_z) - k \Psi_z)\bigr)(1-k)^{-1}\in H^{1/2}(\partial D)$.
   Once selected the sequence, the convergence holds for all $u\in\mathcal{U}$, but in general the convergence is not uniform in $x_0\in \partial B$.
-  \item Fixed $z \in \Omega\backslash D$ and using Green's representation formula with derivatives (\ref{prop:repr-deriv}) for the right hand side:
+  \item Fixed $z \in \Omega\backslash D$ and using Green's representation formula with derivatives \eqref{prop:repr-deriv}, on the right hand side
   \begin{equation}
    \mathcal{R}_{\partial \Omega}(u,\Psi_z) = \partial_{\vec{d}}\,u(z,x_0) + \mathcal{R}_{\partial D}(u,\Psi_z) = \partial_{\vec{d}}\,u(z,x_0) + w(x_0)
   \end{equation}
-  with implicitly defined $w(x_0)$, harmonic function in $x_0 \in \mathbb{R}^2\backslash \overline{D}$ by reciprocity relation (\ref{prop:reciprocity}), while on the left side:
+  with implicitly defined $w(x_0)$, harmonic function in $x_0 \in \mathbb{R}^2\backslash \overline{D}$ by reciprocity relation (\ref{prop:reciprocity}), while on the left side
   \begin{equation}
    \mathcal{R}_{\partial \Omega}(u,v_n) = \mathcal{R}_{\partial D}(u,v_n) = \int_{\partial D}(1-k)(\partial_\nu u^- )v_n\,dy
   \end{equation}
@@ -1760,7 +1788,6 @@ We simply observe equivalence of a variety of norms, which can indifferently be 
  \begin{equation}
   \|v\|_{H^1(D)},\quad\|\nabla v\|_{L^2(D;\,\mathbb{R}^2)},\quad \|\partial_\nu v\|_{H^{-1/2}(\partial D)},\quad \|v\|_{H^{1/2}(\partial D)}
  \end{equation}
-
 \end{remark}
 
 \section{Technicalities}
@@ -1782,7 +1809,7 @@ We simply observe equivalence of a variety of norms, which can indifferently be 
  The consequence is that all single layer potentials $\mathcal{S}(\partial B_1, \sigma)$, evaluated on $\partial B_R$, are orthogonal to the constant function. This singular case depends on the geometry, and doesn't happen in dimension $m=3$.
 \end{example}
 \begin{remark}
- The asymptotic behaviour at infinity of the fundamental solution $\Phi$ defined in \ref{}, can be infinite, depending on the dimension:
+ The asymptotic behavior at infinity of the fundamental solution $\Phi$ defined in \eqref{eq:definition-Phi-23}, can be infinite, depending on the dimension:
  \begin{equation}
  \label{eq:asymptotic-Phi-23}
   \Phi(x,x_0)=
@@ -1804,7 +1831,7 @@ We simply observe equivalence of a variety of norms, which can indifferently be 
   \end{aligned}
   \right.
 \end{equation}
-Consequently, the behavior at infinity of the fundamental solution of the inclusion problem $\Phi_D$, from the fact which is represented by the sum of the fundamental solution $\Phi$ and a single layer with zero mean density, is equal to the previous \ref{eq:asymptotic-Phi-23}. 
+Consequently, the behavior at infinity of the fundamental solution of the inclusion problem $\Phi_D$, from the fact which is represented by the sum of the fundamental solution $\Phi$ and a single layer with zero mean density, is equal to the previous \eqref{eq:asymptotic-Phi-23}. 
 \end{remark}
 \begin{proof} We report computations only for dimension $m=2$:
  \begin{equation}
@@ -1917,7 +1944,7 @@ Consequently, the behavior at infinity of the fundamental solution of the inclus
 \end{center}
 \begin{proposition}[Reciprocity relations]
  \label{prop:reciprocity}
- Let $u$ indicate the fundamental solution $\Phi_D$ for the inclusion problem \ref{eq:fundamental-D-in-dist} with constant impedance $k$ in $D$, and let the source $\delta_{x_0}$ move in the open $\mathbb{R}^2\backslash\overline{D}$, then there hold these reciprocity relations:
+ Let $u$ indicate the fundamental solution $\Phi_D$ for the inclusion problem \eqref{eq:fundamental-D-in-dist} with constant impedance $k$ in $D$, and let the source $\delta_{x_0}$ move in the open $\mathbb{R}^2\backslash\overline{D}$, then there hold these reciprocity relations:
  \begin{equation}
   u(x_0,x_1) = k\, u(x_1,x_0)\quad x_0\in \mathbb{R}^2\backslash\overline{D} \quad x_1\in D
  \end{equation} 
@@ -1950,7 +1977,7 @@ Consequently, the behavior at infinity of the fundamental solution of the inclus
  \begin{equation*}
   \int_{\partial C} u(y,x_0)\partial_\nu u(y,x_1) \, dy = O\Bigl(\frac{\log(|x|)}{|x|}\Bigr)\to 0\quad as \quad x\to \infty
  \end{equation*}
- Instead, we only sketch the initial formulation  which proves \ref{eq:reciprocity-boundary}, for $x_1\in\partial D$. Let denote  
+ Instead, we only sketch the initial formulation  which proves \eqref{eq:reciprocity-boundary}, for $x_1\in\partial D$. Let denote  
  $\gamma := \partial D\backslash B(x_1)$, and two arcs $\beta^+ := \partial B(x_1) \cap (\mathbb{R}^2\backslash\overline{D})$ and $\beta^- := \partial B(x_1) \cap D$
  \begin{align*}
  0 &= \mathcal{R}_{\partial C}(u_0,u_1)+\mathcal{R}_{-\partial B(x_0)}(u_0,u_1)+\mathcal{R}_{- \gamma}(u_0,u_1)+\mathcal{R}_{- \beta^+}(u_0,u_1)\\
@@ -1963,12 +1990,12 @@ Consequently, the behavior at infinity of the fundamental solution of the inclus
 \chapter{Factorization Method}
 \label{ch:factorization}
 \section{Factorization}
-Our aim is to factorize the \textit{relative} Dirichlet-to-Neumann operator $\Lambda_0 - \Lambda$, with a changed sign, in the form
+Our aim is to factorize the \textit{relative} Dirichlet-to-Neumann operator ${N_0} - {N_D}$, with a changed sign, in the form
 \begin{equation}
- \Lambda_0 - \Lambda = A^*TA
+ {N_r}\coloneqq{N_0} - {N_D} = A^*TA
 \end{equation}
 The choice of intermediate operators is not unique, for example in \cite{kirsch:book} there are taken
-\begin{itemize}
+\begin{enumerate}
  \item $A:L^2_0(\partial \Omega) \to L^2(D;\,\mathbb{R}^2)$ defined as $Af = \nabla v|_D$ where $v = T_0f$ solves the variational formulation
  \begin{equation}
   \label{eq:def-A}
@@ -1979,8 +2006,8 @@ The choice of intermediate operators is not unique, for example in \cite{kirsch:
   \label{eq:def-T}
   \int_\Omega \gamma \nabla w\cdot \nabla \psi \, dx = \int_D hg\cdot\nabla\psi\, dx\quad \forall\psi\in H^1_0(\Omega)
  \end{equation}
-\end{itemize}
-Throughout all the section we'll make use of the notation $v=Tf$ and $u=T_0f$, as usual.
+\end{enumerate}
+Throughout all the section we'll make use of the notation $v$ and $u$, as solutions of \eqref{eq:NtoD-laplace} and \eqref{eq:NtoD-inclusion}, respectively.
 The difference $w = v - u$ solves the equation
 \begin{equation}
  \int_\Omega(1+h)\nabla w\cdot\nabla\psi\, dx = \int_D h\nabla v \cdot \nabla \psi\, dx\quad \forall\psi\in H^1_0(\Omega)
@@ -1993,9 +2020,9 @@ We compose operators to simplify the expression of $TA$:
 Actually, firstly given the definition of $A$, we accurately define $T$ such that it makes the factorization true.
 We'll refer to \cite{kirsch:book} for the detailed proof of the next proposition.
 \begin{theorem}[Factorization]
- Let $A$ and $T$ be defined by \ref{eq:def-A} and \ref{eq:def-T}. Then there holds the factorization:
+ Let $A$ and $T$ be defined by \eqref{eq:def-A} and \eqref{eq:def-T}. Then there holds the factorization
 \begin{equation}
- \Lambda_0 - \Lambda = A^*TA
+ {N_0} - {N_D} = A^*TA
 \end{equation}
 \end{theorem}
 The scheme reproduces the general framework, for our choices of the space $L^2(D;\,\mathbb{R}^2)$ and the operators 
@@ -2009,7 +2036,7 @@ The scheme reproduces the general framework, for our choices of the space $L^2(D
     \node (n112) at ([xshift=0.1]n11) {$ $};
     \node (n212) at ([xshift=0.1]n21) {$ $};
     % draw arrows and text between them
-    \draw[->] (n11) to node [midway,right] {$\Lambda_r$} (n21);
+    \draw[->] (n11) to node [midway,right] {${N_r}$} (n21);
     \draw[->] (n11) to node [midway,above] {$A$} (n12);
     \draw[->] (n12) to node [midway,right] {$T$} (n22);
     \draw[->] (n22) to node [midway,above] {$A^*$} (n21);
@@ -2027,18 +2054,18 @@ It's reasonable to evidence benefits of a such factorization.
    (\phi,T\phi)\geq c\|\phi\|^2\quad \forall \phi \in L^2(D;\,\mathbb{R}^2)
   \end{equation}
   where $c = h_0\Big(1-h_0/(1+h_0)\Big)>0$
-  \item $\Lambda_0 - \Lambda: L^2_0(\partial \Omega) \to L^2_0(\partial \Omega)$ is self-adjoint, nonnegative, and compact, as immediate consequence of previous items
+  \item ${N_0} - {N_D}: L^2_0(\partial \Omega) \to L^2_0(\partial \Omega)$ is self-adjoint, nonnegative, and compact, as immediate consequence of previous items
   \begin{equation}
    (f,A^*TAf)\geq c\|Af\|^2\geq 0\quad \forall f \in L^2_0(\partial \Omega)
   \end{equation}  
  \end{enumerate}
 \end{proposition}
-Actually we can strengthen conclusions for $\Lambda_r = \Lambda_0 - \Lambda$.
+Actually we can strengthen conclusions for ${N_r} = {N_0} - {N_D}$.
 \begin{proposition}
 For the same operators, there holds:
 \begin{enumerate}
  \item $A$ is injective
- \item $\Lambda_0 -\Lambda$ is positive, as immediate consequence of point 1.
+ \item ${N_0} -{N_D}$ is positive, as immediate consequence of point 1.
   \begin{equation}
    (f,A^*TAf)\geq c\|Af\|^2 > 0\quad \forall f \in L^2_0(\partial \Omega)\quad f\neq 0
   \end{equation}
@@ -2047,20 +2074,20 @@ For the same operators, there holds:
 \begin{proof}
 It's sufficient to prove injectivity of operator $A$. We suppose that $Af=\nabla v_f = 0$ in $D$.
 Since $v_f$ is harmonic in $\Omega$, all the derivatives $\nabla v_f$ are harmonic in $\Omega$.
-By analytic extension $\nabla v_f = 0$ in $\Omega$, entailing $v_f=0$, since $v_f\in H^1_0(\Omega)$
+By analytic extension, $\nabla v_f = 0$ in $\Omega$, entailing $v_f=0$, since $v_f\in H^1_0(\Omega)$.
 \end{proof}
 
 \section{Equivalent Characterization}
 At this point, it's clear that the linear sampling method discriminates the support of $D$, according with approximation results in the image space. We remember a first result, common to scattering case, whose proof can be found in \cite{somersalo:preprint}.
 \begin{proposition}
- Let $\psi_{0z}$ be defined by \ref{def:lsm-psi}. If $\psi_{0z}\in\mathcal{R}(\Lambda_0-\Lambda)$, then $z\in D$.
+ Let $\psi_{0z}$ be defined by \ref{def:lsm-psi}. If $\psi_{0z}\in\mathcal{R}({N_0}-{N_D})$, then $z\in D$.
 \end{proposition}
-Unfortunately, the inverse of the proposition doesn't hold. This means that the range $\mathcal{R}(\Lambda_0 - \Lambda)$ underestimates the inclusion $D$.
+Unfortunately, the inverse of the proposition doesn't hold. This means that the range $\mathcal{R}({N_0} - {N_D})$ underestimates the inclusion $D$.
 \par
 For this reason, one of the merits of the factorization, is the following equivalent condition, which can be found in \cite{kirsch:book}, along with its proof.
 \begin{theorem}
 \label{theo:equivalence}
- Let assumptions \ref{assumption:connected} for inclusion $D$ hold, let $\psi_{0z}$ be defined by \ref{def:lsm-psi}, the potential of a dipole with vanishing Neumann data on $\partial \Omega$ and $A^*$ be the adjoint of the operator $A$ defined by \ref{eq:def-A}.
+ Let assumptions \ref{assumption:connected} for inclusion $D$ hold, let $\psi_{0z}$ be defined by \ref{def:lsm-psi}, the potential of a dipole with vanishing Neumann data on $\partial \Omega$ and let $A^*$ be the adjoint of the operator $A$ defined by \eqref{eq:def-A}.
  Then there holds the equivalence 
  \begin{equation}
   z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(A^*)
@@ -2070,10 +2097,10 @@ This strong result refers to operator $A^*$, which cannot be defined in our inve
 \begin{theorem}[Range Characterization]
 \label{theo:range-characterization}
  Let $X,Y$ be Hilbert spaces, each identified with its own dual space, and 
- \begin{itemize}
+ \begin{enumerate}
   \item $A:X\to Y$, $T:Y\to Y, K=A^*TA:X\to X$ be linear and bounded
   \item $T$ be self-adjoint and coercive
- \end{itemize}
+ \end{enumerate}
  then for any $\psi \in X$, $\psi\neq 0$
  \begin{equation}
  \psi \in \mathcal{R}(A^*) \Leftrightarrow \inf\Big\{(Kf,f)_X   : f\in X, (f,\psi)_X=1\Big\}>0\\
@@ -2082,45 +2109,44 @@ This strong result refers to operator $A^*$, which cannot be defined in our inve
 Now, inspired  by the factorization structure, and multiplicity of the operator $A$, we construct a parallel factorization, which preserve structure, without any intermediate space.
 We take advantage of the fact that from any compact, self-adjoint and positive operator can be computed the square root, starting from spectral decomposition.
 \begin{align}
-(\Lambda_0 - \Lambda) f &= \sum_{j\in \mathbb{N}}^\infty \lambda_j(f,\psi_j)_{L^2(\partial\Omega)} \psi_j \\
-(\Lambda_0 - \Lambda)^{1/2} f &= \sum_{j\in \mathbb{N}}^\infty \sqrt{\lambda_j}(f,\psi_j)_{L^2(\partial\Omega)} \psi_j 
+({N_0} - {N_D}) f &= \sum_{j\in \mathbb{N}}^\infty \lambda_j(f,\psi_j)_{L^2(\partial\Omega)} \psi_j \\
+({N_0} - {N_D})^{1/2} f &= \sum_{j\in \mathbb{N}}^\infty \sqrt{\lambda_j}(f,\psi_j)_{L^2(\partial\Omega)} \psi_j 
 \end{align}
-and both factorizations hold
+Furthermore, both the following factorizations hold
 \begin{equation}
 \label{eq:factorization-two}
- \Lambda_0 - \Lambda=(\Lambda_0 - \Lambda)^{1/2}I(\Lambda_0 - \Lambda)^{1/2} = A^*TA
+ {N_0} - {N_D}=({N_0} - {N_D})^{1/2}I({N_0} - {N_D})^{1/2} = A^*TA
 \end{equation}
-Then there holds the following result, by immediate application of analytic theorem \ref{theo:range-characterization} to \ref{eq:factorization-two}.
+Then, there holds the following result, by immediate application of analytic theorem \ref{theo:range-characterization} to \eqref{eq:factorization-two}.
 \begin{theorem}
  The range of two operators is the same
  \begin{equation}
-  \mathcal{R}(A^*) = \mathcal{R}((\Lambda_0 - \Lambda)^{1/2})
+  \mathcal{R}(A^*) = \mathcal{R}(({N_0} - {N_D})^{1/2})
  \end{equation}
 so equivalence criterion can be restated
  \begin{equation}
-  z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}((\Lambda_0 - \Lambda)^{1/2})  
+  z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(({N_0} - {N_D})^{1/2})  
  \end{equation}
 \end{theorem}
 % \begin{proof}
-%  It's immediate the application of the analytic theorem to both factorizations, with notation $\Lambda_r = \Lambda - \Lambda_0$
+%  It's immediate the application of the analytic theorem to both factorizations, with notation ${N_r} = {N_D} - {N_0}$
 %  \begin{align*}
-%   &\psi_{0z} \in \mathcal{R}(\Lambda_r^{1/2}) \Leftrightarrow \inf\Big\{(\Lambda_rf,f)_{L^2(\partial\Omega)}: f\in L^2_0(\partial\Omega), (f,\psi_{0z})_{L^2(\partial\Omega)}=1\Big\}>0\\
-%   &\psi_{0z} \in \mathcal{R}(A^*) \Leftrightarrow \inf\Big\{(\Lambda_rf,f)_{L^2(\partial\Omega)}: f\in L^2_0(\partial\Omega), (f,\psi_{0z})_{L^2(\partial\Omega)}=1\Big\}>0
+%   &\psi_{0z} \in \mathcal{R}({N_r}^{1/2}) \Leftrightarrow \inf\Big\{({N_r}f,f)_{L^2(\partial\Omega)}: f\in L^2_0(\partial\Omega), (f,\psi_{0z})_{L^2(\partial\Omega)}=1\Big\}>0\\
+%   &\psi_{0z} \in \mathcal{R}(A^*) \Leftrightarrow \inf\Big\{({N_r}f,f)_{L^2(\partial\Omega)}: f\in L^2_0(\partial\Omega), (f,\psi_{0z})_{L^2(\partial\Omega)}=1\Big\}>0
 %  \end{align*}
-%  and note the fact that both right hand sides only depend on from $\Lambda - \Lambda_0$, and not the factorization
+%  and note the fact that both right hand sides only depend on from ${N_D} - {N_0}$, and not the factorization
 % \end{proof}
-The great advantage is that now the square root operator can be theoretically computed by $\Lambda_0 - \Lambda$.
+The great advantage is that now the square root operator can be theoretically computed by ${N_0} - {N_D}$, while $A^*$ stays unknown.
 \begin{remark}
  We limit to observe the simple fact
  \begin{equation}
-  \mathcal{R}(\Lambda_r) \subset \mathcal{R}(\Lambda_r^{1/2})
+  \mathcal{R}({N_r}) \subset \mathcal{R}({N_r}^{1/2})
  \end{equation}
- according with previous characterizations.
 \end{remark}
 \section{Range criterion}
-Taking advantage of the representation of $\Lambda_r:L^2_0(\partial \Omega)\to L^2_0(\partial \Omega)$ through the orthonormal eigensystem $\bigl\{(\lambda_j, \psi_j)\bigr\}_{j\in\mathbb{N}}$, rewritten alternatively as
+We take advantage of the representation of ${N_r}:L^2_0(\partial \Omega)\to L^2_0(\partial \Omega)$ through the orthonormal eigensystem $\bigl\{(\lambda_j, \psi_j)\bigr\}_{j\in\mathbb{N}}$, or alternatively,
 \begin{center}
-the singular system for $\Lambda_r^{1/2}$ is $\bigl\{(\sqrt{\lambda_j}, \psi_j, \psi_j)\bigr\}_{j\in\mathbb{N}}$ 
+the singular system for ${N_r}^{1/2}$ is $\bigl\{(\sqrt{\lambda_j}, \psi_j, \psi_j)\bigr\}_{j\in\mathbb{N}}$ 
 \end{center}
 From the application of the Picard's theorem, follows the range criterion.
 \begin{proposition}
@@ -2135,7 +2161,7 @@ From the application of the Picard's theorem, follows the range criterion.
 Observe that $\chi(z):=\textup{sign}\,W(z)$ approximates the characteristic function of $D$.
 \end{proposition}
 Hanke and Br\"{u}hl suggested in \cite{hanke-bruhl:recent} a test to establish the convergence of the previous sum, with finitely many terms, after discretization. In most of geometries, the decay of singular values $\bigl\{\lambda_j\bigr\}_j$ is typically exponential, as can be easily plotted. 
-Let's assume an exponential behaviour for the components $(\psi_{0z},\psi_j )^2$, parametrized as
+Let's assume an exponential behavior for the components $(\psi_{0z},\psi_j )^2$, parametrized as
 \begin{align}
  \lambda_j &\sim a_j (r_j) ^j  & \log\lambda_j &\sim c_j + j\log r_j\\
  (\psi_{0z}, \psi_j)^2 &\sim A_j(R_j)^j & \log(\psi_{0z}, \psi_j)^2 &\sim C_j + j\log R_j
@@ -2145,45 +2171,46 @@ then the range criterion leads to comparing the slopes of the straight line inte
  z\in D \,\Longleftrightarrow\, \dfrac{R_j}{r_j} < 1 \,\Longleftrightarrow\, \log R_j < \log r_j
 \end{equation}
 
-\chapter{Link between methods}
+\chapter{Validation of the methods}
 \label{ch:link}
-In this subsection we will link the so-called \textit{reciprocity gap functional method} to the \emph{linear sampling method}.
-The former formulation was:
+\section{Link between two methods}
+In this subsection we will link the \textit{reciprocity gap functional method} to the \emph{linear sampling method}.
+The former formulation was
 \begin{equation}
  \mathcal{R}(u, v) = \mathcal{R}(u, \vec{\Psi}_z\cdot\vec{d})\quad \forall u \in \mathcal{U}
 \end{equation}
-while, the linear sampling method deals with the following equation:
+while, the linear sampling method deals with the following equation
 \begin{equation}
 \label{eq:eq-lsm-link}
- (\Lambda - \Lambda_0)f = \psi_{0z} \quad \text{ on }\partial \Omega
+ ({N_D} - {N_0})f = \psi_{0z} \quad \text{ on }\partial \Omega
 \end{equation}
-The number of players suggest to compute the duality of \ref{eq:eq-lsm-link}, with a generic 
-${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)}$, by self-adjoint properties (named $u=Tg$, $v=T_0f$):
+The number of players suggest to compute the duality of \eqref{eq:eq-lsm-link}, with a generic 
+${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)}$, by self-adjoint properties (named $u,v$ solutions of \eqref{eq:NtoD-laplace}, \eqref{eq:NtoD-inclusion}):
 \begin{align}
  \label{eq:link-duality-left}
- \langle(\Lambda - \Lambda_0)f,g\rangle & =  \langle f,\Lambda g\rangle - \langle \Lambda_0 f,g\rangle \\
+ \langle({N_D} - {N_0})f,g\rangle & =  \langle f,{N_D} g\rangle - \langle {N_0} f,g\rangle \\
                                         & = \langle \partial_\nu v,u\rangle - \langle v,\partial_\nu u\rangle \\
                                         & = \mathcal{R}(u,v)
 \end{align}
 \begin{proposition}
- The \textit{reciprocity gap functional method} correspond to the weak formulation of the \textit{linear sampling method} with a modified right term. Consequently, provided the choice of $\psi_z$ as right side in \ref{eq:eq-lsm-link} , the two methods are equivalent
+ The \textit{reciprocity gap functional method} correspond to the weak formulation of the \textit{linear sampling method} with a modified right term. Consequently, provided the choice of $\psi_z$ as right side in \eqref{eq:eq-lsm-link}, the two methods are equivalent.
 \end{proposition}
 \begin{proof}
  We need to prove both the implications:
 \begin{enumerate}
- \item the r.g. formulation can be obtained from the duality with a generic test function $g\in H^{\, -1/2}_0(\partial \Omega)$, with $\psi_z$ defined in \ref{def:lsm-psi}, resulting in \ref{eq:link-duality-left} and in
+ \item the r.g. formulation can be obtained from the duality with a generic test function $g\in H^{\, -1/2}_0(\partial \Omega)$, with $\psi_z$ defined in \ref{def:lsm-psi}, resulting in \eqref{eq:link-duality-left} and in
 \begin{align}
- \langle \psi_z , g \rangle  & = \langle \vec{\Psi}(x,z)\cdot\vec{d} - m_z - \Lambda(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}) , g \rangle \\
+ \langle \psi_z , g \rangle  & = \langle \vec{\Psi}(x,z)\cdot\vec{d} - m_z - {N_D}(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}) , g \rangle \\
                              & = \langle \vec{\Psi}(x,z)\cdot\vec{d},\partial_\nu u\rangle - 0 - \langle\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d},u\rangle
 \end{align}
- \item the l.s. formulation can be recovered from the weak one, thanks to density of $\{\partial_\nu u|_{\partial \Omega}\}=\{g\}$ in $L_0^2(\partial \Omega)$
+ \item the l.s. formulation can be recovered from the weak one, thanks to density of $\{\partial_\nu u|_{\partial \Omega}\}=\{g\}$ in $L_0^2(\partial \Omega)$.
 \end{enumerate}
 \end{proof}
 
 The approximation result for linear sampling method can be restated, exactly the same, as we could expect after approximation theorem for reciprocity gap method.
 
 \begin{remark}
- The approximation result \ref{} (constructive part for $z \in D$) holds for the modified case with $\psi_z$ as right term (instead of $\psi_{0z}$).
+ The approximation result \ref{prop:lsm-constructive} (constructive part for $z \in D$) holds for the modified case with $\psi_z$ as right term (instead of $\psi_{0z}$).
 \end{remark}
 \begin{proof}
  The proof is can be recycled, with some caution.
@@ -2210,30 +2237,36 @@ The approximation result for linear sampling method can be restated, exactly the
 The linear sampling method, which we implemented, terminates with the resolution of a linear equation of the first kind, namely
 \begin{equation}
 \label{eq:NtoD_firstkind}
- (\Lambda_0 - \Lambda) f = \psi_{0z}\quad \textup{ on }\partial \Omega
+ ({N_0} - {N_D}) f = \psi_{0z}\quad \textup{ on }\partial \Omega
 \end{equation}
 The first great question is how regularization of the equation in $L^2_0(\partial \Omega)$
-allows to construct a sequence converging in $L^2(D;\,\mathbb{R}^2)$, which exists as predicted by approximation theorem \ref{}.
+allows to construct a sequence converging in $L^2(D;\,\mathbb{R}^2)$, which exists as predicted by approximation theorem \ref{prop:lsm-constructive}.
 In \cite{arens:why} it's well explained the key role of the factorization 
-of the \textit{relative} Dirichlet-to-Neumann operator $\Lambda_0 - \Lambda$
+of the \textit{relative} Dirichlet-to-Neumann operator ${N_0} - {N_D}$
 \begin{equation}
- \Lambda_0 - \Lambda = A^*TA
+ {N_0} - {N_D} = A^*TA
 \end{equation}
 Though, since we need to be more precise, we introduce the following notation for the intermediate space.
 \begin{definition}
-We define the closed? subspace:
+We define the closed subspace:
 \begin{equation}
  Z\coloneqq\bigl\{\phi\in L^2(D;\,\mathbb{R}^2):\divergence\phi=0, \curl\phi=0\bigr\}
 %  H_{\divergence}(D)\coloneqq\bigl\{\bm{w}\in L^2(D;\,\mathbb{R}^3):\divergence\bm{w} \in L^2(D),\, \curl\bm{w}=0 \bigr\}
 \end{equation}
-in the weak sense, equipped with the $L^2(D;\,\mathbb{R}^2)$ norm. Furthermore, we change the functional spaces of definition of previous operator $A:L^2_0(\partial \Omega)\to Z$ and $T:Z \to Z$. 
+in the weak sense, equipped with the $L^2(D;\,\mathbb{R}^2)$ norm. Indeed, any sequence $\phi_n$ converging to $\phi$ in $L^2(D;\,\mathbb{R}^2)$, converges even in distributions
+\begin{equation}
+ |\langle\phi-\phi_n, \psi\rangle|=\Bigl|\int_D(\phi-\phi_n)\psi\,dy\Bigr|\leq\|\phi - \phi_n\|_{L^2}\|\psi\|_{L^2}\, \forall\psi\in C^\infty_c(D;\,\mathbb{R}^2)
+\end{equation}
+and continuity of differential operators $L=\divergence$, $L=\curl$, with respect to distributional convergence, implies $0=L\phi_n\to L\phi$, with uniqueness, the closed nature of $Z$.
+\par 
+Furthermore, we change the functional spaces of definition of previous operators $A:L^2_0(\partial \Omega)\to Z$ and $T:Z \to Z$. 
 Note that both operators have well defined values in the image spaces.
 \end{definition}
-Let $v=T_0f$ be an harmonic function, and consider $Af=\nabla v$ and $\phi\in Z$. Then, integrating by parts,
+Let $v_f$ be an harmonic function with Neumann data $f$, and consider $Af=\nabla v$ and $\phi\in Z$. Then, integrating by parts,
 \begin{equation}
  \int_D\nabla v\cdot \phi\,dy=\int_{\partial D}v \phi\cdot\nu\,dy
 \end{equation}
-By density result for $\mathcal{V}(\overline{\Omega})$ analogous to \ref{}, $\phi\cdot \nu=0$ on $\partial D$, yielding $\phi=0$ for any $\phi\in Z$.
+By density result for $\mathcal{V}(\overline{\Omega})$ analogous to \ref{lemma:density-V-0}, $\phi\cdot \nu=0$ on $\partial D$, yielding $\phi=0$ for any $\phi\in Z$.
 This computation leads to the next density result.
 \begin{remark}
  The operator $A$ has dense image in $Z$. And by injectivity and self-adjointness, operator $T$ has dense image too.
@@ -2242,11 +2275,11 @@ This computation leads to the next density result.
  \end{equation}
  Furthermore $A^*$ is injective, by the fact that $\mathcal{N}(A^*)=\mathcal{R}(A)^\perp$
 \end{remark}
-We remember all properties of Neumann-to-Dirichlet operator, involved in equation \ref{eq:NtoD_firstkind} to be regularized.
+We remember all properties of Neumann--to--Dirichlet operator, involved in equation \eqref{eq:NtoD_firstkind} to be regularized.
 \begin{remark}
- The operator $\Lambda_0 - \Lambda: L^2_0(\partial \Omega) \to L^2_0(\partial \Omega)$ is injective, with dense image, self-adjoint, compact and positive:
+ The operator ${N_0} - {N_D}: L^2_0(\partial \Omega) \to L^2_0(\partial \Omega)$ is injective, with dense image, self-adjoint, compact and positive
  \begin{equation}
-  ((\Lambda - \Lambda_0)f,f) = ( Af,TAf) \geq c\|Af\|^2_{L^2(D;\,\mathbb{R}^2)} > 0 \quad \forall f\in L^2_0(\partial \Omega) \quad f\neq0
+  (({N_D} - {N_0})f,f) = ( Af,TAf) \geq c\|Af\|^2_{L^2(D;\,\mathbb{R}^2)} > 0 \quad \forall f\in L^2_0(\partial \Omega) \quad f\neq0
  \end{equation} 
 \end{remark}
 % We highlight as the equivalence characterization theorem \ref{} still remains true, after the restriction of the intermediate space.
@@ -2256,7 +2289,6 @@ We remember all properties of Neumann-to-Dirichlet operator, involved in equatio
   z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(A^*)
  \end{equation}
 \end{remark}
-
 % \begin{center}
 % \begin{tikzpicture}
 %     % set up the nodes
@@ -2267,7 +2299,7 @@ We remember all properties of Neumann-to-Dirichlet operator, involved in equatio
 %     \node (n112) at ([xshift=0.1]n11) {$ $};
 %     \node (n212) at ([xshift=0.1]n21) {$ $};
 %     % draw arrows and text between them
-%     \draw[->] (n11) to node [midway,right] {$\Lambda_r$} (n21);
+%     \draw[->] (n11) to node [midway,right] {${N_r}$} (n21);
 %     \draw[->] (n11) to node [midway,above] {$A$} (n12);
 %     \draw[->] (n12) to node [midway,right] {$T$} (n22);
 %     \draw[->] (n22) to node [midway,above] {$A^*$} (n21);
@@ -2286,7 +2318,7 @@ We remember all properties of Neumann-to-Dirichlet operator, involved in equatio
 %     \node (n112) at ([xshift=0.1]n11) {$ $};
 %     \node (n212) at ([xshift=0.1]n21) {$ $};
 %     % draw arrows and text between them
-%     \draw[->] (n11) to node [midway,right] {$\Lambda_r$} (n21);
+%     \draw[->] (n11) to node [midway,right] {${N_r}$} (n21);
 %     \draw[->] (n11) to node [midway,above] {$A$} (n12);
 %     \draw[->] (n12) to node [midway,right] {$T$} (n22);
 %     \draw[->] (n22) to node [midway,above] {$A^*$} (n21);
@@ -2300,12 +2332,12 @@ We remember all properties of Neumann-to-Dirichlet operator, involved in equatio
 % \end{gather}
 % 
 % \end{center}
-By the spectral theorem applied on the self-adjoint and compact operator $\Lambda_0- \Lambda$, we obtain that there exists
-an orthogonal eigensystem $\{(\lambda_j, \psi_j)\}_{j\in\mathbb{N}}$ for $\Lambda_0 - \Lambda$,
+By the spectral theorem applied on the self-adjoint and compact operator ${N_0}- {N_D}$, we obtain that there exists
+an orthogonal eigensystem $\{(\lambda_j, \psi_j)\}_{j\in\mathbb{N}}$ for ${N_0} - {N_D}$,
 with all $\lambda_j>0$, by injectivity.
 We introduce the following sets of vectors, with the aim of use them as bases for the intermediate space $Z$.
 \begin{definition}
-Let $\lambda_j$ and $\psi_j$, as above denoted, be the eigenvalues and eigenvectors of $\Lambda_r$, we fix the following notation:
+Let $\lambda_j$ and $\psi_j$, as above denoted, be the eigenvalues and eigenvectors of ${N_r}$, we fix the following notation
 \begin{equation}
 %  \{\phi_j\}_{j\in\mathbb{N}}\coloneqq \Big\{\frac{1}{\sqrt{\lambda_j}}A\psi_j\Big\}_{j\in\mathbb{N}} \quad \{\tilde{\phi}_j\}_{j\in\mathbb{N}} \coloneqq\{T\phi_j\}_{j\in\mathbb{N}} 
  \phi_j\coloneqq \frac{1}{\sqrt{\lambda_j}}A\psi_j, \quad \tilde{\phi}_j\coloneqq T\phi_j,\quad j\in\mathbb{N} 
@@ -2316,7 +2348,7 @@ We remark the accurate choice, which yields orthogonality:
  (\phi_j, T\phi_k) =  ( \frac{1}{\sqrt{\lambda_j}} A\psi_j, \frac{1}{\sqrt{\lambda_j}} TA\psi_k) = \frac{1}{\lambda_j}( \psi_j, A^*TA\psi_k) = \delta_{jk}
 \end{equation}
 \begin{remark}
- The sequences $\{\phi_j\}_{j\in\mathbb{N}}$ and $\{\tilde{\phi}_j\}_{j\in\mathbb{N}}$ are biorthogonal
+ The sequences $\{\phi_j\}_{j\in\mathbb{N}}$ and $\{\tilde{\phi}_j\}_{j\in\mathbb{N}}$ are biorthogonal.
 \end{remark}
 Inspired by an analogous approach in \cite{kirsch:shape-1998} for the scattering problem, the aim is to represent functions of the intermediate space $Z$ through a Riesz's basis.
 In general, this conclusion can be reached by several intermediate results. Assumptions for the structured formulation are very similar: the operator $I+K$ with $K$ compact, is substituted by the stronger $T$ coercive operator.
@@ -2334,7 +2366,7 @@ In general, this conclusion can be reached by several intermediate results. Assu
  &\{\lambda_j\}_{j \in \mathbb{N}} \subset \ell^2 \,\Leftrightarrow \,\alpha \in Z:\,\alpha = \sum_{j \in \mathbb{N}}\lambda_j \phi_j \\
  & \exists c>0, \forall \alpha \in Z: \quad \frac{1}{c}\|\alpha\|^2 \leq \sum_{j\in\mathbb{N}}^\infty|\lambda_j|^2  \leq c \|\alpha\|^2
  \end{align}
- and the following decompositions holds:
+ and the following decompositions holds
  \begin{align}
   & \alpha = \sum_{j \in \mathbb{N}}(\alpha,\phi_j)_T \phi_j  \\
   & \alpha = \sum_{j \in \mathbb{N}}(\alpha,T\phi_j) T\phi_j  
@@ -2370,7 +2402,7 @@ In general, this conclusion can be reached by several intermediate results. Assu
 %   \end{enumerate}
 % \end{enumerate} 
 % \end{proof}
-The general purpose is to construct a regularization scheme  $R_\alpha$ from the image space $L^2_0(\partial\Omega)$ to the intermediate space $Z$, whenever there is given a regularization $\tilde{R}_\alpha$ for the relative Neumann-to-Dirichlet operator $\Lambda_0-\Lambda$, as represented graphically. Indeed the range $\mathcal{R}(A^*)$ approximates data for source $z\in D$ sharper than the corresponding $\mathcal{R}(\Lambda_0 -\Lambda)$.
+The general purpose is to construct a regularization scheme  $R_\alpha$ from the image space $L^2_0(\partial\Omega)$ to the intermediate space $Z$, whenever there is given a regularization $\tilde{R}_\alpha$ for the relative Neumann--to--Dirichlet operator ${N_0}-{N_D}$, as represented graphically. Indeed the range $\mathcal{R}(A^*)$ approximates data for source $z\in D$ sharper than the corresponding $\mathcal{R}({N_0} -{N_D})$.
 \begin{center}
 \begin{tikzpicture}
  \node at (0,0) {$ L^2_0(\partial \Omega) \xrightarrow{A} Z \xrightarrow{T} Z\xrightarrow{A^*} L^2_0(\partial\Omega)$};
@@ -2411,7 +2443,7 @@ The rest of computations is unchanged, and depends only on the general scheme. I
 \end{equation}
 
 \begin{theorem}
- Suppose $q$ is a regularization filter for $\Lambda_r = \Lambda_0- \Lambda$, which defines the following regularization method $\tilde{R}_\alpha : L^2_0(\partial \Omega) \to L^2_0(\partial\Omega)$ for $\Lambda_r$
+ Suppose $q$ is a regularization filter for ${N_r} = {N_0}- {N_D}$, which defines the following regularization method $\tilde{R}_\alpha : L^2_0(\partial \Omega) \to L^2_0(\partial\Omega)$ for ${N_r}$
  \begin{equation}
   \tilde{R}_\alpha g := \sum_{j=1}^\infty\frac{q(\alpha,\lambda_j)}{\lambda_j}(g,\psi_j)\psi_j
  \end{equation}
@@ -2419,7 +2451,7 @@ The rest of computations is unchanged, and depends only on the general scheme. I
 \end{theorem}
 We remember the binary criterion
 \begin{equation}
- z\in D \,\Longleftrightarrow \, \psi_{0z}\in\mathcal{R}(\Lambda_r^{1/2})\, \Longleftarrow \,\psi_{0z}\in\mathcal{R}(\Lambda_r)
+ z\in D \,\Longleftrightarrow \, \psi_{0z}\in\mathcal{R}({N_r}^{1/2})\, \Longleftarrow \,\psi_{0z}\in\mathcal{R}({N_r})
 \end{equation}
 
 \begin{corollary}
@@ -2432,16 +2464,16 @@ We remember the binary criterion
   \phi_z^{\alpha_n} = TAf_z^{\alpha_n}
  \end{equation}
 Then
-\begin{itemize}
+\begin{enumerate}
 %  \item if $z\in D$, then $\phi_z^{\alpha_n}$ is a converging sequence, and $f_z^{\alpha_n}$ cannot diverge, it's bounded
- \item if $z\notin D$, $A^*\phi_z^{\alpha_n} = \Lambda_rf_z^{\alpha_n}$ is an approximating sequence, and counterpart of approximation theorem \ref{} imposes $\|\phi_z^{\alpha_n}\|\to\infty$. Furthermore boundedness of $TA$ implies $\|f_z^{\alpha_n}\|\to\infty$
+ \item if $z\notin D$, $A^*\phi_z^{\alpha_n} = {N_r}f_z^{\alpha_n}$ is an approximating sequence, and counterpart of approximation theorem \ref{prop:lsm-counterpart} imposes $\|\phi_z^{\alpha_n}\|\to\infty$. Furthermore boundedness of $TA$ implies $\|f_z^{\alpha_n}\|\to\infty$,
  \item if $z \in D$, $\phi_z^{\alpha_n}\to \phi$ for some $\phi\in Z$, such that $A^*\phi = \psi_{0z}$. If the corresponding $f_z^{\alpha_n}$ would be bounded, by compactness with respect of weak convergence in $L^2_0(\partial\Omega)$, and by compactness of $A$, up to renaming some subsequence:
  \begin{equation}
   f_z^{\alpha_n}\rightharpoonup f \,\Rightarrow \phi_z^{\alpha_n} \to TA f = \phi
  \end{equation}
-Consequently, as necessary condition, $\psi_{0z}=A^*TAf$ and $\psi_{0z}\in\mathcal{R}(\Lambda_r)$, which is not always verified by all points $z\in D$.
-This last observation implies boundedness of the sequence $f_z^{\alpha_n}$ only for $\psi_{0z}\in\mathcal{R}(\Lambda_r)$.
-\end{itemize}
+Consequently, as necessary condition, $\psi_{0z}=A^*TAf$ and $\psi_{0z}\in\mathcal{R}({N_r})$, which is not always verified by all points $z\in D$.
+This last observation implies boundedness of the sequence $f_z^{\alpha_n}$ only for $\psi_{0z}\in\mathcal{R}({N_r})$.
+\end{enumerate}
 \end{corollary}
 
 \chapter{Numerical Implementation}
@@ -2494,7 +2526,7 @@ This is not restrictive, since it's always possible the substitution with the qu
  Kx=y\,\textup{ for }y\in \mathcal{R}(K)
 \end{equation}
 \begin{remark}
- We are considering data $y$ for which we a priori know that there exists a unique solution. But in our problem, it's only a theoretic formulation for the operator $\Lambda_r^{1/2}$ with data $\psi_{0z}$ for $z\in D$.
+ We are considering data $y$ for which we a priori know that there exists a unique solution. But in our problem, it's only a theoretic formulation for the operator ${N_r}^{1/2}$ with data $\psi_{0z}$ for $z\in D$.
 \end{remark}
 In general we can expect to be able to compute only approximate data $y^\delta$ such that $\|y - y^\delta\| \leq \delta$, so we look for only an approximate solution
 \begin{equation}
