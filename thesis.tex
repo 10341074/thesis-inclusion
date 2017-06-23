@@ -646,25 +646,7 @@ We will denote throughout the chapters, with the subscript zero, $H^s_0(\partial
 The advantage, in this last definition, is to avoid trivial constant functions, and to recover uniqueness for second order differential problems.
 We introduce the following notation:
 \begin{enumerate}
- \item $u\in H^1_0(\Omega)$ the unique solution of the \emph{Laplace problem}
-%  \begin{mybox}
- \begin{equation}
- \label{eq:NtoD-inclusion}
-  \left\{
-  \begin{aligned}
-  \divergence(\gamma\nabla u) &= 0 \quad\text{in}\,\Omega \\
-            \partial_\gamma u &= f \quad\text{on}\,\partial \Omega
-  \end{aligned}
-  \right.
- \end{equation}
-%  \end{mybox}
- with $\gamma(x) = \chi_{\Omega\backslash\overline{D}} + k(x)\,\chi_D$, we define
- \begin{align}
- &T_D: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && T_Df = u \label{eq:def-T_D}\\
- &{N_D}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_D}f = u|_{\partial\Omega}
- \end{align}
- \item at the same way, $v\in H^1_0(\Omega)$ is the unique solution of the \emph{inclusion problem} with only background space and no unknown inclusion $D$
-%  \begin{mybox}
+ \item $u\in H^1_0(\Omega)$ the unique solution of the \emph{Laplace problem} with only background space
  \begin{equation}
  \label{eq:NtoD-laplace}
   \left\{
@@ -674,11 +656,25 @@ We introduce the following notation:
   \end{aligned}
   \right.
  \end{equation}
-%  \end{mybox}
  we define
  \begin{align}
- &T_0: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && T_0f = v \label{eq:def-T_0}\\
+ &M_0: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && M_0f = v \label{eq:def-T_0}\\
  &{N_0}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_0} f = v|_{\partial\Omega}
+ \end{align}
+ \item at the same way, $v\in H^1_0(\Omega)$ is the unique solution of the \emph{inclusion problem} with $D$
+ \begin{equation}
+ \label{eq:NtoD-inclusion}
+  \left\{
+  \begin{aligned}
+  \divergence(\gamma\nabla u) &= 0 \quad\text{in}\,\Omega \\
+            \partial_\gamma u &= f \quad\text{on}\,\partial \Omega
+  \end{aligned}
+  \right.
+ \end{equation}
+ with $\gamma(x) = \chi_{\Omega\backslash\overline{D}} + k(x)\,\chi_D$, we define
+ \begin{align}
+ &M_D: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && M_Df = u \label{eq:def-T_D}\\
+ &{N_D}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_D}f = u|_{\partial\Omega}
  \end{align}
 \end{enumerate}
 \begin{remark}
@@ -1295,9 +1291,9 @@ The behavior of layer potentials across the surface $\partial D$ is described by
 Now, we will state some results essentials for our continuation.
 All details and proofs can be found in \cite{kress:book}.
 \begin{definition}
- Let $X,Y$ be Banach spaces of functions defined on $[a,b]$, and $A:X\to Y$ be a \emph{Fredholm integral operator} with kernel $k(x,y)$:
+ Let $X,Y$ be Banach spaces of functions defined on a domain $G$ (it will be a boundary $\partial \Omega$ for us), and $A:X\to Y$ be a \emph{Fredholm integral operator} with kernel $k(x,y)$:
  \begin{equation}
-  A\phi(x)\coloneqq\int_a^b k(x,y)\phi(y)\,dy\quad x\in[a,b]
+  A\phi(x)\coloneqq\int_G k(x,y)\phi(y)\,dy\quad x\in G \label{eq:def-integral-operator}
  \end{equation}
  Then, we name
  \begin{enumerate}
@@ -1312,7 +1308,18 @@ All details and proofs can be found in \cite{kress:book}.
  \end{enumerate}
 \emph{In most of cases, $A$ is a compact operator}.
 \end{definition}
+\begin{definition}
+ Let $A$ be an integral operator with integral kernel $k(x,y):G \times G \to\mathbb{R}$. We say that
+ \begin{enumerate}
+  \item $k$ is a \emph{continuous} kernel if $k(x,y)$ is continuous in $G\times G$
+  \item $k$ is a \emph{weakly singular} kernel if it's defined and continuous for all $x,y\in G\subset \mathbb{R}^m$, $x\neq y$, and if $\exists M>0$ and 
+  $\exists \alpha\in (0,m]$ such that
+  \begin{equation}
+   |k(x,y)|\leq M |x-y|^{\alpha-m}\quad x,y\in G, \, x\neq y
+  \end{equation}
+ \end{enumerate}
 
+\end{definition}
 \begin{lemma}
 \label{lemma:K-K'-compact}
  Let $\partial D$ be a smooth domain, then the operators $K$ and $K'$ are integral operators with a weakly singular kernel and so are compact.
@@ -1879,22 +1886,18 @@ Consequently, the behavior at infinity of the fundamental solution of the inclus
  We will consider only the case in two dimension $\mathbb{R}^2$.
  By classical Green's formula for both harmonic functions $u(\cdot)$ and $\Psi(\cdot,p_0)$ in $D\backslash B_r(p_0)$:
  \[\mathcal{R}_{\partial D}(u(\cdot),\Psi(\cdot,p_0)) = \mathcal{R}_{\partial B_r(p_0)}(u(\cdot),\Psi(\cdot,p_0)) = (1) - (2)\]
- \begin{equation}
- \begin{align}
+ \begin{align*}
  (2)&=\int_{\partial B_r(p_0)}(u_x\nu_x+u_y\nu_y)(-1)\frac{1}{2\pi}\frac{1}{r}\frac{x-x_0}{r}\,dy\\
  &= \int_0^{2\pi}(u_x(r,\theta)\cos\theta+u_y(r,\theta)\sin\theta)(-1)\frac{1}{2\pi}\frac{1}{r}\frac{r\cos\theta}{r}r\,d\theta \to -\frac{1}{2\pi}u_x(p_0)\pi
- \end{align}
- \end{equation}
+ \end{align*}
  thanks to uniform convergence in $\theta$ for $r\to0$ of the integrand. And
- \begin{equation}
- \begin{align}
+ \begin{align*}
  (1)&=\int_{\partial B_r(p_0)}u(\Phi_{xx}\nu_x + \Phi_{xy}\nu_y)\,dy\\
  &= \int_0^{2\pi}u(r,\theta)\Big(\frac{1}{\pi r^2}\cos^2\theta\cos\theta - \frac{1}{2\pi r^2}\cos\theta + \frac{1}{\pi r^2}\cos\theta\sin\theta\sin\theta\Big)r\,d\theta\\
  &= \int_0^{2\pi}\frac{u(r,\theta)-u_0}{r}r\Big(\frac{1}{\pi r^2}\cos^2\theta\cos\theta - \frac{1}{2\pi r^2}\cos\theta + \frac{1}{\pi r^2}\cos\theta\sin\theta\sin\theta\Big)r\,d\theta\\
  & \to \int_0^{2\pi}(u_x(p_0)\cos\theta + u_y(p_0)\sin\theta)\Big(\frac{1}{\pi}\cos^2\theta\cos\theta - \frac{1}{2\pi}\cos\theta + \frac{1}{\pi}\cos\theta\sin\theta\sin\theta\Big)\,d\theta\\
  &= \frac{1}{\pi}u_x(p_0)\Big(\frac{3}{4}\pi-\frac{\pi}{2}+\frac{1}{4}\pi\Big) = \frac{1}{2}u_x(p_0)
- \end{align}
- \end{equation}
+ \end{align*}
  thanks to uniform convergence in $\theta$ for $r\to0$ of the integrand.
 \end{proof}
 % \begin{center}
@@ -2726,9 +2729,9 @@ Finally we state the result which declares the admissibility of the strategy $\a
   x^{\alpha(\delta)}\to x \textup{ as }\delta\to0
  \end{equation}
 \end{proposition}
-The result for the classical definition of discrepancy $\Delta(\alpha)$, can be found in \cite{kirsch:book}. The same author proves the result for $\Delta_n(\alpha)$ in \cite{kirsch:shape-1998}.
+  The result for the classical definition of discrepancy $\Delta(\alpha)$, can be found in \cite{kirsch:book}. The same author proves the result for $\Delta_n(\alpha)$ in \cite{kirsch:shape-1998}.
 
-\section{Numerical discretization}
+\section{Numerical Discretization}
 We will report some details of the numerical discretization of the linear sampling method. Steps are
 \begin{enumerate}
  \item the choice of a basis for the space of function $L^2_0(\partial \Omega)$
@@ -2753,18 +2756,25 @@ Instead main disadvantages are:
  \item same attention must be payed to boundaries with corner, for which the densities are singular. The quadrature rule requires a more sophisticated collocation of nodes.
 \end{enumerate}
 
-\section{Layer Potentials}
-We make large use of integral potentials with integral kernel $K(x,y)$, and density $\phi(y)$, defined on a compact boundary $\partial \Omega$
+\section{Numerical Integration of Layer Potentials}
+\begin{assumption}
+ In the sequel we'll mean satisfied assumptions \ref{assumption:connected} for the inclusion $D$. More importance will be given to regularity of boundaries, 
+ which affects the methods and their convergence. If not differently specified, we'll consider $\partial \Omega$ and $\partial D$ of class $C^2$.
+\end{assumption}
+We will make large use of integral potentials, with integral kernel $K(x,y)$, and density $\phi(y)$, defined on a compact boundary $\partial \Omega$
 \begin{equation}
  A\phi(x)\coloneqq \int_{\partial \Omega} K(x,y)\phi(y)\,dy \quad x\in \partial \Omega \textup{ or }x\in\mathbb{R}^2\backslash\partial\Omega
 \end{equation}
 % In general the integral $w(x)$ is defined on the same boundary $\partial \Omega$, or in a open set $\mathcal{O}=\Omega$ or $\mathcal{O}=\mathbb{R}^2$
-The operators $K$ and $K'$ have weakly singular kernel, which becomes continuous in case of boundary $\partial \Omega$ of class $C^2$. Instead operator $S$ has weakly singular kernel of logarithmic type.
 In the sequel, let $\partial\Omega$ be a curve in $\mathbb{R}^2$ of class $C^2$ parametrized by
 \begin{equation}
 w(t):[0,2\pi]\to\mathbb{R}^2
 \end{equation}
-The quadrature rule implemented, to approximate the integral, depends on the integral kernel. The rule substitutes 
+The quadrature rule implemented, to approximate the integral, depends on the integral kernel. 
+\begin{lemma}
+The operator $S$ has weakly singular kernel of logarithmic type. Instead the operators $K$ and $K'$ have weakly singular kernel, which it's proved to be continuous for a boundary $\partial \Omega$ of class $C^2$, indeed
+\end{lemma}
+The rule substitutes 
 \begin{equation}
  A\phi(t)=\int_0^{2\pi} K(w(t),w(\tau))\phi(w(\tau))|w'(\tau)|\,d\tau=\int_0^{2\pi}g(\tau)d\tau \quad t\in[0,2\pi]
 \end{equation}
@@ -2783,14 +2793,77 @@ with $M_2$ continuous and bounded.
  S\phi(w(t)) =  &\int_0^{2\pi} M_1\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)\phi(w(\tau))|w'(\tau)|\,d\tau + \\ 
                 &\int_0^{2\pi} M_2(t,\tau)\phi(w(\tau))|w'(\tau)|\,d\tau 
 \end{align}
-
 \end{enumerate}
-
-
 A quadrature rule $S_n\phi$, uniformly bounded in $x(t)$, is composed by the Discrete Fourier Transform (DFT) (obtained by the trigonometric interpolation based on an equidistant subdivision) for the first integral, and a generic convergent quadrature rule for the second one (for example the trapezoidal rule based on lagrangian interpolation with equidistant nodes) 
+\begin{assumption}
+\label{assumption:holom-ext}
+ Let $g:\mathbb{R}\to\mathbb{R}$ be analytic and $2\pi$-periodic, then there exists a strip $D_S=\mathbb{R}\times(-s, s)\subset\mathbb{C}$ with $s>0$, such that
+ $g$ can be extended to a holomorphic and $2\pi$-periodic bounded function $g:D_S\to\mathbb{C}$.
+\end{assumption}
+In \cite{kress:book} is demonstrated exponential convergence for analytic integrands.
+\begin{proposition}
+ Let $g$ be as prescribed by assumptions \ref{assumption:holom-ext}. Then the error of the composite trapezoidal rule
+ \begin{equation}
+  E_T(g)\coloneqq \frac{1}{2\pi}\int_0^{2\pi}g\,dy - \frac{1}{2n}\sum_{j=0}^{2n-1}g\Bigl(\frac{j\pi}{n}\Bigr)
+ \end{equation}
+ can be estimated by 
+ \begin{equation}
+  |E_T(g)|\leq M(\coth ns -1) \textup{ or equivalently } |E_T(g)|\leq C e^{-2ns} 
+ \end{equation}
+Observe improvement with respect 11.32 (book).
+\end{proposition}
 
-\section{Numerical Integration}
-\section{Neumann-to-Dirichlet maps}
+\section{Neumann--to--Dirichlet maps' Discretization}
+In this section we describe how we discretized Neumann--to--Dirichlet maps defined in \eqref{eq:NtoD-laplace} and in \eqref{eq:NtoD-inclusion}. We are advantaged by the structure of natural representation formulas of the solutions. Indeed they lead us to solve two integral equations of the second kind, which are well-posed, meaning that the operators are bijective and have continuous inverse.
+Respectively
+\begin{enumerate}
+ \item we represent the solution $v$ of the Laplace problem \eqref{eq:NtoD-laplace}, with Neumann data $f$, as a simple layer potential on the same $\partial \Omega$ such that we can impose boundary values for derivatives
+ \begin{equation}
+ \label{eq:def-v-representation}
+  v(x)\coloneqq \int_{\partial\Omega}\Phi(x,x_0)\phi(x_0)\,dx_0
+ \end{equation}
+ \begin{equation}
+ \label{eq:2kind-laplace}
+  \partial_\nu v=\Bigl(K'+\dfrac{1}{2}I\Bigr)\phi = f
+ \end{equation}
+ \item at the same way, we represent the solution $u$ of the inclusion problem \eqref{eq:NtoD-inclusion}, with Neumann data $f$, as the sum of two simple layer potentials, to force contemporary boundary data $\partial_\nu u = f$ and transmission conditions $\partial_\nu u^+-k\partial_\nu u^-=0$
+ \begin{equation}
+ \label{eq:def-u-representation}
+  u(x)\coloneqq \int_{\partial\Omega}\Phi(x,x_0)\phi_\Omega(x_0)\,dx_0 + \int_{\partial D}\Phi(x,x_0)\phi_D(x_0)\,dx_0
+ \end{equation}
+ \begin{align}
+  &\Bigl(K' + \dfrac{1}{2} I\Bigr)\phi_\Omega + K^\diamond(\partial D;\,\partial \Omega)\phi_D = f\\
+  & K^\diamond(\partial \Omega;\,\partial D)\phi_\Omega + \Bigl(K' + \dfrac{\hat{c}}{2} I\Bigr)\phi_D = 0
+ \end{align}
+ equivalently, 
+ \begin{equation}
+ \label{eq:2kind-inclusion}
+ \dfrac{1}{2}
+ \begin{bmatrix}
+  \phi_\Omega\\ \hat{c}\,\phi_D
+ \end{bmatrix}
+ + 
+ \begin{bmatrix}
+ K'(\partial \Omega) & K^\diamond(\partial D;\,\partial \Omega)\\
+ K^\diamond(\partial \Omega;\,\partial D) & K'(\partial D)
+ \end{bmatrix}
+ \begin{bmatrix}
+  \phi_\Omega\\ \phi_D
+ \end{bmatrix}
+ =
+ \begin{bmatrix}
+ f\\ 0
+ \end{bmatrix}
+ \end{equation}
+\end{enumerate}
+where the operators $K^\diamond(\partial A;\partial B):\partial A\to\partial B$ are normal derivatives on $\partial B$ of a single layer on $\partial A$
+\begin{equation}
+ K^\diamond(\partial A;\partial B)\phi\coloneqq \partial_\nu \mathcal{S}(x)\textup{ on }\partial B\,\textup{ with }
+ \mathcal{S}(x)\coloneqq \int_{\partial A}\Phi(x,x_0)\phi(x_0)\,dx_0
+\end{equation}
+and have smooth integral kernel (we can derive under integral's sign).
+
+\par
 We'll approximate error bounds for the Neumann-to-Dirichlet map discretized through the boundary Element Method (BEM).
 Considering the empty case (with no object $D$):
 \begin{equation}
@@ -2801,7 +2874,7 @@ Using a quadrature rule $\Lambda_{0n} \to \Lambda_0$:
 \begin{equation}
  \Lambda_{0n}f(x) = \sum_{k=1}^n\alpha_k^{(n)}K(x,q_k^{(n)})\phi_f(q_k^{(n)})
 \end{equation}
-For a weakly continuous kernel:
+For a weakly singular kernel:
 \begin{equation}
  \Lambda_{0n}f(x) = \sum_{k=1}^n\alpha_k^{(n)}(x)\phi_f(q_k^{(n)})
 \end{equation}

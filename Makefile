@@ -1,12 +1,16 @@
 edit: thesis.tex
 	kile $< &
-open: notes.pdf
+open: thesis.pdf
 	evince $< &
-build: notes.tex
+build: thesis.tex sources.bib
+	pdflatex $<
+	bibtex thesis.aux
 	pdflatex $<
 distclean:
 	-rm *~ *.aux *.log *.nav *.out *.snm *.toc *.bbl *.blg *.backup
 clean: distclean
 	-rm *.pdf *.dvi
-bibtex: notes.aux
-	bibtex notes.aux
+bibtex: sources.bib
+	bibtex thesis.aux
+import-fig:
+	cp ~/Documents/python/venv/runs/fig-thesis/* ./fig/
