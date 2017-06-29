@@ -6,11 +6,15 @@ build: thesis.tex sources.bib
 	pdflatex $<
 	bibtex thesis.aux
 	pdflatex $<
+	pdflatex $<
 distclean:
 	-rm *~ *.aux *.log *.nav *.out *.snm *.toc *.bbl *.blg *.backup
 clean: distclean
 	-rm *.pdf *.dvi
 bibtex: sources.bib
 	bibtex thesis.aux
-import-fig:
+fig-import:
 	cp ~/Documents/python/venv/runs/fig-thesis/* ./fig/
+fig-convert:
+	# epstopdf ./fig/*.eps ./fig/*.pdf
+	find fig/ . -name "*.eps" -exec epstopdf {} \;

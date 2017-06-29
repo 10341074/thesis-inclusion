@@ -968,7 +968,7 @@ By compact embedding of $H^1(D)$ in $L^2(D)$, both $T$ and $T+K$ are Fredholm op
  \end{proposition}
  This is proved in \cite{kirsch:book}, but we'll present the proof for injectivity contained in \cite{somersalo:preprint}, to highlight the link with ITP.
  \begin{proof}
- We assume $({N_D} - {N_0})f = 0$. Named $u=T_Df$ and $v=T_0f$, the difference $w=u-v$ is harmonic in $\Omega\backslash\overline{D}$ with vanishing Cauchy conditions on $\partial \Omega$, which entails $w=0$ in $\Omega\backslash\overline{D}$. Then the pair $(u|_D,v|_D)$ solves the ITP with conditions:
+ We assume $({N_D} - {N_0})f = 0$. Named $u=M_Df$ and $v=M_0f$, the difference $w=u-v$ is harmonic in $\Omega\backslash\overline{D}$ with vanishing Cauchy conditions on $\partial \Omega$, which entails $w=0$ in $\Omega\backslash\overline{D}$. Then the pair $(u|_D,v|_D)$ solves the ITP with conditions:
  \begin{align}
   u^--v^- &=u^+ - v^+ = 0 \\
   \partial_\gamma u^- - \partial_\nu v^- &= \partial_\nu u^+ - \partial_\nu v^+ = 0 
@@ -1999,7 +1999,7 @@ Our aim is to factorize the \textit{relative} Dirichlet-to-Neumann operator ${N_
 \end{equation}
 The choice of intermediate operators is not unique, for example in \cite{kirsch:book} there are taken
 \begin{enumerate}
- \item $A:L^2_0(\partial \Omega) \to L^2(D;\,\mathbb{R}^2)$ defined as $Af = \nabla v|_D$ where $v = T_0f$ solves the variational formulation
+ \item $A:L^2_0(\partial \Omega) \to L^2(D;\,\mathbb{R}^2)$ defined as $Af = \nabla v|_D$ where $v = M_0f$ solves the variational formulation
  \begin{equation}
   \label{eq:def-A}
   \int_\Omega \nabla v\cdot \nabla \psi \, dx = \int_{\partial \Omega} fv\, ds\quad \forall\psi\in H^1_0(\Omega)
@@ -2763,38 +2763,67 @@ Instead main disadvantages are:
 \end{assumption}
 We will make large use of integral potentials, with integral kernel $K(x,y)$, and density $\phi(y)$, defined on a compact boundary $\partial \Omega$
 \begin{equation}
+\label{eq:quad-def-operator}
  A\phi(x)\coloneqq \int_{\partial \Omega} K(x,y)\phi(y)\,dy \quad x\in \partial \Omega \textup{ or }x\in\mathbb{R}^2\backslash\partial\Omega
 \end{equation}
 % In general the integral $w(x)$ is defined on the same boundary $\partial \Omega$, or in a open set $\mathcal{O}=\Omega$ or $\mathcal{O}=\mathbb{R}^2$
 In the sequel, let $\partial\Omega$ be a curve in $\mathbb{R}^2$ of class $C^2$ parametrized by
 \begin{equation}
-w(t):[0,2\pi]\to\mathbb{R}^2
+c(t):[0,2\pi]\to\mathbb{R}^2
 \end{equation}
 The quadrature rule implemented, to approximate the integral, depends on the integral kernel. 
 \begin{lemma}
-The operator $S$ has weakly singular kernel of logarithmic type. Instead the operators $K$ and $K'$ have weakly singular kernel, which it's proved to be continuous for a boundary $\partial \Omega$ of class $C^2$, indeed
-\end{lemma}
-The rule substitutes 
+The operator $S$ has weakly singular kernel of logarithmic type. Instead the operators $K$ and $K'$ have weakly singular kernel, which it's proved to be continuous for a boundary $\partial \Omega$ of class $C^2$, indeed for $K$ (analogously for $K'$)
+\begin{equation*}
+K\phi(x)\coloneqq\int_{\partial D} \phi(y) \partial_{\nu(y)} \Phi(x, y) \,dy 
+=\int_{\partial D} \phi(y)\frac{1}{2\pi}\frac{1}{|x - y|}\frac{x-y}{|x-y|}\cdot\nu(y)\, dy
+\end{equation*}
+more explicitly in two dimension
 \begin{equation}
- A\phi(t)=\int_0^{2\pi} K(w(t),w(\tau))\phi(w(\tau))|w'(\tau)|\,d\tau=\int_0^{2\pi}g(\tau)d\tau \quad t\in[0,2\pi]
+K\phi(c(t)) =\int_0^{2\pi} \phi(c(\tau))\frac{1}{2\pi}\frac{1}{|c(t) - c(\tau)|}\frac{c(t)-c(\tau)}{|c(t) - c(\tau)|}\cdot\nu(c(\tau))|c'(\tau)|\, d\tau
 \end{equation}
-with its discretization, which takes in account values of density $\phi(w(t))$ in quadrature nodes $t_k^{(n)}$
-\begin{equation}
- A_n\phi(t) = \sum_{k=1}^n\alpha_k^{(n)}(t)\phi(w(t_k^{(n)}))
-\end{equation}
-\begin{enumerate}
- \item for continuous kernel, it's sufficient to substitute quadrature nodes, and to apply a convergent quadrature rule, like the trapezoidal rule
- \item for the integral operator $S:\partial\Omega\to \partial\Omega$, with a weakly singular kernel of logarithmic type, we rewrite in terms of a periodic parametrization:
-\begin{equation}
- -\frac{1}{2\pi}\ln|x(t)-x(\tau)|=M_1\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)+M_2(t,\tau) \quad M_1 = -\frac{1}{4\pi}
-\end{equation}
-with $M_2$ continuous and bounded.
+has diagonal term (with $\xi,\zeta \in [t,\tau]$)
 \begin{align}
- S\phi(w(t)) =  &\int_0^{2\pi} M_1\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)\phi(w(\tau))|w'(\tau)|\,d\tau + \\ 
-                &\int_0^{2\pi} M_2(t,\tau)\phi(w(\tau))|w'(\tau)|\,d\tau 
+ &\lim_{\tau \to t}\frac{1}{2\pi}\frac{c(t)-c(\tau)}{|c(t) - c(\tau)|^2}\cdot\nu(c(\tau))|c'(\tau)| \\
+ =&\lim_{\tau \to t}\frac{1}{2\pi}\frac{-\frac{1}{2}c''(\xi)|t-\tau|^2\cdot\nu(c(\tau))|c'(\tau)|}{|c'(\zeta)|^2|t-\tau|^2}
+ = -\frac{1}{4\pi}\frac{c''(\tau)\cdot\nu(\tau)}{|c'(\tau)|} = -\frac{1}{4\pi}\kappa(\tau)|c'(\tau)|
 \end{align}
-\end{enumerate}
-A quadrature rule $S_n\phi$, uniformly bounded in $x(t)$, is composed by the Discrete Fourier Transform (DFT) (obtained by the trigonometric interpolation based on an equidistant subdivision) for the first integral, and a generic convergent quadrature rule for the second one (for example the trapezoidal rule based on lagrangian interpolation with equidistant nodes) 
+by $c''(\tau)=v(\tau)T(\tau) + \kappa(\tau)v^2(\tau)N(\tau)$ (denoting $v(\tau)=|c'(\tau)|$). Note that the integral kernel of $K'$ has the same diagonal value.
+\end{lemma}
+The quadrature rule substitutes 
+\begin{equation}
+ A\phi(c(t))=\int_0^{2\pi} K(c(t),c(\tau))\phi(c(\tau))|w'(\tau)|\,d\tau=\int_0^{2\pi}g(t,\tau)d\tau \quad t\in[0,2\pi]
+\end{equation}
+with its discretization, which takes in account values of density $\phi(c(t))$ in quadrature nodes $\tau_k^{(n)}$
+\begin{equation}
+\label{eq:quad-rule-generic}
+ A_n\phi(c(t)) = \sum_{k=1}^n\alpha_k^{(n)}(t)\phi(c(\tau_k^{(n)}))
+\end{equation}
+For continuous kernel $K(x,y)$, it's sufficient to apply a convergent quadrature rule, like the trapezoidal rule, 
+and \eqref{eq:quad-rule-generic} becomes
+\begin{equation}
+\label{eq:quad-rule-continuous}
+ A_n\phi(c(t)) = \sum_{k=1}^n\alpha_k^{(n)}K(c(t),c(\tau_k^{(n)}))\phi(c(\tau_k^{(n)}))
+\end{equation}
+\begin{definition}
+\label{def:convergent-quadrature-rule}
+We say $A_n$ is a sequence of \emph{convergent} quadrature rules if $A_n\phi$ converges to $A\phi$ for any continuous $\phi$.
+\end{definition}
+
+% -------------------------------------------------------------------------------------
+% \begin{enumerate}
+%  \item the integral operator $S:\partial\Omega\to \partial\Omega$ has with a weakly singular kernel of logarithmic type, we rewrite in terms of a periodic parametrization:
+% \begin{equation}
+%  -\frac{1}{2\pi}\ln|x(t)-x(\tau)|=M_1\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)+M_2(t,\tau) \quad M_1 = -\frac{1}{4\pi}
+% \end{equation}
+% with $M_2$ continuous and bounded.
+% \begin{align}
+%  S\phi(c(t)) =  &\int_0^{2\pi} M_1\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)\phi(c(\tau))|w'(\tau)|\,d\tau + \\ 
+%                 &\int_0^{2\pi} M_2(t,\tau)\phi(c(\tau))|w'(\tau)|\,d\tau 
+% \end{align}
+% \end{enumerate}
+% A quadrature rule $S_n\phi$, uniformly bounded in $x(t)$, is composed by the Discrete Fourier Transform (DFT) (obtained by the trigonometric interpolation based on an equidistant subdivision) for the first integral, and a generic convergent quadrature rule for the second one (for example the trapezoidal rule based on lagrangian interpolation with equidistant nodes) 
+\subsection{Double Layer Potentials and Composite Polynomial Interpolation}
 \begin{assumption}
 \label{assumption:holom-ext}
  Let $g:\mathbb{R}\to\mathbb{R}$ be analytic and $2\pi$-periodic, then there exists a strip $D_S=\mathbb{R}\times(-s, s)\subset\mathbb{C}$ with $s>0$, such that
@@ -2808,11 +2837,135 @@ In \cite{kress:book} is demonstrated exponential convergence for analytic integr
  \end{equation}
  can be estimated by 
  \begin{equation}
-  |E_T(g)|\leq M(\coth ns -1) \textup{ or equivalently } |E_T(g)|\leq C e^{-2ns} 
+  |E_T(g)|\leq M(\coth ns -1) \textup{ or equivalently } |E_T(g)|\leq C(g) e^{-2ns} 
  \end{equation}
 Observe improvement with respect 11.32 (book).
 \end{proposition}
+\subsection{Single Layer Potentials and Trigonometric Interpolation}
+Let $\partial \Omega$ be of class $C^2$. The integral operator $S:\partial\Omega\to \partial\Omega$ has a \emph{weakly singular kernel with a logarithmic singularity}. We rewrite it in terms of a periodic parametrization
+\begin{equation}
+\label{eq:def-kernel-M}
+ M(t,\tau)\coloneqq-\frac{1}{2\pi}\ln|c(t)-c(\tau)|=M_1(t,\tau)\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)+M_2(t,\tau)
+\end{equation}
+resulting in
+\begin{equation}
+\begin{cases}
+ M_1(t,\tau)= -1/(4\pi) \\
+ M_2(t,\tau)=M(t,\tau) - M_1(t,\tau)\ln\Big(4\sin^2\dfrac{t-\tau}{2}\Big) & t\neq \tau
+\end{cases}
+\end{equation}
+and diagonal term
+\begin{align}
+ M_2(\tau,\tau)&=\lim_{t\to\tau} \Big(M(t,\tau) - M_1(t,\tau)\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)\Big) \\
+ &=2M_1(\tau,\tau)\ln\big(|c'(\tau)|\big)=-1/(2\pi)\ln\big(|c'(\tau)|\big)
+\end{align}
+with $M_2(t,\tau)$ continuous and bounded (actually both kernels $M_1, M_2$ are analytic). It's convenient to separate the two integrals in the sum
+\begin{align}
+ S\phi(c(t)) =  &\int_0^{2\pi} M_1\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)\phi(c(\tau))|c'(\tau)|\,d\tau + \label{eq:single-integral-M1}\\ 
+                &\int_0^{2\pi} M_2(t,\tau)\phi(c(\tau))|c'(\tau)|\,d\tau \label{eq:single-integral-M2}
+\end{align}
+We concentrate on the integral \eqref{eq:single-integral-M1}, containing the singularity, expressed as
+\begin{equation}
+ Qg(t)\coloneqq\frac{1}{2\pi}\int_0^{2\pi}\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)g(\tau)d\tau
+\end{equation}
+with $g(t)$ continuous and $2\pi$-periodic. The quadrature rule $Q_ng\coloneqq Qg_n$ consists in replacing $g$ with its 
+trigonometric interpolation based on equidistant quadrature nodes $\tau_j\coloneqq j\pi/n$
+\begin{equation}
+ Q_ng(t)\coloneqq \sum_{j=0}^{2n-1}R_j^{(n)}(t)g(\tau_j)\quad j=0,\dots, 2n-1
+\end{equation}
+The weights $R_j^{(n)}=QL_j$ are the integrals of the Lagrange basis's elements $L_j(\tau)$ of the interpolation previously specified.
+\begin{equation}
+ R_j^{(n)}(t)=\frac{1}{2\pi}\int_0^{2\pi}\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)L_j(\tau)d\tau \quad j=0,\dots,2n-1
+\end{equation}
+\begin{equation}
+ R_j^{(n)}(t)=-\frac{1}{n}\Bigl\{\sum_{m=1}^{n-1}\frac{1}{m}\cos m(t-\tau_j) + \frac{1}{2n}\cos n(t-\tau_j)\Bigr\} \quad j=0,\dots,2n-1
+\end{equation}
+We report Lemma (8.21) contained in \cite{kress:book}.
+\begin{lemma}
+For the trigonometric monomials, we have the integrals
+\begin{equation}
+ \frac{1}{2\pi}\int_0^{2\pi}\ln\Bigl(4\sin^2\frac{t}{2}\Bigr)e^{imt}\,dt=
+ \begin{cases}
+  0 & m=0 \\
+  -1/|m| & m=\pm1,\pm2,\dots
+ \end{cases}
+\end{equation}
+\end{lemma}
+We compute the estimate of the quadrature error $E_ng\coloneqq Qg - Q_ng$, directly from the interpolation error
+\begin{align}
+ |E_ng|(t)=|Qg-Q_ng|(t)&\leq\frac{1}{2\pi}\int_0^{2\pi}\Big|\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)\Big||g(\tau)-g_n(\tau)|\,d\tau \\
+ &\leq \frac{1}{2\pi} \int_0^{2\pi}\Big|\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)\Big|\,d\tau\|g(\tau) - g_n(\tau)\|_{\infty}
+\end{align}
+The trigonometric interpolation operators are not uniformly bounded. We report convergence results contained in \cite{kress:book}. 
+Provided additional regularity of the integrand $g$, we have uniform convergence of the integrals. The following are theorems (11.6) and (11.7) in \cite{kress:book}.
+\begin{proposition}
+ Let $g\in C^{m,\alpha}_{2\pi}$ be a H\"{o}lder--continuous $2\pi$-periodic function with $n\in\mathbb{N}$ and $\alpha\in(0,1]$. Then there holds the estimate for the trigonometric interpolation error
+ \begin{equation}
+  \|P_ng - g\|_{\infty}\leq C(m,\alpha)\frac{\ln n}{n^{m+\alpha}}\|g\|_{m,\alpha}
+ \end{equation}
+\end{proposition}
+\begin{proposition}
+ Let $g$ be an analytic $2\pi$-periodic function. Then, in the framework of assumptions \ref{assumption:holom-ext}, there exists an holomorphic extension and the estimate for the trigonometric interpolation error decrease exponentially with $n$
+ \begin{equation}
+  \|P_ng - g\|_{\infty}\leq M(g)\frac{\coth\frac{s}{2}}{\sinh ns} \leq C(g)e^{-ns}
+ \end{equation}
+\end{proposition}
 
+\subsection{Domains with Corners}
+Let $\partial \Omega$ be the boundary of a domain with corners, therefore the parametrization $c(t)$ presents jumps in the first derivative.
+We will refer to a smooth portion of $\partial \Omega$, and we parametrize it between $[0,2\pi]$. 
+By this way, in the case of the operators $K,K'$, the integrand function, for fixed $t$, is smooth in $(0,2\pi)$ and presents singularities at the end--points.
+\begin{equation}
+\label{eq:corners-double}
+ K\phi(t)=\int_0^{2\pi}K(c(t),c(\tau))\phi(c(\tau))c'(\tau)\,d\tau=\int_0^{2\pi}g(t,\tau)\,d\tau
+\end{equation}
+The idea is to adapt the quadrature nodes such that we can neglect the end--points. We substitute the variable $\tau=w(\sigma)$ (it's convenient even to evaluate in $t=w(s)$)
+\begin{equation}
+\label{eq:corners-generic}
+ K\phi(w(s))=\int_0^{2\pi}g(w(s),w(\sigma))w'(\sigma)\,d\sigma
+\end{equation}
+The function $w$ is required to be a bijection of $[0,2\pi]$ to itself, with vanishing derivatives at the end--points. In \cite{kress:bie-scattering} is cited the choice of Sag and Szekeres in \cite{Sa-Sz64}.
+\begin{equation}
+ w(s)=\frac{e^{-2\pi/s}}{e^{-2\pi/s} + e^{-2\pi/(2\pi - s)}}
+\end{equation}
+To avoid overgrading, with high convergence order effective only for large $n$, a possible substitution is suggested in \cite{kress:bie-corners}
+\begin{equation}
+ w(s)=2\pi\frac{[v(s)]^q}{[v(s)]^q + [v(2\pi - s)]^q}
+\end{equation}
+where the cubic is defined to equally distribute grid points on two sides
+\begin{equation}
+ v(s)=\Bigl(\frac{1}{q} - \frac{1}{2}\Bigr)\Bigl(\frac{\pi - s}{\pi}\Bigr)^3 + \frac{1}{q}\frac{s-\pi}{\pi} + \frac{1}{2}
+\end{equation}
+By applying trapezoidal rule on equidistant nodes, the quadrature rule for the approximate integral \eqref{eq:corners-generic} based on the graded mesh $\tau_j=w(\sigma_j)$ with equidistant $\sigma_j=j\pi/n$ is 
+\begin{equation}
+ K_n\phi(w(s))=\frac{\pi}{n}\sum_{j=1}^{2n-1}a_jg(w(s), w(\sigma_j))\quad a_j=w'(j\pi/n)\quad j=1,\dots,2n-1
+\end{equation}
+We proceed with the same way for the single layer operator $S$ defined on a boundary $\partial \Omega$ with corners. 
+We consider a smooth portion of the boundary and we substitute its parametrization in the integral kernel $M(t,\tau)$ defined in \eqref{eq:def-kernel-M}
+% Provided the change $\tau=w(\sigma)$, it's convenient to evaluate the single layer potential with respect the variable $t=w(s)$ (with kernel $M$ defined previously in \eqref{})
+\begin{equation}
+ S\phi(w(s))=\int_0^{2\pi}M(w(s),w(\sigma))\phi(c(w(\sigma)))|c'(w(\sigma))|w'(\sigma)\,d\sigma
+\end{equation}
+Only after variable change, we look for a convergent quadrature rule, to solve the logarithmic singularity of the kernel. Again, we isolate it
+\begin{equation}
+\label{eq:def-kernel-tildeM}
+ \tilde{M}(s,\sigma)\coloneqq-\frac{1}{2\pi}\ln|c(w(s))-c(w(\sigma))|=\tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\frac{s - \sigma}{2}\Big)+\tilde{M}_2(s,\sigma)
+\end{equation}
+resulting in
+\begin{equation}
+\begin{cases}
+ \tilde{M}_1(s,\sigma) = M_1(w(s),w(\sigma))= -1/(4\pi) \\
+ \tilde{M}_2(s,\sigma) = \tilde{M}(s,\sigma) - \tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\dfrac{s - \sigma}{2}\Big) & s\neq \sigma \\
+\end{cases}
+\end{equation}
+and diagonal term
+\begin{align}
+ \tilde{M}_2(\sigma,\sigma)&=\lim_{s\to\sigma} \Big(\tilde{M}(s,\sigma) - \tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\dfrac{s - \sigma}{2}\Big)\Big) \\
+ &=M_2(w(\sigma),w(\sigma)) + 2M_1(w(\sigma),w(\sigma))\ln\big(w'(\sigma)\big)= \\
+ &=-1/(2\pi)\ln\big(|c'(w(\sigma))|w'(\sigma)\big)
+\end{align}
+with $\tilde{M}_2(t,\tau)$ continuous and bounded (both kernels $\tilde{M}_1, \tilde{M}_2$ turn out to be analytic). 
+Then we can apply respectively quadrature rule generated by trigonometric interpolation on equidistant nodes, and trapezoidal rule on equidistant nodes $\sigma_j = j\pi/n$ for $j=1,\dots,2n-1$, neglecting end--points with vanishing $w'(0)=w'(2\pi)=0$.
 \section{Neumann--to--Dirichlet maps' Discretization}
 In this section we describe how we discretized Neumann--to--Dirichlet maps defined in \eqref{eq:NtoD-laplace} and in \eqref{eq:NtoD-inclusion}. We are advantaged by the structure of natural representation formulas of the solutions. Indeed they lead us to solve two integral equations of the second kind, which are well-posed, meaning that the operators are bijective and have continuous inverse.
 Respectively
@@ -2824,7 +2977,7 @@ Respectively
  \end{equation}
  \begin{equation}
  \label{eq:2kind-laplace}
-  \partial_\nu v=\Bigl(K'+\dfrac{1}{2}I\Bigr)\phi = f
+  \partial_\nu v=\Bigl(K'+\tfrac{1}{2}I\Bigr)\phi = f
  \end{equation}
  \item at the same way, we represent the solution $u$ of the inclusion problem \eqref{eq:NtoD-inclusion}, with Neumann data $f$, as the sum of two simple layer potentials, to force contemporary boundary data $\partial_\nu u = f$ and transmission conditions $\partial_\nu u^+-k\partial_\nu u^-=0$
  \begin{equation}
@@ -2832,13 +2985,13 @@ Respectively
   u(x)\coloneqq \int_{\partial\Omega}\Phi(x,x_0)\phi_\Omega(x_0)\,dx_0 + \int_{\partial D}\Phi(x,x_0)\phi_D(x_0)\,dx_0
  \end{equation}
  \begin{align}
-  &\Bigl(K' + \dfrac{1}{2} I\Bigr)\phi_\Omega + K^\diamond(\partial D;\,\partial \Omega)\phi_D = f\\
-  & K^\diamond(\partial \Omega;\,\partial D)\phi_\Omega + \Bigl(K' + \dfrac{\hat{c}}{2} I\Bigr)\phi_D = 0
+  &\Bigl(K' + \tfrac{1}{2} I\Bigr)\phi_\Omega + K^\diamond(\partial D;\,\partial \Omega)\phi_D = f\\
+  & K^\diamond(\partial \Omega;\,\partial D)\phi_\Omega + \Bigl(K' + \tfrac{\hat{c}}{2} I\Bigr)\phi_D = 0
  \end{align}
  equivalently, 
  \begin{equation}
  \label{eq:2kind-inclusion}
- \dfrac{1}{2}
+ \tfrac{1}{2}
  \begin{bmatrix}
   \phi_\Omega\\ \hat{c}\,\phi_D
  \end{bmatrix}
@@ -2878,62 +3031,120 @@ For a weakly singular kernel:
 \begin{equation}
  \Lambda_{0n}f(x) = \sum_{k=1}^n\alpha_k^{(n)}(x)\phi_f(q_k^{(n)})
 \end{equation}
-
-\par
-\subsubsection{Nystr\"om}
-The equation \eqref{eq:NtoD0} is an integral equation of the \textit{second kind}, that is, it can be expressed in the form:
+\subsection{Nystr\"om Method}
+Both the equations \eqref{eq:2kind-laplace} and \eqref{eq:2kind-inclusion} can be expressed in the form of 
+\emph{second kind} equations 
 \begin{equation}
- (I - A) \phi = f
+\label{eq:nystrom-full}
+ \phi-A\phi = f
 \end{equation}
-\begin{center}
- $A: G \to G$ a \textit{compact} linear operator
-\end{center}
-\begin{center}
- $I-A$ is injective in $\{\phi_0\}^\perp$
-\end{center}
-
-In this case $A=K'$ is an \textit{integral operator}.
-Under the hypothesis of regularity (it's enough a curve of class $C^2$) the integral operator $K'$ has a continuous kernel (in general it's only weakly singular).
-If $A_n$ is the approximate operator constructed by \textit{quadrature rule}:
+with $A$ a \emph{compact} linear operator (and therefore continuous), and $I-A:X\to Y$ \emph{injective}. 
+In the first case \eqref{eq:2kind-laplace}, $X=X_0=\{\phi_0\}^\perp \subset L^2(\partial \Omega)$, 
+while in the second case \eqref{eq:2kind-inclusion}, $X=X_0\times L^2(\partial D)$, where $\phi_0$ is the only non trivial eigenvector in $\mathcal{N}(K' + 1/2I)$ on $\partial\Omega$.
+\par
+The \emph{Nystr\"om method} consists in substituting a convergent (according to \ref{def:convergent-quadrature-rule}) quadrature rule $A_n$ instead of $A$ in the previous \eqref{eq:nystrom-full}. 
+The first discretization yields to the \emph{semi--discretized equation} finite--dimensional
 \begin{equation}
+\label{eq:nystrom-semi}
  \phi_n - A_n\phi_n = f
 \end{equation}
-
 \par
-theorem (12.7) of \cite{kress:book}
+We will consider only the case of $\partial \Omega$ of class $C^2$, such that the integral kernel of $A$, in the next equation, is continuous (for boundaries with corners the integral kernel is weakly singular, we need to integrate separately on each smooth piece through a graded mesh).
+Therefore in the sequel, quadrature operator $A_n\phi$ reduces to \eqref{eq:quad-rule-continuous} (we suppress the curve's parametrization $c$ and use quadrature nodes $x_k=c(\tau_k^{(n)})$)
+\begin{equation}
+\label{eq:quad-rule-continuous-synt}
+ A_n\phi(x) = \sum_{k=1}^n\alpha_k K(x,x_k)\phi(x_k)
+\end{equation}
+We report theorem (12.7) in \cite{kress:book}, which expresses the solution of \eqref{eq:nystrom-semi} as a finite sum.
 \begin{theorem}
- Let $\phi_n$ be a solution of
+ Let $K(x,y)$ be a continuous integral kernel of $A$, and consider the semi--discretized equation \eqref{eq:nystrom-semi}
  \begin{equation}
-  \phi_n(x) -\sum_{k=1}^n\alpha_k K(x,x_k)\phi_n(x_k)=f(x) \quad x\in G
+  \label{eq:nystrom-semi-continuous}
+  \phi_n(x) -\sum_{k=1}^n\alpha_k K(x,x_k)\phi_n(x_k)=f(x) \quad x\in \partial \Omega
  \end{equation}
- \begin{itemize}
-  \item let $\phi_n$ be a solution of the approximate equation, then its values $\phi_j^{(n)} = \phi_n(x_j)$ at nodes, satisfy the following linear system
+ \begin{enumerate}
+  \item if $\phi_n$ is a solution of \eqref{eq:nystrom-semi-continuous}, then its values $\phi_j^{(n)} = \phi_n(x_j)$ at nodes, satisfy the following linear system
   \begin{equation}
+    \label{eq:nystrom-system}
     \phi_j^{(n)} - \sum_{k=1}^n\alpha_k K(x_j,x_k)\phi_k^{(n)} = f(x_j)\quad j=1,...,n
   \end{equation}
-  \item conversely, if $\phi_j^{(n)}$ satisfy the linear system, then $\phi_n$ such constructed solves the approximate equation
+  \item conversely, if values $\phi_j^{(n)}$ satisfy the linear system \eqref{eq:nystrom-system}, then $\phi_n$ such constructed solves the approximate equation
   \begin{equation}
-   \phi_n(x)\coloneqq f(x) + \sum_{k=1}^n\alpha_k K(x,x_k)\phi_k^{(n)} \quad x\in G
+   \phi_n(x)\coloneqq f(x) + \sum_{k=1}^n\alpha_k K(x,x_k)\phi_k^{(n)} \quad x\in \partial\Omega
   \end{equation}
- \end{itemize}
+ \end{enumerate}
 \end{theorem}
-Can be interpreted as an interpolation at a subdivision coincident with quadrature nodes, this goes back to Nystr\"om
+This fast way of solving \eqref{eq:nystrom-semi}, can be interpreted as a collocation method on the subdivision coincident with quadrature nodes.
 \par
-theorem (10.9) of \cite{kress:book} of section (10.4)
-\begin{theorem}[pointwise approximation]
- Under preceding hypotheses, we have the error estimate
+Finally the convergence result which relates the two solutions of \eqref{eq:nystrom-full} and of \eqref{eq:nystrom-semi}, guarantees us for the Nystr\"om's method.
+The error analysis for the equation of the second kind is based on theorems (10.9) and (10.10) contained \cite{kress:book}, where all details can be found.
+\begin{theorem}[Pointwise Convergence]
+ Let $X$ be a Banach space, let $I-A:X\to X$ be injective, $A$ be linear compact, $A_n$ a sequence \emph{pointwise convergent}, of \emph{collectively compact} operators (definition is reported \ref{def:collectively-compact}), 
+ then there holds the error estimate for the solution of the second kind equation $\phi-A\phi=f$, and its approximation $\phi_n - A_n\phi_n=f_n$
  \begin{equation}
   \|\phi_n - \phi \| \leq \frac{1 + \|(I-A)^{-1}A_n\|}{1-\|(I-A)^{-1}(A_n-A)A_n\|}\{\|(A_n - A)\phi\| + \| f_n - f\|\}
  \end{equation}
- and for sufficiently large $n$, thanks to uniform boundedness with respect to $n$
+ and for sufficiently large $n$ (such that the denominator in the coefficient is positive), thanks to uniform boundedness with respect to $n$, there holds      
  \begin{equation}
   \|\phi_n - \phi \| \leq C\{\|(A_n - A)\phi\| + \| f_n - f\|\}
  \end{equation}
 \end{theorem}
-For an integral operator with continuous kernel, the trapezoidal rule gives
+\begin{corollary}
+ Let $K(x,y)$ be a continuous integral kernel of $A$, let $I-A$ be injective and $A_n$ be a sequence of convergent quadrature rules. 
+ If $f$ is continuous, then $\phi,\phi_n$ are continuous themselves. Moreover there holds the a priori error estimate
+ \begin{equation}
+  \|\phi_n - \phi \|_{\infty} \leq C\{\|(A_n - A)\phi\|_{\infty}\}
+ \end{equation}
+\end{corollary}
+% For an integral operator with continuous kernel, the trapezoidal rule gives
+% \begin{equation}
+%  |(A - A_n)\phi|(x) \leq \frac{1}{12}h^2(b-a)\max_{y\in G}|\partial_{yy}K(x,y)\phi(y)|
+% \end{equation}
+\subsection{Neumann--to--Dirichlet map}
+Let $-N_r=N_D - N_0$ be the relative Neumann--to--Dirichlet map. In the previous section, we described
+the procedure to compute the approximation $-N_{rn}f$. 
 \begin{equation}
- |(A - A_n)\phi|(x) \leq \frac{1}{12}h^2(b-a)\max_{y\in G}|\partial_{yy}K(x,y)\phi(y)|
+ {N_0}_nf = S_n\phi_n = SP_n\phi_n\quad and \quad{N_D}_nf = S_n{\phi_\Omega}_n + S_n{\phi_D}_n
 \end{equation}
+then, we will express for brevity the numerical integration as $S_n$, 
+for the relative map the error estimate is
+\begin{equation}
+ \|{N_r}f - {N_r}_nf\|\leq\|S\|\|\phi-\phi_n\| + \|S\phi_n - S_n\phi_n\| = err_{Nystr\textit{\"{o}}m} + err_{Num\,Int}
+\end{equation}
+Our real intention is to construct an \emph{approximate map} $-{N_r}_n$ to generalize and speed up 
+the computation to any $f$. By this way, we are forced to express $-{N_r}_n$ in terms of 
+a basis $\{b_k\}$ of a $n$--dimensional subspace $X_n\subset X=L^2_0(\partial\Omega)$.
+Consequently, our first step will be the projection of $f$ on the subspace $X_n$, through the interpolation $P_nf$,
+and we will take in account this error, by an accurate choice of $P_n$ such that the convergence of the global error will be not affected 
+(we'll denote $\phi(f)$ the solution of the second kind equation with right term $f$).
+\begin{equation}
+ P_nf = \sum_{k=1}^nf_kb_k \Rightarrow \phi_n(P_nf)=\sum_{k=1}^nf_k\phi_n(b_k)
+\end{equation}
+
+\begin{align*}
+ -e_n &= -{N_r}f + {N_r}_nP_nf =S\phi(f) - S_n\phi_n(P_nf) \\
+ &=\Big[S\phi_n(P_nf) - S_n \phi_n(P_nf) \Big] 
+ + \Big[S\phi(f) - S\phi(P_nf)\Big]
+ + \Big[S\phi(P_nf)- S\phi_n(P_nf)\Big] \\ 
+ &=\Big(S\psi_n - S_n\psi_n \Big) 
+ -N_r(I-P_n)f
+ + S\Big(\phi(P_nf)-\phi_n(P_nf)\Big) \\
+ &= e_{Num\,Int} + e_{Interp} + e_{Nystr\textit{\"{o}}m}
+%  + &\Big[S\phi(f) - S\sum\phi(e_k)f_k\Big] 
+%  + \Big[S\sum\phi(e_k)f_k - S\sum\phi_n(e_k)f_k\Big] \\
+% &= N_0(I-P_n)f + \sum_kf_k[S(\phi-\phi_n)(e_k)]
+\end{align*}
+
+The original equation, which cannot always be solved, is
+\begin{equation}
+ N_r f = \psi_{0z}
+\end{equation}
+The regularized equation 
+\begin{equation}
+ \alpha f^\alpha + N_r^TN_r = \psi_{0z}
+\end{equation}
+
+
 \section{Appendix A: Functional analysis}
 \begin{theorem}[Parseval]
  Let $X$ be a separable Hilbert space and $\{x_j\}_{j\in\mathbb{N}}$ a complete orthonormal basis, then
@@ -2986,6 +3197,10 @@ In this case a possible solution is
  x = \sum_{j \in \mathbb{N}}\frac{1}{\mu_j}\langle y,y_j\rangle x_j
 \end{equation}
 \end{theorem}
+\begin{definition}
+\label{def:collectively-compact}
+ Let $\mathcal{A}=\{A:X\to Y\}$ be a set of linear operators between two normed spaces. It's called a \emph{collectively compact} set if for each bounded set $U\subset X$ the set of images $\mathcal{A}(U)=\{A(U):A\in\mathcal{A}\}$ is relatively compact.
+\end{definition}
 
 %\vspace{5cm}
 %\nocite{*}
@@ -3078,3 +3293,6 @@ See the second case \ref{negative} or the first \ref{positive}
 \node[fancytitle, right=10pt] at (box.north west) {A fancy title};
 \node[fancytitle, rounded corners] at (box.east) {$\clubsuit$};
 \end{tikzpicture}%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\centering
+\includegraphics[width=\textwidth]{fig/prova}
