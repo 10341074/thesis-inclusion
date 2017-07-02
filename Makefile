@@ -4,11 +4,12 @@ open: thesis.pdf
 	evince $< &
 build: thesis.tex sources.bib
 	pdflatex $<
-	bibtex thesis.aux
+	# bibtex thesis.aux
+	biber thesis.aux
 	pdflatex $<
 	pdflatex $<
 distclean:
-	-rm *~ *.aux *.log *.nav *.out *.snm *.toc *.bbl *.blg *.backup
+	-rm *~ *.aux *.log *.nav *.out *.snm *.toc *.bbl *.blg *.backup *.bcf *.xml
 clean: distclean
 	-rm *.pdf *.dvi
 bibtex: sources.bib
