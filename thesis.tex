@@ -1,6 +1,6 @@
 \documentclass[10pt, a4paper, twoside, openright]{book}
 % \documentclass{book}
-\usepackage[english]{babel}
+\usepackage[english, italian]{babel}
 % \usepackage[italian, english]{babel}
 \usepackage[utf8]{inputenc} % needed for bibtex
 \usepackage{mathrsfs}
@@ -18,6 +18,7 @@
 \usepackage[usenames,dvipsnames]{xcolor} % before tikz, options for more colors
 \definecolor{light-gray}{gray}{0.95}
 
+\usepackage{booktabs}
 \usepackage{caption}
 \usepackage{subfig}
 
@@ -65,6 +66,8 @@
 \usepackage{csquotes}
 %\usepackage[autostyle, italian=guillemets]{csquotes}
 
+% \usepackage[chapter]{placeins} % floatbarrier
+
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \addbibresource{sources.bib}
 
@@ -98,7 +101,7 @@
 \providetoggle{old}
 \settoggle{old}{false}
 \providetoggle{fig}
-\settoggle{fig}{false}
+\settoggle{fig}{true}
 % \toggletrue{paper}
 % \togglefalse{paper}
 \renewcommand{\i}{\textup{i}}
@@ -115,12 +118,34 @@
 \end{center}
 }
 
+\usepackage{fancyhdr}
+\newcommand{\fncyblank}{\fancyhf{}}
+
+\newenvironment{abstract} %
+{\cleardoublepage\fncyblank\null\vfill\begin{center} %
+\bfseries\abstractname\end{center}} %
+{\vfill\null}
 
 \title{Numerical Reconstruction of Inclusions in Electrical Conductors}
 \author{Giacomo Milan}
+% \date{3 Ottobre 2017} % oppure anno accademico
+
 \begin{document}
 \maketitle
 \tableofcontents
+\listoffigures
+%\listoftables
+
+% \begin{abstract}
+%  In this 
+% \end{abstract}
+
+%\selectlanguage{italian}
+% \begin{abstract}
+%  Italian Abstract
+% \end{abstract}
+% \selectlanguage{english}
+
 \chapter{Introduction}
 In this thesis we will consider the inverse conductivity problem, or Electrical Impedance Tomography (EIT),
 that was proposed to the mathematical community by Calderon \cite{Ca} in 1980.
@@ -760,7 +785,7 @@ The relative operator ${N_D} - {N_0}$ is strictly connected to a formulation whi
 \section{Interior Transmission Problem}
 The Interior Transmission Problem (ITP) couples two second order differential equations with Cauchy transmission conditions.
 It is defined as follows.
-\begin{mybox}
+% \begin{mybox}
 \begin{problem}[Interior Transmission Problem (ITP)]
 \label{problem:ITP-dist}
 We denote \emph{strong solution} of the ITP, the couple {$(u,v) \in (H^1(D) \times H^1(D))/\mathbb{C}$} which solves, in the sense of distributions,
@@ -775,13 +800,13 @@ and in the sense of trace operator, given $f\in H^{1/2}(\partial D)$ and $g\in H
 \end{align}
 Note $g\in H^{\,-1/2}_0(\partial D)$, follows from an application of divergence theorem to $\gamma\nabla u - \nabla v$.
 \end{problem}
-\end{mybox}
+% \end{mybox}
 The equivalence class $(H^1(D) \times H^1(D))/\mathbb{C}$, in which we have the uniqueness of the solution $(u,v)$, is constructed from the equivalence relation
 \begin{equation}
  (u,v)\sim(u',v') \quad \text{if and only if} \quad \exists \,c \,\,\text{s.t.}\,(u,v) = (u' + c,v' + c).
 \end{equation}
 In order to consider the Cauchy conditions as the natural ones, we introduce the following modified version of the ITP.
-\begin{mybox}
+% \begin{mybox}
 \begin{problem}[Modified Interior Transmission Problem (MITP)]
 \label{problem:MITP-dist}
 We denote \emph{strong solution} of the MITP, the couple {$(u,v) \in H^1(D) \times H^1(D)$} which solves
@@ -793,7 +818,7 @@ We denote \emph{strong solution} of the MITP, the couple {$(u,v) \in H^1(D) \tim
 \end{align}
 given $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}(\partial D)$.
 \end{problem}
-\end{mybox}
+% \end{mybox}
 Following on ideas of \cite{cakoni-colton-haddar:lsm}, we define the space
 \begin{equation}
  H_{\divergence}(D)\coloneqq\bigl\{\bm{w}\in L^2(D;\,\mathbb{R}^3):\divergence\bm{w} \in L^2(D),\, \curl\bm{w}=0 \bigr\},
@@ -1093,7 +1118,7 @@ and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\t
   \begin{equation}
    u^\epsilon_z\coloneqq\chi_Du_z + (1-\chi_D)(\psi_{0z} + v^\epsilon_z),
   \end{equation}
-  such that $(\partial_\nu u^\epsilon_z -\partial_\nu v^\epsilon_z )|_{\partial\Omega}=\psi_{0z}|_{\partial\Omega}=0$, and define the solution of the inclusion problem $w^\epsilon_z$, with the same boundary derivative
+  such that $(\partial_\nu u^\epsilon_z -\partial_\nu v^\epsilon_z )|_{\partial\Omega}=\partial_\nu\psi_{0z}|_{\partial\Omega}=0$, and define the solution of the inclusion problem $w^\epsilon_z$, with the same boundary derivative
   \begin{align}
    w^\epsilon_z&\coloneqq T\partial_\nu u^\epsilon_z, \\
    r^\epsilon_z&\coloneqq w^\epsilon_z - u^\epsilon_z,
@@ -1193,42 +1218,40 @@ Adding and subtracting $\gamma\nabla \Phi$, we obtain the equation for $\Sigma(x
  -\divergence\bigl(\gamma\nabla \Sigma(x,x_0)\bigr)=\divergence\bigl((\gamma - 1)\nabla\Phi\bigr)\,\textup{ in }\mathcal{D}'(\mathbb{R}^m),
 \end{equation}
 or equivalently
-\begin{center}
-\colorbox{light-gray}{\color{black}\parbox{\textwidth}{
+% \begin{mybox}
 \begin{equation}
  \int_{\mathbb{R}^m \backslash D}\nabla \Sigma\,\nabla v\, dx + \int_{D} k \, \nabla \Sigma\,\nabla v \, dx = - \int_D(k-1)\,\nabla \Phi\,\nabla v \,dx\quad\forall v \in \mathcal{D}(\mathbb{R}^m).
  \label{eq:variational-F}
 \end{equation}
-}}
-\end{center}
-Selecting test functions in $C^\infty_c(D)$ and in $C^\infty_c(\mathbb{R}^m\backslash \overline{D})$, and using trace's theorems for smooth boundary, the problem can be restated as
-\begin{center}
-\colorbox{light-gray}{\color{black}\parbox{\textwidth}{
+% \end{mybox}
+Selecting test functions in $C^\infty_c(D)$ and in $C^\infty_c(\mathbb{R}^m\backslash \overline{D})$, and using trace's theorems for smooth boundary, the problem can be restated.
+\begin{problem} Find $\Sigma\in H^1_{loc}(\mathbb{R}^m)$ such that
+% \begin{mybox}
 \begin{align}
  &-\Delta \Sigma(x,x_0) = 0,\quad\textup{ in }D, \label{eq:laplacian-D}\\
  &-\Delta \Sigma(x,x_0) = 0,\quad\textup{ in }\mathbb{R}^m\backslash\overline{D}, \label{eq:laplacian-outside-D}
 \end{align}
-\begin{center}with \emph{transmission conditions}\end{center}
+with \emph{transmission conditions}
+% \vspace{-0.2cm}
 \begin{subequations}
 \begin{align}
  \bigl[\Sigma\bigr]^+_-\bigl(y,x_0\bigr) &=0, && y \in\partial D, \label{eq:transmissionF0}\\ 
  \bigl[\partial_\gamma \Sigma\bigr]^+_-\bigl(y,x_0\bigr) &= (k - 1)\partial_\nu \Phi(y,x_0), && y \in\partial D. \label{eq:transmissionF1}
 \end{align}
 \end{subequations}
-}}
-\end{center}
+% \end{mybox}
+\end{problem}
 \begin{remark}
  We write explicitly the transmission conditions of $\Phi_D(x,x_0)$, which will be several times invoked in the sequel:
-\begin{center}
-\colorbox{light-gray}{\color{black}\parbox{\textwidth}{
+% \begin{mybox}
+% \vspace{-0.2cm}
 \begin{subequations}
 \begin{align}
  \bigl[\Phi_D\bigr]^+_-\bigl(y,x_0\bigr)&=\Phi_D^+(y,x_0) - \Phi_D^-(y,x_0) =0, & y \in\partial D, \label{eq:transmissionPhiD0}\\ 
  \bigl[\partial_\gamma \Phi_D\bigr]^+_-\bigl(y,x_0\bigr) &= \partial_\nu \Phi_D^+(y,x_0) - k\,\partial_\nu \Phi_D^-(y,x_0) =0, & y \in\partial D. \label{eq:transmissionPhiD1}
 \end{align}
 \end{subequations}
-}}
-\end{center}
+% \end{mybox}
 \end{remark}
 \section{Surface Potentials and Representation Formulas}
 In the sequel, the domain $D$ will be of class $C^2$ satisfying assumptions \ref{assumption:connected}, will be of class $C^2$, if not differently specified.
@@ -1289,7 +1312,7 @@ All details and proofs can be found in \cite{kress:book}.
 \begin{definition}
  Let $X,Y$ be Banach spaces of functions defined on a domain $G$ (it will be a boundary $\partial \Omega$ for us), and $A:X\to Y$ be a \emph{Fredholm integral operator} with kernel $k(x,y)$, that is
  \begin{equation}
-  A\phi(x)\coloneqq\int_G k(x,y)\phi(y)\,dy\quad x\in G. \label{eq:def-integral-operator}
+  A\phi(x)\coloneqq\int_G K(x,y)\phi(y)\,dy\quad x\in G. \label{eq:def-integral-operator}
  \end{equation}
  Then, denoting
  \begin{enumerate}
@@ -1305,13 +1328,13 @@ All details and proofs can be found in \cite{kress:book}.
 the operator $A$ is a compact.
 \end{definition}
 \begin{definition}
- Let $A$ be an integral operator with integral kernel $k(x,y):G \times G \to\mathbb{R}$. We define
+ Let $A$ be an integral operator with integral kernel $K(x,y):G \times G \to\mathbb{R}$. We define
  \begin{enumerate}
-  \item $k$ is a \emph{continuous} kernel if $k(x,y)$ is continuous in $G\times G$
-  \item $k$ is a \emph{weakly singular} kernel if it's defined and continuous for all $x,y\in G\subset \mathbb{R}^m$, $x\neq y$, and if there exists a positive constant $M$ and 
+  \item $K$ is a \emph{continuous} kernel if $K(x,y)$ is continuous in $G\times G$
+  \item $K$ is a \emph{weakly singular} kernel if it's defined and continuous for all $x,y\in G\subset \mathbb{R}^m$, $x\neq y$, and if there exists a positive constant $M$ and 
   there exists $\alpha\in (0,m]$ such that
   \begin{equation}
-   |k(x,y)|\leq M |x-y|^{\alpha-m}\quad x,y\in G, \, x\neq y.
+   |K(x,y)|\leq M |x-y|^{\alpha-m}\quad x,y\in G, \, x\neq y.
   \end{equation}
  \end{enumerate}
 \end{definition}
@@ -1345,8 +1368,8 @@ The Direct Problem consists in computing the solution $u(x)$ of the following eq
 with the inclusion $D$ and the conductivity $k$ known. The boundary condition depends on 
 the physical problem we are interested to. 
 We consider the Dirichlet boundary condition. The problem reads as follows.
-\begin{center}
-\colorbox{light-gray}{\color{black}\parbox{\textwidth}{
+% \begin{mybox}
+\begin{problem}
 Find $u \in H^1(\Omega)$ such that
 \begin{equation}
   \begin{cases}
@@ -1355,8 +1378,8 @@ Find $u \in H^1(\Omega)$ such that
  \end{cases}
 \end{equation}
 with $f\in H^{1/2}(\partial\Omega)$.
-}}
-\end{center}
+\end{problem}
+% \end{mybox}
 In concrete applications, the function $u$ is not computed, though it's observed on the 
 surface $\partial\Omega$ and the measures $u|_{\partial \Omega}$, 
 $\partial_\nu u|_{\partial \Omega}$ are considered for the definition of the reciprocity gap operator. Dirichlet data $f$ are the values of the generic potential which we are able to generate from the exterior: it can be a plane wave in the scattering case, or the potential generated by a point source $\delta_{x_0}$. In the latter case we are referring to the fundamental solution, and by uniqueness, the same $u$ is equal to $u(x)=\Phi_D(x,x_0)$ for $x\in \Omega$.
@@ -1536,7 +1559,7 @@ Let $u\in\mathcal{U}$, the set defined in \ref{def:setU}. In the present case $u
 \end{equation}
 \end{enumerate}
 \end{definition}
-\begin{figure}[tb]
+\begin{figure}[]
 \begin{center}
  \begin{tikzpicture}
   \draw [dashed] (2,2) ellipse (3cm and 2cm);
@@ -2199,6 +2222,7 @@ The great advantage is that now the square root operator can be theoretically co
  \end{equation}
 \end{remark}
 \section{Range criterion}
+\label{section:range-criterion}
 We take advantage of the representation of ${N_r}:L^2_0(\partial \Omega)\to L^2_0(\partial \Omega)$ with the orthonormal eigensystem $\bigl\{(\lambda_j, \psi_j)\bigr\}_{j\in\mathbb{N}}$, or alternatively,
 \begin{center}
 the singular system for ${N_r}^{1/2}$: $\bigl\{(\sqrt{\lambda_j}, \psi_j, \psi_j)\bigr\}_{j\in\mathbb{N}}$.
@@ -2271,11 +2295,11 @@ The approximation result for linear sampling method can be restated, exactly the
  \partial_\gamma u_z = \partial_\nu v_z + \partial_\nu\psi_z^+ \quad \textup{ on }\partial D,
  \end{equation}
  with derivative $\partial_\nu\psi_z^+|_{\partial D}$ from the exterior of $D$. Since $\partial_\nu\psi_z = 0$ on $\partial \Omega$, even in this case $\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) = \partial_\nu u^\epsilon_z = \partial_\nu v^\epsilon_z$ on $\partial \Omega$, 
- and after defining $u^\epsilon_z, w^\epsilon_z, r^\epsilon_z$ as before
+ where
  \begin{equation}
    u^\epsilon_z\coloneqq\chi_Du_z + (1-\chi_D)(\psi_{z} + v^\epsilon_z),
  \end{equation}
- the transmission conditions are
+  and after defining $w^\epsilon_z, r^\epsilon_z$ as before, the transmission conditions are
   \begin{align}
    [r^\epsilon_z]^+_- = [w^\epsilon_z]^+_- -[u^\epsilon_z]^+_- &=0 - (v^\epsilon_z - v_z), && \textup{ on }\partial D, \\
    [\partial_\gamma r^\epsilon_z]^+_- = [\partial_\gamma w^\epsilon_z]^+_- -[\partial_\gamma u^\epsilon_z]^+_-&= 0 - (\partial_\nu v^\epsilon_z - \partial_\nu v_z), && \textup{ on }\partial D, 
@@ -2525,7 +2549,7 @@ This last observation implies boundedness of the sequence $f_z^{\alpha_n}$ only 
 \end{enumerate}
 \end{corollary}
 \chapter{Numerical Implementation}
-In the previous chapters we arrived at the a linear equation of the first kind (see \eqref{eq:lsm-approximate-lin-eq} and \eqref{eq:rg-approximate-eq}), of the form
+In the previous chapters we arrived at a linear equation of the first kind (see \eqref{eq:lsm-approximate-lin-eq} and \eqref{eq:rg-approximate-eq}), of the form
 \begin{equation}
  Kx = y,\label{eq:first-to-inv}
 \end{equation}
@@ -2615,6 +2639,7 @@ Therefore regularization of the equation $Kx=y$ for $y\in\mathcal{R}(K)$ consist
  \end{equation}
 \end{definition}
 \begin{definition}
+\label{def:admissibility-reg-strategy}
  A regularization strategy is called \emph{admissible} if there is a function $\alpha(\delta)$ such that for $\delta \to 0$ there hold
  \begin{equation}
  \left\{
@@ -2644,7 +2669,7 @@ the accuracy $\|R_\alpha Kx -x\|$ and the stability $\|R_\alpha\|$}, and we have
 strategy $\alpha(\delta)$ which guarantees convergence of the error $\|x^{\alpha,\delta} - x\|$, 
 with accuracy of data $\delta$.
 \par
-\begin{figure}[h]
+\begin{figure}[]
 \begin{center}
 \begin{tikzpicture}
   \begin{axis}[
@@ -2717,7 +2742,7 @@ whose details are stated by the Picard's theorem.
   \end{equation}
  \end{enumerate}
 \end{theorem}
-\section{Tikhonov regularization}
+\section{Tikhonov Regularization}
 Let us introduce the following functional.
 \begin{definition}
  Let $K:X\to Y$ be a linear bounded operator, we define the \emph{Tikhonov functional} $J_\alpha:X\to \mathbb{R}$ as
@@ -2743,36 +2768,46 @@ Necessary conditions \eqref{eq:normal-equation}, which in general provides a can
 \end{remark}
 Details of the proof are contained in \cite{kirsch:book}.
 The choice of $\alpha$ is usually made \emph{a priori}, hence before the computation of $x^\alpha$. In the next section 
-we'll present a criterion such that it will be made an \emph{a posteriori} choice of $\alpha$, based on the residual $Kx^\alpha - y$, which will lead to better results.
-\section{The discrepancy principle of Morozov}
-Instead of solving equation $Kx=y$, the Tikhonov regularization considers the following modified equation
+we'll present a criterion such that it will be made an \emph{a posteriori} choice of $\alpha$, based on the residual $Kx^\alpha - y$, which will lead to better approximations.
+\section{Discrepancy Principle of Morozov}
+The Tikhonov regularization for the equation with perturbed data $y^\delta$ yields to solving
 \begin{equation}
 \label{eq:tikh-equation-2}
  \alpha x^{\alpha, \delta} + K^*Kx^{\alpha, \delta} = K^*y^\delta.
 \end{equation}
-The aim is to establish, not the optimal regularization parameter $\alpha$ for fixed error level $\delta$, but a full strategy $\alpha(\delta)$ which guarantees diminishing of the error. The most used method is the so-called Morozov discrepancy principle. It's \emph{a posteriori} criterion, based on the residual $Kx^{\alpha,\delta} - f^\delta$, which fixes an upper bound for the residual, proportional to $\delta$, avoiding to require excessively small values of $\alpha$, which would carry only further instability. It consists in finding $\alpha$ which satisfies
+The wrong approach would be to establish the optimal regularization parameter $\alpha$ for the fixed error level $\delta$. 
+Instead, our aim is to construct a full strategy $\alpha(\delta)$ which guarantees the diminishing 
+of the error. 
+\par
+The most used criterion is the so-called Morozov discrepancy principle. 
+It's \emph{a posteriori} criterion, based on the residual $Kx^{\alpha,\delta} - f^\delta$. 
+It fixes an upper bound proportional to $\delta$ for the residual, avoiding to require excessively small values 
+of $\alpha$, which would carry on only further instability. 
+It consists in computing $\alpha$ which satisfies
 \begin{equation}
 \label{eq:discrepancy-zero}
- \|Kx^{\alpha, \delta} - y ^\delta \|= \delta
+ \|Kx^{\alpha, \delta} - y ^\delta \|= \delta.
 \end{equation}
-A variant of the criterion, fixes the normalized residual, finding $\alpha$ which satisfies
+A variant of this criterion, according with \cite{kirsch:shape-1998}, fixes the normalized residual proportional to $\delta$ and the computation of $\alpha$ consists in
 \begin{equation}
 \label{eq:discrepancy-relative-zero}
- \|Kx^{\alpha, \delta} - y ^\delta \|= \delta\|x^{\alpha,\delta}\|
+ \|Kx^{\alpha, \delta} - y ^\delta \|= \delta\|x^{\alpha,\delta}\|.
 \end{equation}
-This makes a more complete use of Tikhonov functional, and discriminates better values of $\alpha$, according with diverging norm $\|x^{\alpha,\delta}\|$.
+This expression is much more similar to the Tikhonov functional $J_\alpha$.
+Indeed it distinguishes much better different values of $\alpha$, according to the diverging quantity $\|x^{\alpha,\delta}\|$.
 \begin{remark}
- The error parameter $\delta$ is taken such that $0<\delta<\|y^\delta\|$, to avoid the trivial approximating solution $x^{\alpha,\delta}= 0$.
+ The error parameter $\delta$ is chosen such that $0<\delta<\|y^\delta\|$, in order to avoid the trivial approximating solution $x^{\alpha,\delta}= 0$.
 \end{remark}
 We introduce the discrepancy function to reformulate Morozov principle.
 \begin{definition}
- We denote the \emph{discrepancy} function, or its variants, as $\Delta(\alpha)$. The main ones are the classical and the normalized discrepancy:
+ We denote by $\Delta(\alpha)$ the \emph{discrepancy} function and its variants. The mostly used 
+ are the classical and the normalized discrepancy:
  \begin{align}
-  \Delta(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta \\
-  \Delta_n(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta\|x^{\alpha,\delta}\|
+  \Delta(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta, \label{eq:def-disc}\\
+  \Delta_N(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta\|x^{\alpha,\delta}\|.\label{eq:def-disc-N}
  \end{align}
 \end{definition}
-We list the properties of the discrepancy function, in order to establish the effective functioning.
+In the next proposition, we state the main properties of the discrepancy function.
 \begin{proposition}
 \label{prop:properties-disc}
  Let $x^{\alpha,\delta}$ be the solution of \ref{eq:tikh-equation-2}, then 
@@ -2780,140 +2815,182 @@ We list the properties of the discrepancy function, in order to establish the ef
  \begin{enumerate}
   \item the map $\alpha\mapsto \|x^{\alpha, \delta}\|$ is nonincreasing
   \begin{equation}
-   \lim_{\alpha\to\infty} x^{\alpha, \delta} = 0
+   \lim_{\alpha\to\infty} x^{\alpha, \delta} = 0,
   \end{equation}
   \item the map $\alpha\mapsto \|Kx^{\alpha, \delta} - y^\delta\|$ is nondecreasing
   \begin{align}
-   \lim_{\alpha\to0} Kx^{\alpha, \delta} = y^\delta \Rightarrow &\lim_{\alpha\to0}\|Kx^{\alpha, \delta} - y^\delta\| = 0\\
-   &\lim_{\alpha\to\infty}\|Kx^{\alpha, \delta} - y^\delta\| = \|y^\delta\|>\delta
+   \lim_{\alpha\to0} Kx^{\alpha, \delta} = y^\delta \Rightarrow &\lim_{\alpha\to0}\|Kx^{\alpha, \delta} - y^\delta\| = 0,\\
+   &\lim_{\alpha\to\infty}\|Kx^{\alpha, \delta} - y^\delta\| = \|y^\delta\|>\delta.
   \end{align}
  \end{enumerate}
 \end{proposition}
-Therefore the determination of $\alpha(\delta)$, in practice, is equivalent to the computation of the unique zero of the function $\Delta(\alpha)$.
+Therefore the determination of $\alpha(\delta)$ is equivalent to the computation 
+of the unique zero of the function $\Delta(\alpha)$.
 \begin{proposition}
 \label{prop:strategy-disc}
- By previous proposition \ref{prop:properties-disc}, for fixed $\delta, $there exists unique zero $\alpha^*(\delta)$ for the discrepancy function, such that $\Delta\bigl(\alpha^*\bigr)=0$. The same holds true for $\Delta_n(\alpha)$. 
- \begin{center}
-  Fixed $\delta$, there exists a unique couple $(\alpha(\delta), x^{\alpha(\delta)})$ such that
- \end{center}
+ By previous Proposition \ref{prop:properties-disc}, let $\delta$ be fixed, then there 
+ exists unique zero $\alpha^*(\delta)$ of the discrepancy function, 
+ such that $\Delta\bigl(\alpha^*\bigr)=0$. The same is still true for $\Delta_N(\alpha)$.
+ Therefore, let $\delta$ be fixed, then there exists a unique 
+ couple $(\alpha(\delta), x^{\alpha(\delta)})$ such that
  \begin{equation}
   \left\{
   \begin{split}
-   & \alpha(\delta) x^{\alpha(\delta)} + K^*Kx^{\alpha(\delta)} = K^*y^\delta \\
-   & \Delta(\alpha(\delta))=0 \textup{ or } \Delta_n(\alpha(\delta))=0
+   & \alpha(\delta) x^{\alpha(\delta)} + K^*Kx^{\alpha(\delta)} = K^*y^\delta, \\
+   & \Delta(\alpha(\delta))=0, \quad\textup{ or }\quad \Delta_N(\alpha(\delta))=0.
   \end{split}
   \right.
  \end{equation}
 \end{proposition}
-The computation of the zero of the discrepancy $\Delta(\alpha)$, can be implemented with any method, for example the Newton's, or the bisection one.
-We briefly sketch the Newton's method, which requires the first derivative
-Differentiation with respect to $\alpha$ gives:
+The computation of the zero of the discrepancy $\Delta(\alpha)$ can be implemented 
+with any method; for instance the Newton's method, or the bisection one.
+\par
+We briefly sketch the Newton's method, which requires the expression of the first derivative.
+Differentiation of \eqref{eq:def-disc} with respect to $\alpha$ gives
 \begin{equation}
- \Delta'(\alpha) = \dfrac{2 \langle  Kx^{\delta, \alpha} - y^\delta, K\frac{d}{d\alpha}x^{\alpha, \delta}\rangle}{2\|Kx^{\alpha,\delta} - y^\delta\|}
+ \Delta'(\alpha) = \dfrac{2 \langle  Kx^{\delta, \alpha} - y^\delta, K\frac{d}{d\alpha}x^{\alpha, \delta}\rangle}{2\|Kx^{\alpha,\delta} - y^\delta\|}.
 \end{equation}
-The equation for the gradient $dx^{\alpha,\delta}/d\alpha$, is obtained by differentiation of \ref{eq:tikh-equation-2}
+The equation for the gradient $dx^{\alpha,\delta}/d\alpha$ is obtained by differentiation of \ref{eq:tikh-equation-2}
 \begin{equation}
- \alpha\frac{d}{d\alpha}x^{\alpha, \delta} + K^*K\frac{d}{d\alpha}x^{\alpha, \delta} = -x^{\delta, \alpha}
+ \alpha\frac{d}{d\alpha}x^{\alpha, \delta} + K^*K\frac{d}{d\alpha}x^{\alpha, \delta} = -x^{\delta, \alpha},
 \end{equation}
-and the new iteration of Newton's method is
+and the iteration of the Newton's method is
 \begin{equation}
- \alpha^{k+1} = \alpha^k - \frac{\Delta(\alpha^k)}{\Delta'(\alpha^k)}
+ \alpha^{k+1} = \alpha^k - \frac{\Delta(\alpha^k)}{\Delta'(\alpha^k)}.
 \end{equation}
 % \begin{align}
 %  &\Delta(\alpha) = \|Kx^{\alpha,\delta} - y^\delta\|^2 - \delta^2 && \Delta'(\alpha) = 2 \langle  Kx^{\delta, \alpha} - y^\delta, K\frac{d}{d\alpha}x^{\alpha, \delta}\rangle  \\
 %  &\Delta_1(\alpha) = \|Kx^{\alpha,\delta} - y^\delta\| - \delta && \Delta_1'(\alpha) = \frac{1}{\|Kx^{\alpha,\delta} - y^\delta\|} \langle  Kx^{\delta, \alpha} - y^\delta, K\frac{d}{d\alpha}x^{\alpha, \delta}\rangle  \\
 %  &\Delta_3(\alpha) = \|Kx^{\alpha,\delta} - y^\delta\| - \delta \|x^{\alpha,\delta}\| && \Delta_3'(\alpha) = \frac{1}{\|Kx^{\alpha,\delta} - y^\delta\|} \langle  Kx^{\delta, \alpha} - y^\delta, K\frac{d}{d\alpha}x^{\alpha, \delta}\rangle -\delta\frac{1}{\|x^{\alpha,\delta}\|}\langle x^{\alpha, \delta}, \frac{d}{d\alpha}x^{\alpha, \delta}\rangle
 % \end{align}
-In the next numerical samples, it has been used the normalized discrepancy function $\Delta_n(\alpha)$, and the bisection method, to avoid non admissible negative values for $\alpha$.
+In the numerical approximations reported in the following sections, we used the normalized discrepancy function $\Delta_N(\alpha)$, and the bisection method, to avoid negative, and therefore non admissible, values for $\alpha$.
 \par
-Finally we state the result which declares the admissibility of the strategy $\alpha(\delta)$ of proposition \ref{prop:strategy-disc}, according with definition \ref{}.
+Finally we state the result which validates the admissibility of 
+the strategy $\alpha(\delta)$ of Proposition \ref{prop:strategy-disc}, according with Definition \ref{def:admissibility-reg-strategy}.
 \begin{proposition}
- Let $\alpha(\delta)$ be the strategy constructed according with discrepancy principle in proposition \ref{prop:strategy-disc}. Then it's an admissible strategy:
+ Let $\alpha(\delta)$ be the strategy constructed according with the discrepancy principle in Proposition \ref{prop:strategy-disc}. Then it's an admissible strategy, that is
  \begin{equation}
-  x^{\alpha(\delta)}\to x \textup{ as }\delta\to0
+  x^{\alpha(\delta)}\to x \textup{ as }\delta\to0.
  \end{equation}
 \end{proposition}
-  The result for the classical definition of discrepancy $\Delta(\alpha)$, can be found in \cite{kirsch:book}. The same author proves the result for $\Delta_n(\alpha)$ in \cite{kirsch:shape-1998}.
-
+ The result for the classical definition of discrepancy $\Delta(\alpha)$ can be found in \cite{kirsch:book}. The same author proves the result for $\Delta_N(\alpha)$ in \cite{kirsch:shape-1998}.
 \section{Numerical Discretization}
-We will report some details of the numerical discretization of the linear sampling method. Steps are
+We now report the details of the numerical discretization of the linear sampling method. The main 
+steps are
 \begin{enumerate}
- \item the choice of a basis for the space of function $L^2_0(\partial \Omega)$
- \item the solution of the direct Laplace problem and inclusion problem, which will be done by the use of Nystr\"om method
- \item the construction of relative Neumann-to-Dirichlet map
- \item the regularization and the linear solution of the system related to the inverse problem
+ \item the choice of a basis of functions for the space $L^2_0(\partial \Omega)$;
+ \item the solution of the \emph{direct} Laplace problem and the \emph{direct} inclusion problem, 
+ which will be done by the use of the Nystr\"om method;
+ \item the construction of the discrete relative Neumann--to--Dirichlet map;
+ \item the regularization and the computation of the solution of the linear system related 
+ to the \emph{inverse} problem.
 \end{enumerate}
-\section{Boundary Integrals Discretization}
-In the previous chapter, we described as choice of solving Laplace and inclusion direct problems, through \emph{boundary integrals}. Their numerical computation results in the discretization of boundary functional spaces, like $L^2_0(\partial \Omega)$. 
-Discretization in finite dimension, can be done with a basis of smooth functions defined globally on $\partial \Omega$, or with a basis of functions defined each on a single element of the discretized boundary. In fact this last is called the Boundary Element Method (BEM). 
-If we directly look for a discretization of integral operators, we come to the main classification of so-called projection methods, see \cite{kirsch:book}, in Galerkin method, Least Squares method, or Collocation method. We will adopt the Nystr\"{o}m method which can be interpreted as a collocation method with quadrature nodes coincident with collocation nodes. The name BEM can be improperly used to indicate boundary integrals discretization, since the BEM with linear basis is itself a collocation method.
-We indicate main advantages of the formulation and discretization with boundary integrals:
+Our choice is to solve the Laplace and the inclusion direct problems  
+through \emph{boundary integrals}. Their numerical approximation requires the definition of discrete 
+functional spaces defined on a boundary. 
+For instance, discretization can be done with a finite basis of smooth functions defined globally 
+on $\partial \Omega$, or with a finite basis of functions defined each one on a single element of 
+the discretized boundary. Indeed, this last method is called the Boundary Element Method (BEM). 
+We will used this method every time that we will interpolate the integrand function with a piecewise 
+linear basis.
+
+Furthermore, all the methods which define the regularized discrete integral operator, 
+for an equation of the first kind,
+can be classified, under the definition of Projection methods 
+(see \cite{kirsch:book}), in Galerkin methods, Least Squares methods, or 
+Collocation methods. We will adopt the Nystr\"{o}m method for an equation 
+of the second kind, which can be interpreted as a 
+collocation method with quadrature nodes coincident with collocation nodes. 
+We are advantaged by the reduced amount of computation, since Nystr\"{o}m method requires only 
+one integration, while there are needed two integrations for the Galerkin method, and three 
+integrations for the Least Squares method.
+We list main advantages of the formulation of the problem through boundary integrals, 
+instead of using for instance the discretization of the variational formulation with the FEM.
 \begin{enumerate}
- \item the expression of the solution reduces itself to a boundary integral, avoiding to consider the full domain. The discretization of curve instead of a region in two dimensions (or a surface in three dimensions) is more advantageous,
- \item we can deal with unbounded region in exterior problems, as easily as with bounded region,
- \item most of times, for smooth boundaries and data, the rate of convergence is very high, even exponential,
+ \item The expression of the solution reduces to a boundary integral,
+ and allows not to consider the full domain. The discretization of a curve, instead of an area 
+ in two dimension (or a surface instead of a volume in three dimension), is more advantageous.
+ \item We can deal with unbounded regions in exterior problems, as easily as we do with bounded regions.
+ \item Most of the times, for smooth boundaries and smooth data, the rate of convergence is very high, even exponential.
 \end{enumerate}
-Instead main disadvantages are:
+On the other end, we present the main disadvantages.
 \begin{enumerate}
- \item the boundary integrals formulation needs the knowledge of the fundamental solution. This great problem depends on the nature of the differential equation. We used the fundamental solution of Laplace problem to construct boundary layers for the inclusion problem, but this fact couldn't be circumvented for differential problem with non constant parameters,
- \item main difficulties comes with singularities of integral kernels, for which must be found a convergence quadrature method,
- \item same attention must be payed to boundaries with corner, for which the densities are singular. The quadrature rule requires a more sophisticated collocation of nodes.
+ \item The boundary integrals formulation requires the knowledge of the fundamental solution. 
+ This problem depends on the nature of the differential equation. 
+ We used the fundamental solution of the Laplace problem to construct boundary layers 
+ for the inclusion problem, but this fact couldn't be circumvented for 
+ differential problem with non constant parameters.
+ \item Main difficulties comes from singularities of the integral kernels, 
+ which requires a convergent quadrature method.
+ \item Some attention must be payed to boundaries with corner, 
+ where the unknown densities are singular. The quadrature rule requires a more 
+ careful collocation of the nodes.
 \end{enumerate}
 
 \section{Numerical Integration of Layer Potentials}
+We recall assumptions for $D$ and $\Omega$.     
 \begin{assumption}
- In the sequel we'll mean satisfied assumptions \ref{assumption:connected} for the inclusion $D$. More importance will be given to regularity of boundaries, 
+ In the sequel we'll mean satisfied Assumption \ref{assumption:connected} for the inclusion $D$. 
+ More importance will be given to the regularity of the boundaries, 
  which affects the methods and their convergence. If not differently specified, we'll consider $\partial \Omega$ and $\partial D$ of class $C^2$.
 \end{assumption}
-We will make large use of integral potentials, with integral kernel $K(x,y)$, and density $\phi(y)$, defined on a compact boundary $\partial \Omega$
+We will make wide use of integral potentials, with integral kernel $K(x,y)$, and density $\phi(y)$, defined on a compact boundary $\partial \Omega$
 \begin{equation}
 \label{eq:quad-def-operator}
- A\phi(x)\coloneqq \int_{\partial \Omega} K(x,y)\phi(y)\,dy \quad x\in \partial \Omega \textup{ or }x\in\mathbb{R}^2\backslash\partial\Omega
+ A\phi(x)\coloneqq \int_{\partial \Omega} K(x,y)\phi(y)\,dy \quad x\in\mathbb{R}^2.
 \end{equation}
-% In general the integral $w(x)$ is defined on the same boundary $\partial \Omega$, or in a open set $\mathcal{O}=\Omega$ or $\mathcal{O}=\mathbb{R}^2$
+Most of the times, for $x\in\mathbb{R}^2\backslash\partial \Omega$, the kernel $K(x,y)$ is 
+continuous. We concentrate our 
+attention to the case with $x\in\partial\Omega$.
 In the sequel, let $\partial\Omega$ be a curve in $\mathbb{R}^2$ of class $C^2$ parametrized by
 \begin{equation}
-c(t):[0,2\pi]\to\mathbb{R}^2
+c(t):[0,2\pi]\to\mathbb{R}^2.
 \end{equation}
-The quadrature rule implemented, to approximate the integral, depends on the integral kernel. 
+The quadrature rule implemented depends on the integral kernel. 
 \begin{lemma}
-The operator $S$ has weakly singular kernel of logarithmic type. Instead the operators $K$ and $K'$ have weakly singular kernel, which it's proved to be continuous for a boundary $\partial \Omega$ of class $C^2$, indeed for $K$ (analogously for $K'$)
+The operator $S$ defined in \eqref{def:operator-S} has a weakly singular kernel of logarithmic type. 
+Instead, the operators $K$ and $K'$ in 
+\eqref{def:operator-K} and \eqref{def:operator-K'} have a weakly singular kernel, which it's proved to 
+be continuous for a boundary $\partial \Omega$ of class $C^2$. Indeed for $K$ (analogously for $K'$) defined as
 \begin{equation*}
-K\phi(x)\coloneqq\int_{\partial D} \phi(y) \partial_{\nu(y)} \Phi(x, y) \,dy 
-=\int_{\partial D} \phi(y)\frac{1}{2\pi}\frac{1}{|x - y|}\frac{x-y}{|x-y|}\cdot\nu(y)\, dy
+K\phi(x)\coloneqq\int_{\partial D} \phi(y) \partial_{\nu(y)} \Phi(x, y) \,dy,
+=\int_{\partial D} \phi(y)\frac{1}{2\pi}\frac{1}{|x - y|}\frac{x-y}{|x-y|}\cdot\nu(y)\, dy,
 \end{equation*}
-more explicitly in two dimension
+and more explicitly in two dimension
 \begin{equation}
-K\phi(c(t)) =\int_0^{2\pi} \phi(c(\tau))\frac{1}{2\pi}\frac{1}{|c(t) - c(\tau)|}\frac{c(t)-c(\tau)}{|c(t) - c(\tau)|}\cdot\nu(c(\tau))|c'(\tau)|\, d\tau
+K\phi(c(t)) =\int_0^{2\pi} \phi(c(\tau))\frac{1}{2\pi}\frac{1}{|c(t) - c(\tau)|}\frac{c(t)-c(\tau)}{|c(t) - c(\tau)|}\cdot\nu(c(\tau))|c'(\tau)|\, d\tau,
 \end{equation}
-has diagonal term (with $\xi,\zeta \in [t,\tau]$)
+it's well defined the diagonal term (with $\xi,\zeta \in [t,\tau]$)
 \begin{align}
  &\lim_{\tau \to t}\frac{1}{2\pi}\frac{c(t)-c(\tau)}{|c(t) - c(\tau)|^2}\cdot\nu(c(\tau))|c'(\tau)| \\
  =&\lim_{\tau \to t}\frac{1}{2\pi}\frac{-\frac{1}{2}c''(\xi)|t-\tau|^2\cdot\nu(c(\tau))|c'(\tau)|}{|c'(\zeta)|^2|t-\tau|^2}
- = -\frac{1}{4\pi}\frac{c''(\tau)\cdot\nu(\tau)}{|c'(\tau)|} = -\frac{1}{4\pi}\kappa(\tau)|c'(\tau)|
+ = -\frac{1}{4\pi}\frac{c''(\tau)\cdot\nu(\tau)}{|c'(\tau)|} = -\frac{1}{4\pi}\kappa(\tau)|c'(\tau)|,
 \end{align}
 by $c''(\tau)=v(\tau)T(\tau) + \kappa(\tau)v^2(\tau)N(\tau)$ (denoting $v(\tau)=|c'(\tau)|$). Note that the integral kernel of $K'$ has the same diagonal value.
 \end{lemma}
-The quadrature rule substitutes 
+The quadrature rule substitutes the integral
 \begin{equation}
  A\phi(c(t))=\int_0^{2\pi} K(c(t),c(\tau))\phi(c(\tau))|w'(\tau)|\,d\tau=\int_0^{2\pi}g(t,\tau)d\tau \quad t\in[0,2\pi]
 \end{equation}
-with its discretization, which takes in account values of density $\phi(c(t))$ in quadrature nodes $\tau_k^{(n)}$
+with its discretization, which makes use of values of the density $\phi(c(t))$ in quadrature 
+nodes $\tau_k^{(n)}$, that is
 \begin{equation}
 \label{eq:quad-rule-generic}
- A_n\phi(c(t)) = \sum_{k=1}^n\alpha_k^{(n)}(t)\phi(c(\tau_k^{(n)}))
-\end{equation}
-For continuous kernel $K(x,y)$, it's sufficient to apply a convergent quadrature rule, like the trapezoidal rule, 
-and \eqref{eq:quad-rule-generic} becomes
-\begin{equation}
-\label{eq:quad-rule-continuous}
- A_n\phi(c(t)) = \sum_{k=1}^n\alpha_k^{(n)}K(c(t),c(\tau_k^{(n)}))\phi(c(\tau_k^{(n)}))
+ A_n\phi(c(t)) = \sum_{k=1}^n\alpha_k^{(n)}(t)\phi(c(\tau_k^{(n)})).
 \end{equation}
 \begin{definition}
 \label{def:convergent-quadrature-rule}
 We say $A_n$ is a sequence of \emph{convergent} quadrature rules if $A_n\phi$ converges to $A\phi$ for any continuous $\phi$.
 \end{definition}
-
+For a continuous kernel $K(x,y)$, it's sufficient to apply a convergent quadrature rule according with Definition 
+\ref{def:convergent-quadrature-rule}, like the trapezoidal rule, 
+and \eqref{eq:quad-rule-generic} becomes
+\begin{equation}
+\label{eq:quad-rule-continuous}
+ A_n\phi(c(t)) = \sum_{k=1}^n\alpha_k^{(n)}K(c(t),c(\tau_k^{(n)}))\phi(c(\tau_k^{(n)})).
+\end{equation}
+Further details about interpolation and numerical integration can be founded in \cite{QSS:book}, and in 
+\cite{kress:book} relative to layer potentials.
 % -------------------------------------------------------------------------------------
 % \begin{enumerate}
 %  \item the integral operator $S:\partial\Omega\to \partial\Omega$ has with a weakly singular kernel of logarithmic type, we rewrite in terms of a periodic parametrization:
@@ -2928,61 +3005,77 @@ We say $A_n$ is a sequence of \emph{convergent} quadrature rules if $A_n\phi$ co
 % \end{enumerate}
 % A quadrature rule $S_n\phi$, uniformly bounded in $x(t)$, is composed by the Discrete Fourier Transform (DFT) (obtained by the trigonometric interpolation based on an equidistant subdivision) for the first integral, and a generic convergent quadrature rule for the second one (for example the trapezoidal rule based on lagrangian interpolation with equidistant nodes) 
 \subsection{Double Layer Potentials and Composite Polynomial Interpolation}
+In the case of double layer potentials, we will use the trapezoidal rule 
+correspondent to the linear piecewise interpolation of the integrand function, 
+since they have a continuous kernel.
 \begin{assumption}
 \label{assumption:holom-ext}
- Let $g:\mathbb{R}\to\mathbb{R}$ be analytic and $2\pi$-periodic, then there exists a strip $D_S=\mathbb{R}\times(-s, s)\subset\mathbb{C}$ with $s>0$, such that
- $g$ can be extended to a holomorphic and $2\pi$-periodic bounded function $g:D_S\to\mathbb{C}$.
+ Let $g:\mathbb{R}\to\mathbb{R}$ be analytic and $2\pi$-periodic
 \end{assumption}
-In \cite{kress:book} is demonstrated exponential convergence for analytic integrands.
 \begin{proposition}
- Let $g$ be as prescribed by assumptions \ref{assumption:holom-ext}. Then the error of the composite trapezoidal rule
+ Let Assumption \ref{assumption:holom-ext} hold, then there exists a strip $D_S=\mathbb{R}\times(-s, s)\subset\mathbb{C}$ with $s>0$, such that
+ $g$ can be extended to a holomorphic and $2\pi$-periodic bounded function $g:D_S\to\mathbb{C}$.
+\end{proposition}
+In \cite{kress:book} is demonstrated, in Theorem (12.6), the exponential 
+convergence for analytic integrands, which we'll verify numerically.
+\begin{proposition}
+ Let $g$ be as prescribed by Assumption \ref{assumption:holom-ext}. Then the error of the composite trapezoidal rule
  \begin{equation}
   E_T(g)\coloneqq \frac{1}{2\pi}\int_0^{2\pi}g\,dy - \frac{1}{2n}\sum_{j=0}^{2n-1}g\Bigl(\frac{j\pi}{n}\Bigr)
  \end{equation}
  can be estimated by 
  \begin{equation}
-  |E_T(g)|\leq M(\coth ns -1) \textup{ or equivalently } |E_T(g)|\leq C(g) e^{-2ns} 
+  |E_T(g)|\leq M(g)(\coth ns -1), \text{ or equivalently }  |E_T(g)|\leq C(g) e^{-2ns}.
  \end{equation}
-Observe improvement with respect 11.32 (book).
 \end{proposition}
 \subsection{Single Layer Potentials and Trigonometric Interpolation}
-Let $\partial \Omega$ be of class $C^2$. The integral operator $S:\partial\Omega\to \partial\Omega$ has a \emph{weakly singular kernel with a logarithmic singularity}. We rewrite it in terms of a periodic parametrization
+In the case of a single layer potential we can not directly implement the trapezoidal rule.
+Let $\partial \Omega$ be of class $C^2$, the integral operator $S:\partial\Omega\to \partial\Omega$ has a \emph{weakly singular kernel with a logarithmic singularity}. We rewrite it in terms of a periodic parametrization
 \begin{equation}
 \label{eq:def-kernel-M}
- M(t,\tau)\coloneqq-\frac{1}{2\pi}\ln|c(t)-c(\tau)|=M_1(t,\tau)\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)+M_2(t,\tau)
+ M(t,\tau)\coloneqq-\frac{1}{2\pi}\ln|c(t)-c(\tau)|=M_1(t,\tau)\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)+M_2(t,\tau),
 \end{equation}
 resulting in
 \begin{equation}
 \begin{cases}
- M_1(t,\tau)= -1/(4\pi) \\
- M_2(t,\tau)=M(t,\tau) - M_1(t,\tau)\ln\Big(4\sin^2\dfrac{t-\tau}{2}\Big) & t\neq \tau
+ M_1(t,\tau)= -1/(4\pi), \\
+ M_2(t,\tau)=M(t,\tau) - M_1(t,\tau)\ln\Big(4\sin^2\dfrac{t-\tau}{2}\Big) & t\neq \tau,
 \end{cases}
 \end{equation}
-and diagonal term
+with a diagonal term
 \begin{align}
  M_2(\tau,\tau)&=\lim_{t\to\tau} \Big(M(t,\tau) - M_1(t,\tau)\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)\Big) \\
- &=2M_1(\tau,\tau)\ln\big(|c'(\tau)|\big)=-1/(2\pi)\ln\big(|c'(\tau)|\big)
+ &=2M_1(\tau,\tau)\ln\big(|c'(\tau)|\big)=-1/(2\pi)\ln\big(|c'(\tau)|\big),
 \end{align}
-with $M_2(t,\tau)$ continuous and bounded (actually both kernels $M_1, M_2$ are analytic). It's convenient to separate the two integrals in the sum
+with $M_2(t,\tau)$ continuous and bounded (actually both kernels $M_1, M_2$ are analytic). It's convenient to separate the two integrals as the sum
 \begin{align}
  S\phi(c(t)) =  &\int_0^{2\pi} M_1\ln\Big(4\sin^2\frac{t-\tau}{2}\Big)\phi(c(\tau))|c'(\tau)|\,d\tau + \label{eq:single-integral-M1}\\ 
-                &\int_0^{2\pi} M_2(t,\tau)\phi(c(\tau))|c'(\tau)|\,d\tau \label{eq:single-integral-M2}
+                &\int_0^{2\pi} M_2(t,\tau)\phi(c(\tau))|c'(\tau)|\,d\tau \label{eq:single-integral-M2}.
 \end{align}
-We concentrate on the integral \eqref{eq:single-integral-M1}, containing the singularity, expressed as
+We focus on the integral \eqref{eq:single-integral-M1}, containing the singularity, expressed as
 \begin{equation}
  Qg(t)\coloneqq\frac{1}{2\pi}\int_0^{2\pi}\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)g(\tau)d\tau
 \end{equation}
-with $g(t)$ continuous and $2\pi$-periodic. The quadrature rule $Q_ng\coloneqq Qg_n$ consists in replacing $g$ with its 
-trigonometric interpolation based on equidistant quadrature nodes $\tau_j\coloneqq j\pi/n$
+with $g(t)$ continuous and $2\pi$-periodic. The quadrature rule 
+$Q_ng\coloneqq Qg_n$ consists in replacing $g$ with its 
+trigonometric interpolation 
 \begin{equation}
- Q_ng(t)\coloneqq \sum_{j=0}^{2n-1}R_j^{(n)}(t)g(\tau_j)\quad j=0,\dots, 2n-1
+ g_n(t)=\frac{\alpha_0}{2} + \sum_{k=1}^{n-1}\{\alpha_k\cos kt + \beta_k\sin kt\} + \frac{\alpha_n}{2}\cos nt,
 \end{equation}
-The weights $R_j^{(n)}=QL_j$ are the integrals of the Lagrange basis's elements $L_j(\tau)$ of the interpolation previously specified.
+such that $g_n(\tau_j) = g(\tau_j)$ for $j=0,\dots,2n-1$, based on equidistant quadrature nodes $\tau_j\coloneqq j\pi/n$. 
+The quadrature rule gives
 \begin{equation}
- R_j^{(n)}(t)=\frac{1}{2\pi}\int_0^{2\pi}\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)L_j(\tau)d\tau \quad j=0,\dots,2n-1
+ Q_ng(t)\coloneqq \sum_{j=0}^{2n-1}R_j^{(n)}(t)g(\tau_j)\quad j=0,\dots, 2n-1.
+\end{equation}
+The weights $R_j^{(n)}(t)=QL_j(\tau)$ are the integrals of the Lagrange basis's functions $L_j(\tau)$ of the trigonometric interpolation, that are
+\begin{equation}
+ L_j(t)=\frac{1}{2n}\Big\{1+2\sum_{k=1}^{n-1}\cos k(t- \tau_j) + \cos n(t - \tau_j)\Big\}\quad j=0,\dots,2n-1,
 \end{equation}
 \begin{equation}
- R_j^{(n)}(t)=-\frac{1}{n}\Bigl\{\sum_{m=1}^{n-1}\frac{1}{m}\cos m(t-\tau_j) + \frac{1}{2n}\cos n(t-\tau_j)\Bigr\} \quad j=0,\dots,2n-1
+ R_j^{(n)}(t)=\frac{1}{2\pi}\int_0^{2\pi}\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)L_j(\tau)d\tau \quad j=0,\dots,2n-1,
+\end{equation}
+\begin{equation}
+ R_j^{(n)}(t)=-\frac{1}{n}\Bigl\{\sum_{m=1}^{n-1}\frac{1}{m}\cos m(t-\tau_j) + \frac{1}{2n}\cos n(t-\tau_j)\Bigr\} \quad j=0,\dots,2n-1.
 \end{equation}
 We report Lemma (8.21) contained in \cite{kress:book}.
 \begin{lemma}
@@ -2990,109 +3083,122 @@ For the trigonometric monomials, we have the integrals
 \begin{equation}
  \frac{1}{2\pi}\int_0^{2\pi}\ln\Bigl(4\sin^2\frac{t}{2}\Bigr)e^{imt}\,dt=
  \begin{cases}
-  0 & m=0 \\
-  -1/|m| & m=\pm1,\pm2,\dots
+  0, & m=0, \\
+  -1/|m|, & m=\pm1,\pm2,\dots
  \end{cases}
 \end{equation}
 \end{lemma}
 We compute the estimate of the quadrature error $E_ng\coloneqq Qg - Q_ng$, directly from the interpolation error
 \begin{align}
  |E_ng|(t)=|Qg-Q_ng|(t)&\leq\frac{1}{2\pi}\int_0^{2\pi}\Big|\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)\Big||g(\tau)-g_n(\tau)|\,d\tau \\
- &\leq \frac{1}{2\pi} \int_0^{2\pi}\Big|\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)\Big|\,d\tau\|g(\tau) - g_n(\tau)\|_{\infty}
+ &\leq \frac{1}{2\pi} \int_0^{2\pi}\Big|\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)\Big|\,d\tau\|g(\tau) - g_n(\tau)\|_{\infty}.
 \end{align}
 The trigonometric interpolation operators are not uniformly bounded. We report convergence results contained in \cite{kress:book}. 
-Provided additional regularity of the integrand $g$, we have uniform convergence of the integrals. The following are theorems (11.6) and (11.7) in \cite{kress:book}.
+Provided additional regularity of the integrand $g$, we have uniform convergence of the integrals. 
+The following propositions are Theorems (11.6) and (11.7) contained in \cite{kress:book}, which give 
+a result of this kind.
 \begin{proposition}
  Let $g\in C^{m,\alpha}_{2\pi}$ be a H\"{o}lder--continuous $2\pi$-periodic function with $n\in\mathbb{N}$ and $\alpha\in(0,1]$. Then there holds the estimate for the trigonometric interpolation error
  \begin{equation}
-  \|P_ng - g\|_{\infty}\leq C(m,\alpha)\frac{\ln n}{n^{m+\alpha}}\|g\|_{m,\alpha}
+  \|P_ng - g\|_{\infty}\leq C(m,\alpha)\frac{\ln n}{n^{m+\alpha}}\|g\|_{m,\alpha}.
  \end{equation}
 \end{proposition}
 \begin{proposition}
- Let $g$ be an analytic $2\pi$-periodic function. Then, in the framework of assumptions \ref{assumption:holom-ext}, there exists an holomorphic extension and the estimate for the trigonometric interpolation error decrease exponentially with $n$
+ Let $g$ be an analytic $2\pi$-periodic function. Then, in the framework of Assumption \ref{assumption:holom-ext}, there exists an holomorphic extension and the estimate for the trigonometric interpolation error decrease exponentially with $n$
  \begin{equation}
-  \|P_ng - g\|_{\infty}\leq M(g)\frac{\coth\frac{s}{2}}{\sinh ns} \leq C(g)e^{-ns}
+  \|P_ng - g\|_{\infty}\leq M(g)\frac{\coth\frac{s}{2}}{\sinh ns} \leq C(g)e^{-ns}.
  \end{equation}
 \end{proposition}
 
 \subsection{Domains with Corners}
 Let $\partial \Omega$ be the boundary of a domain with corners, therefore the parametrization $c(t)$ presents jumps in the first derivative.
 We will refer to a smooth portion of $\partial \Omega$, and we parametrize it between $[0,2\pi]$. 
-By this way, in the case of the operators $K,K'$, the integrand function, for fixed $t$, is smooth in $(0,2\pi)$ and presents singularities at the end--points.
+By this way, in the case of the operators $K,K'$, the integrand function, for fixed $t$, is smooth in $(0,2\pi)$ and presents 
+singularities at the end--points, that we write as
 \begin{equation}
 \label{eq:corners-double}
- K\phi(t)=\int_0^{2\pi}K(c(t),c(\tau))\phi(c(\tau))c'(\tau)\,d\tau=\int_0^{2\pi}g(t,\tau)\,d\tau
+ K\phi(t)=\int_0^{2\pi}K(c(t),c(\tau))\phi(c(\tau))c'(\tau)\,d\tau=\int_0^{2\pi}g(t,\tau)\,d\tau.
 \end{equation}
-The idea is to adapt the quadrature nodes such that we can neglect the end--points. We substitute the variable $\tau=w(\sigma)$ (it's convenient even to evaluate in $t=w(s)$)
+The idea is to adapt the quadrature nodes such that we can neglect the end--points.
+We substitute the variable $\tau=w(\sigma)$ (it's convenient to evaluate $K\phi$ in $t=w(s)$)
 \begin{equation}
 \label{eq:corners-generic}
- K\phi(w(s))=\int_0^{2\pi}g(w(s),w(\sigma))w'(\sigma)\,d\sigma
+ K\phi(w(s))=\int_0^{2\pi}g(w(s),w(\sigma))w'(\sigma)\,d\sigma.
 \end{equation}
-The function $w$ is required to be a bijection of $[0,2\pi]$ to itself, with vanishing derivatives at the end--points. In \cite{kress:bie-scattering} is cited the choice of Sag and Szekeres in \cite{Sa-Sz64}.
+The function $w$ is required to be a bijection of $[0,2\pi]$ to itself, with vanishing derivatives at the end--points. In \cite{kress:bie-scattering} is cited the choice of Sag and Szekeres in \cite{Sa-Sz64}, that is
 \begin{equation}
- w(s)=\frac{e^{-2\pi/s}}{e^{-2\pi/s} + e^{-2\pi/(2\pi - s)}}
+ w(s)=\frac{e^{-2\pi/s}}{e^{-2\pi/s} + e^{-2\pi/(2\pi - s)}}.
 \end{equation}
-To avoid overgrading, with high convergence order effective only for large $n$, a possible substitution is suggested in \cite{kress:bie-corners}
+To avoid overgrading, since high convergence order is effective only for large $n$, a possible substitution is suggested in \cite{kress:bie-corners}, that is
 \begin{equation}
- w(s)=2\pi\frac{[v(s)]^q}{[v(s)]^q + [v(2\pi - s)]^q}
+ w(s)=2\pi\frac{[v(s)]^q}{[v(s)]^q + [v(2\pi - s)]^q},\label{eq:graded-parametrization-power}
 \end{equation}
-where the cubic is defined to equally distribute grid points on two sides
+where the cubic is defined such that to distribute equally grid points on two sides
 \begin{equation}
- v(s)=\Bigl(\frac{1}{q} - \frac{1}{2}\Bigr)\Bigl(\frac{\pi - s}{\pi}\Bigr)^3 + \frac{1}{q}\frac{s-\pi}{\pi} + \frac{1}{2}
+ v(s)=\Bigl(\frac{1}{q} - \frac{1}{2}\Bigr)\Bigl(\frac{\pi - s}{\pi}\Bigr)^3 + \frac{1}{q}\frac{s-\pi}{\pi} + \frac{1}{2}.
 \end{equation}
-By applying trapezoidal rule on equidistant nodes, the quadrature rule for the approximate integral \eqref{eq:corners-generic} based on the graded mesh $\tau_j=w(\sigma_j)$ with equidistant $\sigma_j=j\pi/n$ is 
+By applying trapezoidal rule on equidistant nodes, the quadrature rule for the approximate integral \eqref{eq:corners-generic} based on the graded mesh $\tau_j=w(\sigma_j)$ 
+with equidistant nodes $\sigma_j=j\pi/n$ is 
 \begin{equation}
- K_n\phi(w(s))=\frac{\pi}{n}\sum_{j=1}^{2n-1}a_jg(w(s), w(\sigma_j))\quad a_j=w'(j\pi/n)\quad j=1,\dots,2n-1
+ K_n\phi(w(s))=\frac{\pi}{n}\sum_{j=1}^{2n-1}a_jg(w(s), w(\sigma_j))\quad a_j=w'(j\pi/n)\quad j=1,\dots,2n-1.
 \end{equation}
-We proceed with the same way for the single layer operator $S$ defined on a boundary $\partial \Omega$ with corners. 
+We proceed at the same way for the single layer operator $S$ defined on a boundary $\partial \Omega$ with corners. 
 We consider a smooth portion of the boundary and we substitute its parametrization in the integral kernel $M(t,\tau)$ defined in \eqref{eq:def-kernel-M}
-% Provided the change $\tau=w(\sigma)$, it's convenient to evaluate the single layer potential with respect the variable $t=w(s)$ (with kernel $M$ defined previously in \eqref{})
 \begin{equation}
- S\phi(w(s))=\int_0^{2\pi}M(w(s),w(\sigma))\phi(c(w(\sigma)))|c'(w(\sigma))|w'(\sigma)\,d\sigma
+ S\phi(w(s))=\int_0^{2\pi}M(w(s),w(\sigma))\phi(c(w(\sigma)))|c'(w(\sigma))|w'(\sigma)\,d\sigma.
 \end{equation}
-Only after variable change, we look for a convergent quadrature rule, to solve the logarithmic singularity of the kernel. Again, we isolate it
+After the variable change, we need to solve the logarithmic singularity of the kernel by a suitable quadrature rule. Again, we isolate it
 \begin{equation}
 \label{eq:def-kernel-tildeM}
- \tilde{M}(s,\sigma)\coloneqq-\frac{1}{2\pi}\ln|c(w(s))-c(w(\sigma))|=\tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\frac{s - \sigma}{2}\Big)+\tilde{M}_2(s,\sigma)
+ \tilde{M}(s,\sigma)\coloneqq-\frac{1}{2\pi}\ln|c(w(s))-c(w(\sigma))|=\tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\frac{s - \sigma}{2}\Big)+\tilde{M}_2(s,\sigma),
 \end{equation}
 resulting in
 \begin{equation}
 \begin{cases}
- \tilde{M}_1(s,\sigma) = M_1(w(s),w(\sigma))= -1/(4\pi) \\
- \tilde{M}_2(s,\sigma) = \tilde{M}(s,\sigma) - \tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\dfrac{s - \sigma}{2}\Big) & s\neq \sigma \\
+ \tilde{M}_1(s,\sigma) = M_1(w(s),w(\sigma))= -1/(4\pi), \\
+ \tilde{M}_2(s,\sigma) = \tilde{M}(s,\sigma) - \tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\dfrac{s - \sigma}{2}\Big) & s\neq \sigma, \\
 \end{cases}
 \end{equation}
-and diagonal term
+with a diagonal term
 \begin{align}
  \tilde{M}_2(\sigma,\sigma)&=\lim_{s\to\sigma} \Big(\tilde{M}(s,\sigma) - \tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\dfrac{s - \sigma}{2}\Big)\Big) \\
  &=M_2(w(\sigma),w(\sigma)) + 2M_1(w(\sigma),w(\sigma))\ln\big(w'(\sigma)\big)= \\
- &=-1/(2\pi)\ln\big(|c'(w(\sigma))|w'(\sigma)\big)
+ &=-1/(2\pi)\ln\big(|c'(w(\sigma))|w'(\sigma)\big),
 \end{align}
 with $\tilde{M}_2(t,\tau)$ continuous and bounded (both kernels $\tilde{M}_1, \tilde{M}_2$ turn out to be analytic). 
 Then we can apply respectively quadrature rule generated by trigonometric interpolation on equidistant nodes, and trapezoidal rule on equidistant nodes $\sigma_j = j\pi/n$ for $j=1,\dots,2n-1$, neglecting end--points with vanishing $w'(0)=w'(2\pi)=0$.
 \section{Neumann--to--Dirichlet maps' Discretization}
-In this section we describe how we discretized Neumann--to--Dirichlet maps defined in \eqref{eq:NtoD-laplace} and in \eqref{eq:NtoD-inclusion}. We are advantaged by the structure of natural representation formulas of the solutions. Indeed they lead us to solve two integral equations of the second kind, which are well-posed, meaning that the operators are bijective and have continuous inverse.
+In this section, we describe how we discretized Neumann--to--Dirichlet maps defined in 
+\eqref{eq:NtoD-laplace} and in \eqref{eq:NtoD-inclusion}. We are advantaged by the 
+structure of natural representation formulas of the solutions. Indeed, they entail two 
+integral equations of the second kind, which are well-posed, meaning that the 
+operators are bijective and have continuous inverse.
 Respectively
 \begin{enumerate}
- \item we represent the solution $v$ of the Laplace problem \eqref{eq:NtoD-laplace}, with Neumann data $f$, as a simple layer potential on the same $\partial \Omega$ such that we can impose boundary values for derivatives
+ \item we represent the solution $v$ of the Laplace problem \eqref{eq:NtoD-laplace}, with 
+ Neumann data $f$ on $\partial \Omega$, as a simple layer potential with density on $\partial \Omega$, such 
+ that we can impose boundary values for derivatives
  \begin{equation}
  \label{eq:def-v-representation}
-  v(x)\coloneqq \int_{\partial\Omega}\Phi(x,x_0)\phi(x_0)\,dx_0
+  v(x)\coloneqq \int_{\partial\Omega}\Phi(x,x_0)\phi(x_0)\,dx_0,
  \end{equation}
  \begin{equation}
  \label{eq:2kind-laplace}
-  \partial_\nu v=\Bigl(K'+\tfrac{1}{2}I\Bigr)\phi = f
+  \partial_\nu v=\Bigl(K'+\tfrac{1}{2}I\Bigr)\phi = f,
  \end{equation}
- \item at the same way, we represent the solution $u$ of the inclusion problem \eqref{eq:NtoD-inclusion}, with Neumann data $f$, as the sum of two simple layer potentials, to force contemporary boundary data $\partial_\nu u = f$ and transmission conditions $\partial_\nu u^+-k\partial_\nu u^-=0$
+ \item we represent the solution $u$ of the inclusion problem \eqref{eq:NtoD-inclusion}, 
+ with Neumann data $f$, as the sum of two simple layer potentials, to force 
+ at the same time boundary data $\partial_\nu u = f$ on $\partial \Omega$ and transmission conditions 
+ $\partial_\nu u^+-k\partial_\nu u^-=0$ on $\partial D$
  \begin{equation}
  \label{eq:def-u-representation}
-  u(x)\coloneqq \int_{\partial\Omega}\Phi(x,x_0)\phi_\Omega(x_0)\,dx_0 + \int_{\partial D}\Phi(x,x_0)\phi_D(x_0)\,dx_0
+  u(x)\coloneqq \int_{\partial\Omega}\Phi(x,x_0)\phi_\Omega(x_0)\,dx_0 + \int_{\partial D}\Phi(x,x_0)\phi_D(x_0)\,dx_0,
  \end{equation}
  \begin{align}
-  &\Bigl(K' + \tfrac{1}{2} I\Bigr)\phi_\Omega + K^\diamond(\partial D;\,\partial \Omega)\phi_D = f\\
-  & K^\diamond(\partial \Omega;\,\partial D)\phi_\Omega + \Bigl(K' + \tfrac{\hat{c}}{2} I\Bigr)\phi_D = 0
+  &\Bigl(K' + \tfrac{1}{2} I\Bigr)\phi_\Omega + K^\diamond(\partial D;\,\partial \Omega)\phi_D = f,\\
+  & K^\diamond(\partial \Omega;\,\partial D)\phi_\Omega + \Bigl(K' + \tfrac{\hat{c}}{2} I\Bigr)\phi_D = 0,
  \end{align}
- equivalently, 
+ or equivalently 
  \begin{equation}
  \label{eq:2kind-inclusion}
  \tfrac{1}{2}
@@ -3111,99 +3217,118 @@ Respectively
  \begin{bmatrix}
  f\\ 0
  \end{bmatrix}
+ ,
  \end{equation}
 \end{enumerate}
-where the operators $K^\diamond(\partial A;\partial B):\partial A\to\partial B$ are normal derivatives on $\partial B$ of a single layer on $\partial A$
+where the operators $K^\diamond(\partial A;\partial B):\partial A\to\partial B$ are the normal derivatives 
+on $\partial B$ of a single layer defined on $\partial A$, that is
 \begin{equation}
  K^\diamond(\partial A;\partial B)\phi\coloneqq \partial_\nu \mathcal{S}(x)\textup{ on }\partial B\,\textup{ with }
- \mathcal{S}(x)\coloneqq \int_{\partial A}\Phi(x,x_0)\phi(x_0)\,dx_0
+ \mathcal{S}(x)\coloneqq \int_{\partial A}\Phi(x,x_0)\phi(x_0)\,dx_0,
 \end{equation}
-and have smooth integral kernel (we can derive under integral's sign).
-
-\par
-We'll approximate error bounds for the Neumann-to-Dirichlet map discretized through the boundary Element Method (BEM).
-Considering the empty case (with no object $D$):
-\begin{equation}
- \label{eq:NtoD0}
- {N_0} f (x)= S\phi_f(x)=\int_{\partial\Omega}\Phi(x,y)\phi_f(y)\,dy \quad K'\phi_f+\frac{1}{2}\phi_f= f
-\end{equation}
-Using a quadrature rule $\Lambda_{0n} \to \Lambda_0$:
-\begin{equation}
- \Lambda_{0n}f(x) = \sum_{k=1}^n\alpha_k^{(n)}K(x,q_k^{(n)})\phi_f(q_k^{(n)})
-\end{equation}
-For a weakly singular kernel:
-\begin{equation}
- \Lambda_{0n}f(x) = \sum_{k=1}^n\alpha_k^{(n)}(x)\phi_f(q_k^{(n)})
-\end{equation}
+and they have a smooth integral kernel (we can compute derivation under integral's sign).
 \subsection{Nystr\"om Method}
 Both the equations \eqref{eq:2kind-laplace} and \eqref{eq:2kind-inclusion} can be expressed in the form of 
-\emph{second kind} equations 
+a \emph{second kind} equation
 \begin{equation}
 \label{eq:nystrom-full}
- \phi-A\phi = f
+ \phi-A\phi = f,
 \end{equation}
-with $A$ a \emph{compact} linear operator (and therefore continuous), and $I-A:X\to Y$ \emph{injective}. 
+with $A$ a \emph{compact} linear operator (and therefore continuous) and $I-A:X\to Y$ \emph{injective}. 
 In the first case \eqref{eq:2kind-laplace}, $X=X_0=\{\phi_0\}^\perp \subset L^2(\partial \Omega)$, 
 while in the second case \eqref{eq:2kind-inclusion}, $X=X_0\times L^2(\partial D)$, where $\phi_0$ is the only non trivial eigenvector in $\mathcal{N}(K' + 1/2I)$ on $\partial\Omega$.
 \par
-The \emph{Nystr\"om method} consists in substituting a convergent (according to \ref{def:convergent-quadrature-rule}) quadrature rule $A_n$ instead of $A$ in the previous \eqref{eq:nystrom-full}. 
-The first discretization yields to the \emph{semi--discretized equation} finite--dimensional
+The \emph{Nystr\"om method} consists in substituting a convergent (according to Definition \ref{def:convergent-quadrature-rule}) 
+quadrature rule $A_n$ instead of $A$ in the previous equation \eqref{eq:nystrom-full}. 
+This first discretization yields to the \emph{semi--discretized equation} finite dimensional
 \begin{equation}
 \label{eq:nystrom-semi}
- \phi_n - A_n\phi_n = f
+ \phi_n - A_n\phi_n = f.
 \end{equation}
 \par
-We will consider only the case of $\partial \Omega$ of class $C^2$, such that the integral kernel of $A$, in the next equation, is continuous (for boundaries with corners the integral kernel is weakly singular, we need to integrate separately on each smooth piece through a graded mesh).
-Therefore in the sequel, quadrature operator $A_n\phi$ reduces to \eqref{eq:quad-rule-continuous} (we suppress the curve's parametrization $c$ and use quadrature nodes $x_k=c(\tau_k^{(n)})$)
+We will consider only the case of $\partial \Omega$ of class $C^2$, such that the 
+integral kernel of $A$, in the next equation, is continuous 
+(for boundaries with corners the integral kernel is weakly singular and we need to integrate separately on each smooth piece through a graded mesh).
+Therefore in the sequel, the quadrature operator $A_n\phi$ reduces to \eqref{eq:quad-rule-continuous} (we suppress the curve's parametrization $c$ and use quadrature nodes $x_k=c(\tau_k^{(n)})$), that is
 \begin{equation}
 \label{eq:quad-rule-continuous-synt}
- A_n\phi(x) = \sum_{k=1}^n\alpha_k K(x,x_k)\phi(x_k)
+ A_n\phi(x) = \sum_{k=1}^n\alpha_k K(x,x_k)\phi(x_k).
 \end{equation}
-We report theorem (12.7) in \cite{kress:book}, which expresses the solution of \eqref{eq:nystrom-semi} as a finite sum.
+We report Theorem (12.7) in \cite{kress:book}, which expresses the solution of \eqref{eq:nystrom-semi} as a finite sum.
 \begin{theorem}
- Let $K(x,y)$ be a continuous integral kernel of $A$, and consider the semi--discretized equation \eqref{eq:nystrom-semi}
+ Let $A$ be an integral operator with a continuous integral kernel $K(x,y)$, 
+ and consider the semi--discretized equation \eqref{eq:nystrom-semi}, more explicitly
  \begin{equation}
   \label{eq:nystrom-semi-continuous}
-  \phi_n(x) -\sum_{k=1}^n\alpha_k K(x,x_k)\phi_n(x_k)=f(x) \quad x\in \partial \Omega
+  \phi_n(x) -\sum_{k=1}^n\alpha_k K(x,x_k)\phi_n(x_k)=f(x) \quad x\in \partial \Omega,
  \end{equation}
+ then
  \begin{enumerate}
-  \item if $\phi_n$ is a solution of \eqref{eq:nystrom-semi-continuous}, then its values $\phi_j^{(n)} = \phi_n(x_j)$ at nodes, satisfy the following linear system
+  \item if $\phi_n$ is a solution of \eqref{eq:nystrom-semi-continuous}, then its values $\phi_j^{(n)} = \phi_n(x_j)$ 
+  at nodes $x_j$ satisfy the following linear system
   \begin{equation}
     \label{eq:nystrom-system}
-    \phi_j^{(n)} - \sum_{k=1}^n\alpha_k K(x_j,x_k)\phi_k^{(n)} = f(x_j)\quad j=1,...,n
+    \phi_j^{(n)} - \sum_{k=1}^n\alpha_k K(x_j,x_k)\phi_k^{(n)} = f(x_j)\quad j=1,...,n,
   \end{equation}
   \item conversely, if values $\phi_j^{(n)}$ satisfy the linear system \eqref{eq:nystrom-system}, then $\phi_n$ such constructed solves the approximate equation
   \begin{equation}
-   \phi_n(x)\coloneqq f(x) + \sum_{k=1}^n\alpha_k K(x,x_k)\phi_k^{(n)} \quad x\in \partial\Omega
+   \phi_n(x)\coloneqq f(x) + \sum_{k=1}^n\alpha_k K(x,x_k)\phi_k^{(n)} \quad x\in \partial\Omega.
   \end{equation}
  \end{enumerate}
 \end{theorem}
-This fast way of solving \eqref{eq:nystrom-semi}, can be interpreted as a collocation method on the subdivision coincident with quadrature nodes.
+This fast way for solving \eqref{eq:nystrom-semi}, can be interpreted as a collocation method on the subdivision coincident with quadrature nodes.
 \par
-Finally the convergence result which relates the two solutions of \eqref{eq:nystrom-full} and of \eqref{eq:nystrom-semi}, guarantees us for the Nystr\"om's method.
-The error analysis for the equation of the second kind is based on theorems (10.9) and (10.10) contained \cite{kress:book}, where all details can be found.
+Finally the result which compares the two solutions of \eqref{eq:nystrom-full} and of 
+\eqref{eq:nystrom-semi}, guarantees us for the convergence of Nystr\"om's method.
+The error analysis for the equation of the second kind is based on Theorem (10.9) contained \cite{kress:book}, where all details can be found.
 \begin{theorem}[Pointwise Convergence]
- Let $X$ be a Banach space, let $I-A:X\to X$ be injective, $A$ be linear compact, $A_n$ a sequence \emph{pointwise convergent}, of \emph{collectively compact} operators (definition is reported \ref{def:collectively-compact}), 
+ Let $X$ be a Banach space, let $I-A:X\to X$ be injective, $A$ be linear compact, $A_n$ a sequence \emph{pointwise convergent}, of \emph{collectively compact} operators (Definition \ref{def:collectively-compact}), 
  then there holds the error estimate for the solution of the second kind equation $\phi-A\phi=f$, and its approximation $\phi_n - A_n\phi_n=f_n$
  \begin{equation}
-  \|\phi_n - \phi \| \leq \frac{1 + \|(I-A)^{-1}A_n\|}{1-\|(I-A)^{-1}(A_n-A)A_n\|}\{\|(A_n - A)\phi\| + \| f_n - f\|\}
+  \|\phi_n - \phi \| \leq \frac{1 + \|(I-A)^{-1}A_n\|}{1-\|(I-A)^{-1}(A_n-A)A_n\|}\{\|(A_n - A)\phi\| + \| f_n - f\|\},
  \end{equation}
  and for sufficiently large $n$ (such that the denominator in the coefficient is positive), thanks to uniform boundedness with respect to $n$, there holds      
  \begin{equation}
-  \|\phi_n - \phi \| \leq C\{\|(A_n - A)\phi\| + \| f_n - f\|\}
+  \|\phi_n - \phi \| \leq C\{\|(A_n - A)\phi\| + \| f_n - f\|\}.
  \end{equation}
 \end{theorem}
 \begin{corollary}
  Let $K(x,y)$ be a continuous integral kernel of $A$, let $I-A$ be injective and $A_n$ be a sequence of convergent quadrature rules. 
- If $f$ is continuous, then $\phi,\phi_n$ are continuous themselves. Moreover there holds the a priori error estimate
- \begin{equation}
-  \|\phi_n - \phi \|_{\infty} \leq C\{\|(A_n - A)\phi\|_{\infty}\}
- \end{equation}
+ If $f$ is continuous, then $\phi,\phi_n$ are continuous themselves. 
 \end{corollary}
 % For an integral operator with continuous kernel, the trapezoidal rule gives
 % \begin{equation}
 %  |(A - A_n)\phi|(x) \leq \frac{1}{12}h^2(b-a)\max_{y\in G}|\partial_{yy}K(x,y)\phi(y)|
 % \end{equation}\begin{figure}
+Since in our case we use directly $f_n=f$, there holds the a priori error estimate
+ \begin{equation}
+  \|\phi_n - \phi \|_{\infty} \leq C\{\|(A_n - A)\phi\|_{\infty}\}
+ \end{equation}
+Let $-N_r=N_D - N_0$ be the relative Neumann--to--Dirichlet map. In the previous section, we described
+how we computed the approximation of $-{N_r}f$, which we'll denote by $-{N_{rn}}f$, that is the difference 
+of the two discretized maps $N_{0n}$ and $N_{Dn}$ valued on $f$
+\begin{equation}
+ {N_{0n}}f = S_n\phi_n = SP_n\phi_n\quad and \quad{N_{Dn}}f = S_n\phi_{\Omega n} + S_n\phi_{D n},
+\end{equation}
+where $S_n$ is the quadrature rule of the single layer operator $S$, and 
+$\phi_n, \phi_{\Omega n}, \phi_{Dn}$ 
+are the approximate solution of the semi-discretized equation, computed with the Nystr\"{o}m method.
+\par
+The error estimate of the relative map is
+\begin{equation}
+ \|{N_r}f - {N_{rn}}f\|\leq\|S\|\|\phi-\phi_n\| + \|S\phi_n - S_n\phi_n\| = err_{Nystr\textit{\"{o}}m} + err_{Num\,Int}
+\end{equation}
+Convergence results of quadrature rules for the integration of a double or a single layer potential 
+contained in the previous sections, lead us to expect an exponential convergence both for the Nystr\"{o}m method and 
+for the numerical integration of $S$.
+\par
+We tested the convergence order of $N_0$, for which we can easily compute the exact solution, 
+from the knowledge of the explicit expression of a harmonic function. In Figures 
+\ref{fig:convergence-N_0-smooth} and \ref{fig:convergence-N_0-Lipschitz} with 
+logarithmic scale for both axes, we used 
+the harmonic function $v(x,y)=x^3 - 3 xy^2$. We can observe the exponential convergence 
+to the exact solution $N_{0n}f\to v|_{\partial \Omega}$. The integration for the ellipse 
+is exact, while for a generic smooth curve we could expect a good, but not a optimal result.
 
 \iftoggle{fig}{
 \begin{center}
@@ -3214,58 +3339,294 @@ The error analysis for the equation of the second kind is based on theorems (10.
 }
 \subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
 {
-\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_triangle}
+\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_kite}
 }
-\caption{Convergence order for an analytic boundary and for an Lipschitz one}
-\label{fig:subfig}
+\caption{Loglog plot of the convergence order for two smooth inclusions: an ellipse, and a kite shaped domain, computed with the infinity norm.}
+\label{fig:convergence-N_0-smooth}
 \end{figure}
 \end{center}
 }
 
-\subsection{Neumann--to--Dirichlet map}
-Let $-N_r=N_D - N_0$ be the relative Neumann--to--Dirichlet map. In the previous section, we described
-the procedure to compute the approximation $-N_{rn}f$. 
-\begin{equation}
- {N_0}_nf = S_n\phi_n = SP_n\phi_n\quad and \quad{N_D}_nf = S_n{\phi_\Omega}_n + S_n{\phi_D}_n
-\end{equation}
-then, we will express for brevity the numerical integration as $S_n$, 
-for the relative map the error estimate is
-\begin{equation}
- \|{N_r}f - {N_r}_nf\|\leq\|S\|\|\phi-\phi_n\| + \|S\phi_n - S_n\phi_n\| = err_{Nystr\textit{\"{o}}m} + err_{Num\,Int}
-\end{equation}
-Our real intention is to construct an \emph{approximate map} $-{N_r}_n$ to generalize and speed up 
-the computation to any $f$. By this way, we are forced to express $-{N_r}_n$ in terms of 
-a basis $\{b_k\}$ of a $n$--dimensional subspace $X_n\subset X=L^2_0(\partial\Omega)$.
-Consequently, our first step will be the projection of $f$ on the subspace $X_n$, through the interpolation $P_nf$,
-and we will take in account this error, by an accurate choice of $P_n$ such that the convergence of the global error will be not affected 
-(we'll denote $\phi(f)$ the solution of the second kind equation with right term $f$).
-\begin{equation}
- P_nf = \sum_{k=1}^nf_kb_k \Rightarrow \phi_n(P_nf)=\sum_{k=1}^nf_k\phi_n(b_k)
-\end{equation}
+\iftoggle{fig}{
+\begin{center}
+\begin{figure}
+\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ elliptic}.]
+{
+\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_drop}
+}
+\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
+{
+\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_triangle}
+}
+\caption{Loglog plot of the convergence order for two Lipschitz inclusions: 
+a drop shaped domain with one vertex, and a triangle, computed with the infinity norm.}
+\label{fig:convergence-N_0-Lipschitz}
+\end{figure}
+\end{center}
+}
 
-\begin{align*}
- -e_n &= -{N_r}f + {N_r}_nP_nf =S\phi(f) - S_n\phi_n(P_nf) \\
- &=\Big[S\phi_n(P_nf) - S_n \phi_n(P_nf) \Big] 
- + \Big[S\phi(f) - S\phi(P_nf)\Big]
- + \Big[S\phi(P_nf)- S\phi_n(P_nf)\Big] \\ 
- &=\Big(S\psi_n - S_n\psi_n \Big) 
- -N_r(I-P_n)f
- + S\Big(\phi(P_nf)-\phi_n(P_nf)\Big) \\
- &= e_{Num\,Int} + e_{Interp} + e_{Nystr\textit{\"{o}}m}
-%  + &\Big[S\phi(f) - S\sum\phi(e_k)f_k\Big] 
-%  + \Big[S\sum\phi(e_k)f_k - S\sum\phi_n(e_k)f_k\Big] \\
-% &= N_0(I-P_n)f + \sum_kf_k[S(\phi-\phi_n)(e_k)]
-\end{align*}
-
-The original equation, which cannot always be solved, is
+Since the map $-N_{rn}$ uses only the values of $f$ in the quadrature nodes $x_j$, we can easily 
+construct a map defined on the finite dimensional vector subspace in $\mathbb{R}^{2n}$ of 
+$\{f(x_j)\}$, which are the values on $2n$ quadrature nodes. This subspace has dimension $2n-1$, 
+since $f$ is subjected to the constrain of zero mean. Therefore we can compute $-N_{rn}b_k$ 
+only in terms of a finite basis $b_k$ of $\mathbb{R}^{2n}$.
+% Our intention is to construct an \emph{approximate map} $-{N_r^{(n)}}$ to generalize and speed up 
+% the computation for any $f$. Therefore, our aim is to express $-{N_r^{(n)}}$ in terms of 
+% a basis $\{b_k\}_{k\in\mathbb{N}}$ of a $n$-dimensional subspace $X_n\subset X=L^2_0(\partial\Omega)$.
+% Consequently, our first step will be the projection of $f$ on the subspace $X_n$, through the interpolation $P_nf$,
+% and we will take in account this error, by an accurate choice of $P_n$ such that the convergence of the global error will be not affected 
+% (we'll denote $\phi(f)$ the solution of the second kind equation with right term $f$).
+% \begin{equation}
+%  P_nf = \sum_{k=1}^nf_kb_k \Rightarrow \phi_n(P_nf)=\sum_{k=1}^nf_k\phi_n(b_k)
+% \end{equation}
+% 
+% \begin{align*}
+%  -e_n &= -{N_r}f + {N_r}_nP_nf =S\phi(f) - S_n\phi_n(P_nf) \\
+%  &=\Big[S\phi_n(P_nf) - S_n \phi_n(P_nf) \Big] 
+%  + \Big[S\phi(f) - S\phi(P_nf)\Big] \\
+%   &\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad
+%   + \Big[S\phi(P_nf)- S\phi_n(P_nf)\Big] \\ 
+%  &=\Big(S\psi_n - S_n\psi_n \Big) 
+%  -N_r(I-P_n)f
+%  + S\Big(\phi(P_nf)-\phi_n(P_nf)\Big) \\
+%  &= e_{Num\,Int} + e_{Interp} + e_{Nystr\textit{\"{o}}m}
+% %  + &\Big[S\phi(f) - S\sum\phi(e_k)f_k\Big] 
+% %  + \Big[S\sum\phi(e_k)f_k - S\sum\phi_n(e_k)f_k\Big] \\
+% % &= N_0(I-P_n)f + \sum_kf_k[S(\phi-\phi_n)(e_k)]
+% \end{align*}
+\par
+After we have computed the map $-N_{rn}$, 
+the approximate equation to regularize is
 \begin{equation}
- N_r f = \psi_{0z}
+ N_r f = \psi_{0z},
 \end{equation}
-The regularized equation 
+while its regularized correspondent, and its discretization, according to Tikhonov method, are
+\begin{align}
+ &\alpha_n f^{\alpha_n} + N_r^TN_rf^{\alpha_n} = \psi_{0z}\label{eq:tikh-reg-lsm}, \\
+ &\alpha_n f_n^{\alpha_n} + N_{rn}^TN_{rn}f_n^{\alpha_n} = \psi_{0zn}\label{eq:tikh-reg-lsm-discrete}.
+\end{align}
+In next section, we will compare the plots of the norm of the computed $f$, according to Propositions
+\ref{prop:lsm-constructive} and \ref{prop:lsm-counterpart}. To take in account the norm of right term 
+$\psi_{0z}$, we will plot the inverse of the ratio of the two norms, namely
 \begin{equation}
- \alpha f^\alpha + N_r^TN_r = \psi_{0z}
+ r_n(z)\coloneqq\frac{\|\psi_{0zn}\|_{L^2(\partial \Omega)}}{\|f_n\|_{L^2(\partial \Omega)}},
 \end{equation}
+such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
 
+\section{Numerical Results}
+This section is dedicated to the discussion of the numerical approximations computed with the 
+Python package \cite{}.
+As the first case, we consider a smooth inclusion, elliptic shaped. Then we compare the results obtained by 
+the two different methods
+\begin{enumerate}
+ \item the factorization method, by the criterion described in section \ref{section:range-criterion},
+ \item the Tikhonov regularization of the Neumann--to--Dirichlet map, described by the linear
+ sampling method, corresponding to equation \eqref{eq:tikh-reg-lsm}.
+\end{enumerate}
+The conductivity $k$ has been taken constant $k=2$, since we observed that its value didn't 
+affect the outcome in a relevant way. The number of quadrature nodes 
+on $\partial D$ and on $\partial \Omega$ has been chosen high enough to obtain a good approximation 
+of the map $N_r$.
+In the sequel, we will use the abbreviations FM for the Factorization Method, LSM for the regularized 
+Linear Sampling Method.
+\par
+As can be observed in Figures \ref{fig:one_ellipse0} and \ref{fig:one_ellipse1} and 
+in Table \ref{tab:ellipse-parameters}, the LSM reconstructs well the position and the shape 
+of the inclusion. Moreover, the FM computes with a good accuracy also its size. 
+
+\begin{table}
+\caption{did}
+\label{tab:ellipse-parameters}
+\begin{center}
+\vspace*{-0.5cm}
+\begin{tabular}{lcccr}
+\toprule
+ & exact && exact &\\
+ fig & center & center & axes  & axes \\
+\midrule
+\ref{fig:one_ellipse0} & (0, 0) &  (0.0046, -0.0041) & (2, 1) & (1.9224, 0.7561) \\
+\ref{fig:one_ellipse1} & (0, 0) &  (1.0797, 0.0253) & (1.8, 1.2) & (1.8340, 1.0232) \\
+\bottomrule
+\end{tabular}
+\end{center}
+% \vspace*{-1.5cm}
+\end{table}
+
+\iftoggle{fig}{
+\begin{center}
+\begin{figure}
+\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ elliptic}.]
+{
+\includegraphics[width=.48\textwidth]{fig/one_ellipse_lsm_ellipse0}
+}
+\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
+{
+\includegraphics[width=.48\textwidth]{fig/one_ellipse_fm_ellipse0}
+}
+\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\label{fig:one_ellipse0}
+\end{figure}
+\end{center}
+}
+
+\iftoggle{fig}{
+\begin{center}
+\begin{figure}
+\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ elliptic}.]
+{
+\includegraphics[width=.48\textwidth]{fig/one_ellipse_lsm_ellipse1}
+}
+\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
+{
+\includegraphics[width=.48\textwidth]{fig/one_ellipse_fm_ellipse1}
+}
+\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\label{fig:one_ellipse1}
+\end{figure}
+\end{center}
+}
+
+Now we consider different geometries, like the most used in literature: the kite shape (smoothly parametrized), 
+and the drop shape or any polygonal inclusion, for which must be used a graded quadrature mesh 
+(we used the parametrization \eqref{eq:graded-parametrization-power}) which excludes the values in the vertexes. 
+The results are reported in Figures \ref{fig:first_compare_kite}, \ref{fig:first_compare_drop} 
+and \ref{fig:first_compare_triangle}, which show a good approximation of the shapes and 
+of the position of the different inclusions. 
+\begin{center}
+\begin{figure}[]%[tb]
+\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$}.]
+{
+\includegraphics[width=.48\textwidth]{fig/first_compare_lsm_kite0}
+}
+\subfloat[][\emph{Factorization method}.]
+{
+\includegraphics[width=.48\textwidth]{fig/first_compare_fm_kite0}
+}
+\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\label{fig:first_compare_kite}
+\end{figure}
+\end{center}
+\begin{center}
+\begin{figure}%[tb]
+\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$}.]
+{
+\includegraphics[width=.48\textwidth]{fig/first_compare_lsm_drop0}
+}
+\subfloat[][\emph{Factorization method}.]
+{
+\includegraphics[width=.48\textwidth]{fig/first_compare_fm_drop0}
+}
+\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\label{fig:first_compare_drop}
+\end{figure}
+\end{center}
+\begin{center}
+\begin{figure}%[tb]
+\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$}.]
+{
+\includegraphics[width=.48\textwidth]{fig/first_compare_lsm_triangle0}
+}
+\subfloat[][\emph{Factorization method}.]
+{
+\includegraphics[width=.48\textwidth]{fig/first_compare_fm_triangle0}
+}
+\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\label{fig:first_compare_triangle}
+\end{figure}
+\end{center}
+Now we compare previous results with the approximations obtained, for the same geometries, by the 
+combination of the Tikhonov regularization with the Morozov discrepancy principle, which fixes the 
+error level $\delta$, and computes the norm of the regularized solutions for different values of 
+$\alpha(\delta)$. For connected inclusions, we cannot observe a significant improvement. 
+Instead, for a non connected domain, composed by two or three components, Figures \ref{fig:discrepancy_two_ellipse} 
+and \ref{fig:discrepancy_three_ellipse}
+show that after about 15 iterations on $\alpha$, contour plot fills better the unknown shape.
+For further iterations, some difficulties occurs, since the root $\alpha(\delta)$ of the discrepancy 
+function $\Delta_N(\alpha)$ is too close to the machine epsilon. 
+We can observe that FM works still well for a high resolution, while is less accurate for a few 
+number of quadrature nodes.
+\begin{center}
+\begin{figure}%[tb]
+\subfloat[][\emph{Linear sampling method}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse0_it_alpha_0}
+}
+\subfloat[][\emph{Factorization method}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_fm_two_ellipse0}
+}
+\\
+\subfloat[][\emph{Morozov principle applied to LSM after $15$ iterations in $\alpha$}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse0_it_alpha_14}
+}
+\subfloat[][\emph{Morozov principle applied to LSM after $17$ iterations in $\alpha$}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse0_it_alpha_16}
+}
+\caption{Discrepancy principle applied to LSM for a domain with two components.}
+\label{fig:discrepancy_two_ellipse}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}%[tb]
+\subfloat[][\emph{Linear sampling method}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse0_it_alpha_0}
+}
+\subfloat[][\emph{Factorization method}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_fm_three_ellipse0}
+}
+\\
+\subfloat[][\emph{Morozov principle applied to LSM after $15$ iterations in $\alpha$}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse0_it_alpha_14}
+}
+\subfloat[][\emph{Morozov principle applied to LSM after $17$ iterations in $\alpha$}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse0_it_alpha_16}
+}
+\caption{Discrepancy principle applied to LSM for a domain with three components.}
+\label{fig:discrepancy_three_ellipse}
+\end{figure}
+\end{center}
+
+The \emph{Inverse Crime} effect appears every time we solve the inverse problem with data computed 
+by the discretization of the direct map. It's well known in literature how this aspect leads to 
+better estimates than which we should expect. Indeed, in our case, the right term $\psi_{z0}$ 
+has been corrected by the direct Neumann--to--Dirichlet map (see \eqref{def:lsm-psi}). Therefore, it's advisable to 
+introduce some noise in the data, such that $\|y - y^\delta\|\propto\delta$ is more realistic.
+
+We note that the FM is more sensible to noise, while the regularized LSM is more stable, as can 
+deduced by observing Figure \ref{fig:noise}. Indeed, introducing a normal distributed random noise of 
+maximum amplitude equal to $\delta$, we can observe that factorization method does not work for 
+values of $\delta$ greater than $1e-05$, while the norm of the regularized solution computed with
+the linear sampling method still approximates the unknown inclusion.
+
+\begin{center}
+\begin{figure}%[tb]
+\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$ and $\delta=1e-05$}.]
+{
+\includegraphics[width=.30\textwidth]{fig/noise_lsm_ellipse0_noiselevel1e-05}
+}
+\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$ and $\delta=1e-02$}.]
+{
+\includegraphics[width=.30\textwidth]{fig/noise_lsm_ellipse0_noiselevel1e-02}
+}
+\subfloat[][\emph{Factorization method for $\delta=1e-02$}.]
+{
+\includegraphics[width=.30\textwidth]{fig/noise_fm_ellipse0_noiselevel1e-05}
+}
+\caption{Stability of the methods with respect to normal noise of amplitude $\delta$ in the data.}
+\label{fig:noise}
+\end{figure}
+\end{center}
+
+\clearpage
+%\cleardoublepage
+% \FloatBarrier
 
 \section{Appendix A: Functional analysis}
 \begin{theorem}[Parseval]
@@ -3330,7 +3691,7 @@ In this case a possible solution is
 % \bibliographystyle{plain} % bibtex
 % \bibliography{sources} % bibtex
 \end{document}
-
+\chapter{End Document}
 \colorbox{Orchid}{
 
 % \framebox[0.5\textwidth][l]{

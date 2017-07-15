@@ -1,0 +1,24 @@
+
+\begin{align}
+ &\divergence \nabla v = 0, \\
+ &\divergence \gamma \nabla u = 0
+\end{align}
+\begin{align}
+  &\divergence \gamma \nabla w + \divergence (\gamma - 1)\nabla v = 0\textup{ in }\Omega \\
+  &\partial_\nu w = 0 \textup{ on }\partial \Omega
+\end{align}
+
+The weak formulation is
+\begin{equation}
+ \int_\Omega \gamma \nabla w\nabla \phi = - \int_D (k-1)\nabla v\nabla \phi 
+ \quad \forall\phi \in H^1(\Omega)
+\end{equation}
+
+We can rewrite the problem for $w$ as 
+\begin{align}
+ &\Delta w = 0\textup{ in } \Omega\backslash\overline{D} \textup{ and in }D \\
+ & w^+ = w^- \textup{ on }\partial D\\
+ & \partial_\nu w^+ = k \partial_\nu w^- + (k-1)\partial_\nu v^- = k\partial_\nu u^- - \partial_\nu v^- \textup{ on }\partial D \\
+ & \partial_\nu w = 0 \textup{ on }\partial \Omega
+\end{align}
+

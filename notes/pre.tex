@@ -1,0 +1,133 @@
+\documentclass[10pt, a4paper, twoside, openright]{book}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc} % needed for bibtex
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+%\usepackage{nccmath} % mfrac
+%\mathbb needs amsfonts or amssymb
+\usepackage{amsfonts}
+\usepackage{bm} % bold symbols math
+
+% \usepackage[overload]{empheq} % left\{ for align % no crash kile ?
+\usepackage{cases}
+\usepackage[usenames,dvipsnames]{xcolor} % before tikz, options for more colors
+\definecolor{light-gray}{gray}{0.95}
+
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subfig}
+
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+% set arrows as stealth fighter jets
+\tikzset{>=stealth}
+% bezier
+\usetikzlibrary{decorations.pathreplacing}
+\tikzset{%
+  show curve controls/.style={
+    postaction={
+      decoration={
+        show path construction,
+        curveto code={
+          \draw [blue] 
+            (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
+            (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
+          \fill [red, opacity=0.5] 
+            (\tikzinputsegmentsupporta) circle [radius=.5ex]
+            (\tikzinputsegmentsupportb) circle [radius=.5ex];
+        }
+      },
+      decorate
+}}}
+\tikzstyle{mybox} = [draw=gray, fill=light-gray, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
+\tikzstyle{mytitle} =[fill=gray, text=white]
+
+% plots
+\usepackage{pgfplots}
+
+%\usepackage{color}
+
+\usepackage{xcolor}
+\definecolor{bookColor}{cmyk}{1	, 1  , 0   , 0}  % 0.90\% of black
+%\color{bookColor}
+
+\usepackage{hyperref}
+\hypersetup{pdftex,colorlinks=true,allcolors=blue}
+\usepackage{hypcap}
+\usepackage{etoolbox}
+
+\usepackage{csquotes}
+%\usepackage[autostyle, italian=guillemets]{csquotes}
+
+% \usepackage[chapter]{placeins} % floatbarrier
+
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{sources.bib}
+
+\theoremstyle{definition}
+\newtheorem{definition}[subsection]{Definition}
+\theoremstyle{plain}
+\newtheorem{theorem}[subsection]{Theorem}
+\theoremstyle{plain}
+\newtheorem{corollary}[subsection]{Corollary}
+\theoremstyle{plain}
+\newtheorem{proposition}[subsection]{Proposition}
+\theoremstyle{plain}
+\newtheorem{remark}[subsection]{Remark}
+\theoremstyle{plain}
+\newtheorem{lemma}[subsection]{Lemma}
+\theoremstyle{plain}
+\newtheorem{example}[subsection]{Example}
+
+\theoremstyle{plain}
+\newtheorem{assumption}[subsection]{Assumption}
+\theoremstyle{plain}
+\newtheorem{problem}[subsection]{Problem}
+
+\DeclareMathOperator{\divergence}{div}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\imag}{Im}
+
+\providetoggle{verbose}
+\settoggle{verbose}{true}
+\providetoggle{old}
+\settoggle{old}{false}
+\providetoggle{fig}
+\settoggle{fig}{true}
+% \toggletrue{paper}
+% \togglefalse{paper}
+\renewcommand{\i}{\textup{i}}
+\let\phi\varphi
+\let\epsilon\varepsilon
+
+\usepackage{environ}
+\NewEnviron{mybox}{%
+\begin{center}
+\colorbox{light-gray}{\color{black}\parbox{\textwidth}{%
+% \fcolorbox{gray}{light-gray}{
+\BODY
+}}
+\end{center}
+}
+
+\usepackage{fancyhdr}
+\newcommand{\fncyblank}{\fancyhf{}}
+
+\newenvironment{abstract} %
+{\cleardoublepage\fncyblank\null\vfill\begin{center} %
+\bfseries\abstractname\end{center}} %
+{\vfill\null}
+
+\title{Numerical Reconstruction of Inclusions in Electrical Conductors}
+\author{Giacomo Milan}
+% \date{3 Ottobre 2017} % oppure anno accademico
+
+\begin{document}
+\input{wproblem}
+\end{document}
