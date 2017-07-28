@@ -21,7 +21,8 @@
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{subfig}
-
+% \captionsetup[figure]{width=.85\textwidth}
+\captionsetup[subfigure]{margin=0.5cm}
 \usepackage{tikz}
 \usetikzlibrary{matrix}
 \usetikzlibrary{positioning}
@@ -136,9 +137,14 @@
 \listoffigures
 %\listoftables
 
-% \begin{abstract}
-%  In this 
-% \end{abstract}
+\begin{abstract}
+ In this work our intention is to present some of the main methods to approach the inverse 
+ inclusion problem, consisting in determining the support of an unknown conductor 
+ object embedded in a background material. Discontinuous conductivity requires a separate 
+ analysis from the issue of the inverse impedance problem, which has been widely treated. 
+ Furthermore we conclude the exposition with some numerical simulations of the algorithms 
+ presented.
+\end{abstract}
 
 %\selectlanguage{italian}
 % \begin{abstract}
@@ -155,7 +161,7 @@ description of the conductivity and thus to image the internal geometry and feat
 These problems arise in non invasive techniques and it may be applied in various fields. For instance, there has been a
 great development in medical applications as a possible diagnostic tool.
 Muscles tissues, fat tissues, bones, inner organs, lungs have different conductive properties, thus it should be possible, in principle,
-to give an imaging method that in some cases could accomplish other well known techniques such as X-rays ar MRI, providing different information.
+to give an imaging method that in some cases could accomplish other well known techniques such as X-rays or MRI, providing different information.
 
 Keeping in mind such medical applications, we will focus on a special instance of the conductivity problem known as the Inverse Inclusion Problem.
 Denoting by $\Omega$ a conductor body, whose conductivity is known, let us assume that in a region $D$ compactly contained in $\Omega$,
@@ -3329,7 +3335,8 @@ logarithmic scale for both axes, we used
 the harmonic function $v(x,y)=x^3 - 3 xy^2$. We can observe the exponential convergence 
 to the exact solution $N_{0n}f\to v|_{\partial \Omega}$. The integration for the ellipse 
 is exact, while for a generic smooth curve we could expect a good, but not a optimal result.
-
+Instead, in Figure \ref{fig:contourplots_direct} we can compare the direct implementation of two 
+direct maps the Laplace problem and the inclusion problem.
 \iftoggle{fig}{
 \begin{center}
 \begin{figure}
@@ -3361,6 +3368,24 @@ is exact, while for a generic smooth curve we could expect a good, but not a opt
 \caption{Loglog plot of the convergence order for two Lipschitz inclusions: 
 a drop shaped domain with one vertex, and a triangle, computed with the infinity norm.}
 \label{fig:convergence-N_0-Lipschitz}
+\end{figure}
+\end{center}
+}
+
+\iftoggle{fig}{
+\begin{center}
+\begin{figure}
+\subfloat[][\emph{Computed solution for direct Laplace problem}.]
+{
+\includegraphics[width=.48\textwidth]{fig/contourplots_direct_0}
+}
+\subfloat[][\emph{Computed solution for direct problem with an elliptic inclusion}.]
+{
+\includegraphics[width=.48\textwidth]{fig/contourplots_direct_D}
+}
+\caption{Numerical discretization of the direct problems, with Neumann boundary data given by the 
+harmonic function $(x-2)^2-y^2$.}
+\label{fig:contourplots_direct}
 \end{figure}
 \end{center}
 }
@@ -3412,6 +3437,25 @@ $\psi_{0z}$, we will plot the inverse of the ratio of the two norms, namely
  r_n(z)\coloneqq\frac{\|\psi_{0zn}\|_{L^2(\partial \Omega)}}{\|f_n\|_{L^2(\partial \Omega)}},
 \end{equation}
 such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
+In figure \ref{fig:contourplots_rhs}, we can see the numerical discretization of the right hand side $\psi_{z0}$, 
+compared with $\psi_{z}$.
+\iftoggle{fig}{
+\begin{center}
+\begin{figure}
+\subfloat[][\emph{Computed solution for direct Laplace problem}.]
+{
+\includegraphics[width=.48\textwidth]{fig/contourplots_rhs_0}
+}
+\subfloat[][\emph{Computed solution for direct problem with an elliptic inclusion}.]
+{
+\includegraphics[width=.48\textwidth]{fig/contourplots_rhs_D}
+}
+\caption{Numerical discretization of the direct problems, with Neumann boundary data given by the 
+harmonic function $(x-2)^2-y^2$.}
+\label{fig:contourplots_rhs}
+\end{figure}
+\end{center}
+}
 
 \section{Numerical Results}
 This section is dedicated to the discussion of the numerical approximations computed with the 
@@ -3435,11 +3479,11 @@ in Table \ref{tab:ellipse-parameters}, the LSM reconstructs well the position an
 of the inclusion. Moreover, the FM computes with a good accuracy also its size. 
 
 \begin{table}
-\caption{did}
+\caption{\emph{Elliptic inclusion's parameters computed}.}
 \label{tab:ellipse-parameters}
 \begin{center}
 \vspace*{-0.5cm}
-\begin{tabular}{lcccr}
+\begin{tabular}{ccccc}
 \toprule
  & exact && exact &\\
  fig & center & center & axes  & axes \\
@@ -3455,15 +3499,15 @@ of the inclusion. Moreover, the FM computes with a good accuracy also its size.
 \iftoggle{fig}{
 \begin{center}
 \begin{figure}
-\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ elliptic}.]
+\subfloat[][\emph{Linear sampling method for $\alpha=\mathrm{1e}{-10}$}.]
 {
 \includegraphics[width=.48\textwidth]{fig/one_ellipse_lsm_ellipse0}
 }
-\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
+\subfloat[][\emph{Factorization method}.]
 {
 \includegraphics[width=.48\textwidth]{fig/one_ellipse_fm_ellipse0}
 }
-\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\caption{Shape and size approximations for an elliptic inclusion.}
 \label{fig:one_ellipse0}
 \end{figure}
 \end{center}
@@ -3472,15 +3516,15 @@ of the inclusion. Moreover, the FM computes with a good accuracy also its size.
 \iftoggle{fig}{
 \begin{center}
 \begin{figure}
-\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ elliptic}.]
+\subfloat[][\emph{Linear sampling method for $\alpha=\mathrm{1e}{-10}$}.]
 {
 \includegraphics[width=.48\textwidth]{fig/one_ellipse_lsm_ellipse1}
 }
-\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
+\subfloat[][\emph{Factorization method}.]
 {
 \includegraphics[width=.48\textwidth]{fig/one_ellipse_fm_ellipse1}
 }
-\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\caption{Shape and size approximations for an elliptic inclusion, not centered in $\Omega$.}
 \label{fig:one_ellipse1}
 \end{figure}
 \end{center}
@@ -3494,7 +3538,7 @@ and \ref{fig:first_compare_triangle}, which show a good approximation of the sha
 of the position of the different inclusions. 
 \begin{center}
 \begin{figure}[]%[tb]
-\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$}.]
+\subfloat[][\emph{Linear sampling method for for $\alpha=\mathrm{1e}{-10}$}.]
 {
 \includegraphics[width=.48\textwidth]{fig/first_compare_lsm_kite0}
 }
@@ -3502,27 +3546,27 @@ of the position of the different inclusions.
 {
 \includegraphics[width=.48\textwidth]{fig/first_compare_fm_kite0}
 }
-\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\caption{Comparison between two method for a kite shaped inclusion.}
 \label{fig:first_compare_kite}
 \end{figure}
 \end{center}
 \begin{center}
 \begin{figure}%[tb]
-\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$}.]
+\subfloat[][\emph{Linear sampling method for $\alpha=\mathrm{1e}{-10}$}.]
 {
 \includegraphics[width=.48\textwidth]{fig/first_compare_lsm_drop0}
 }
 \subfloat[][\emph{Factorization method}.]
 {
-\includegraphics[width=.48\textwidth]{fig/first_compare_fm_drop0}
+\includegraphics[width=.38\textwidth]{fig/first_compare_fm_drop0}
 }
-\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\caption{Comparison between two method for a drop shaped inclusion.}
 \label{fig:first_compare_drop}
 \end{figure}
 \end{center}
 \begin{center}
 \begin{figure}%[tb]
-\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$}.]
+\subfloat[][\emph{Linear sampling method for $\alpha=\mathrm{1e}{-10}$}.]
 {
 \includegraphics[width=.48\textwidth]{fig/first_compare_lsm_triangle0}
 }
@@ -3530,7 +3574,7 @@ of the position of the different inclusions.
 {
 \includegraphics[width=.48\textwidth]{fig/first_compare_fm_triangle0}
 }
-\caption{Convergence order for an analytic boundary and for a Lipschitz one}
+\caption{Comparison between two method for a triangle shaped inclusion.}
 \label{fig:first_compare_triangle}
 \end{figure}
 \end{center}
@@ -3549,20 +3593,20 @@ number of quadrature nodes.
 \begin{figure}%[tb]
 \subfloat[][\emph{Linear sampling method}.]
 {
-\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse0_it_alpha_0}
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_it_alpha_0}
 }
 \subfloat[][\emph{Factorization method}.]
 {
-\includegraphics[width=.48\textwidth]{fig/discrepancy_fm_two_ellipse0}
+\includegraphics[width=.38\textwidth]{fig/discrepancy_fm_two_ellipse0}
 }
 \\
+\subfloat[][\emph{Morozov principle applied to LSM after $14$ iterations in $\alpha$}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_it_alpha_14}
+}
 \subfloat[][\emph{Morozov principle applied to LSM after $15$ iterations in $\alpha$}.]
 {
-\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse0_it_alpha_14}
-}
-\subfloat[][\emph{Morozov principle applied to LSM after $17$ iterations in $\alpha$}.]
-{
-\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse0_it_alpha_16}
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_it_alpha_15}
 }
 \caption{Discrepancy principle applied to LSM for a domain with two components.}
 \label{fig:discrepancy_two_ellipse}
@@ -3573,23 +3617,38 @@ number of quadrature nodes.
 \begin{figure}%[tb]
 \subfloat[][\emph{Linear sampling method}.]
 {
-\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse0_it_alpha_0}
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_it_alpha_0}
 }
 \subfloat[][\emph{Factorization method}.]
 {
-\includegraphics[width=.48\textwidth]{fig/discrepancy_fm_three_ellipse0}
+\includegraphics[width=.38\textwidth]{fig/discrepancy_fm_three_ellipse0}
 }
 \\
+\subfloat[][\emph{Morozov principle applied to LSM after $14$ iterations in $\alpha$}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_it_alpha_14}
+}
 \subfloat[][\emph{Morozov principle applied to LSM after $15$ iterations in $\alpha$}.]
 {
-\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse0_it_alpha_14}
-}
-\subfloat[][\emph{Morozov principle applied to LSM after $17$ iterations in $\alpha$}.]
-{
-\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse0_it_alpha_16}
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_it_alpha_15}
 }
 \caption{Discrepancy principle applied to LSM for a domain with three components.}
 \label{fig:discrepancy_three_ellipse}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}%[tb]
+\subfloat[][\emph{Plot of $\alpha$ computed by the Morozov principle after $15$ iterations}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_alpha_it_alpha_15}
+}
+\subfloat[][\emph{Plot of $\alpha$ computed by the Morozov principle after $15$ iterations}.]
+{
+\includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_alpha_it_alpha_15}
+}
+\caption{Check on values of $\alpha$ computed by the Morozov discrepancy principle}
+\label{fig:discrepancy_alpha}
 \end{figure}
 \end{center}
 
@@ -3602,20 +3661,20 @@ introduce some noise in the data, such that $\|y - y^\delta\|\propto\delta$ is m
 We note that the FM is more sensible to noise, while the regularized LSM is more stable, as can 
 deduced by observing Figure \ref{fig:noise}. Indeed, introducing a normal distributed random noise of 
 maximum amplitude equal to $\delta$, we can observe that factorization method does not work for 
-values of $\delta$ greater than $1e-05$, while the norm of the regularized solution computed with
+values of $\delta$ greater than $\mathrm{1e}{-05}$, while the norm of the regularized solution computed with
 the linear sampling method still approximates the unknown inclusion.
 
 \begin{center}
 \begin{figure}%[tb]
-\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$ and $\delta=1e-05$}.]
+\subfloat[][\emph{Linear sampling method for $\alpha=\mathrm{1e}{-10}$ and $\delta=\mathrm{1e}{-05}$}.]
 {
 \includegraphics[width=.30\textwidth]{fig/noise_lsm_ellipse0_noiselevel1e-05}
 }
-\subfloat[][\emph{Linear sampling method for $\alpha=1e-10$ and $\delta=1e-02$}.]
+\subfloat[][\emph{Linear sampling method for $\alpha=\mathrm{1e}{-10}$ and $\delta=\mathrm{1e}{-02}$}.]
 {
 \includegraphics[width=.30\textwidth]{fig/noise_lsm_ellipse0_noiselevel1e-02}
 }
-\subfloat[][\emph{Factorization method for $\delta=1e-02$}.]
+\subfloat[][\emph{Factorization method for $\delta=\mathrm{1e}{-02}$}.]
 {
 \includegraphics[width=.30\textwidth]{fig/noise_fm_ellipse0_noiselevel1e-05}
 }
@@ -3684,6 +3743,21 @@ In this case a possible solution is
 \label{def:collectively-compact}
  Let $\mathcal{A}=\{A:X\to Y\}$ be a set of linear operators between two normed spaces. It's called a \emph{collectively compact} set if for each bounded set $U\subset X$ the set of images $\mathcal{A}(U)=\{A(U):A\in\mathcal{A}\}$ is relatively compact.
 \end{definition}
+\chapter*{Conclusions}
+\addcontentsline{toc}{chapter}{Conclusions}
+The reciprocity gap principle turns out to be equivalent to the linear sampling method.
+In both cases, the main difficulty which arises in the algorithm is the identification of an approximating
+sequence for a generic sampling point $z$ inside the unknown domain $D$. This fact reflects itself 
+on the moderately good, but not satisfying, results.
+The regularization helps the stability of the linear sampling implementation, and 
+the Morozov principle improves significantly the computed approximation, but at a high 
+computational effort, associated with difficulties of very small values.
+On the other end, the factorization method has the advantage of giving an approximation 
+without solving any linear system, but requires a high accuracy of data, lightly affected 
+by noise.
+
+In conclusion, the combination of all the methods gives an good idea of the unknown 
+inclusion, and we could expect similar results even for non constant conductivities.
 
 %\vspace{5cm}
 %\nocite{*}
