@@ -108,6 +108,17 @@
 \renewcommand{\i}{\textup{i}}
 \let\phi\varphi
 \let\epsilon\varepsilon
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amssymb,tikz}
+
+\newcommand{\mysetminusD}{\hbox{\tikz{\draw[line width=0.6pt,line cap=round] (3pt,0) -- (0,6pt);}}}
+\newcommand{\mysetminusT}{\mysetminusD}
+\newcommand{\mysetminusS}{\hbox{\tikz{\draw[line width=0.45pt,line cap=round] (2pt,0) -- (0,4pt);}}}
+\newcommand{\mysetminusSS}{\hbox{\tikz{\draw[line width=0.4pt,line cap=round] (1.5pt,0) -- (0,3pt);}}}
+
+\newcommand{\mysetminus}{\mathbin{\mathchoice{\mysetminusD}{\mysetminusT}{\mysetminusS}{\mysetminusSS}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \usepackage{environ}
 \NewEnviron{mybox}{%
@@ -138,12 +149,13 @@
 %\listoftables
 
 \begin{abstract}
- In this work our intention is to present some of the main methods to approach the inverse 
- inclusion problem, consisting in determining the support of an unknown conductor 
- object embedded in a background material. Discontinuous conductivity requires a separate 
- analysis from the issue of the inverse impedance problem, which has been widely treated. 
- Furthermore we conclude the exposition with some numerical simulations of the algorithms 
- presented.
+ In this work we show some of the main methods 
+ to approach the inverse inclusion problem, which consists in determining 
+ the support of an unknown conductor object embedded in a background material. 
+ Discontinuous conductivity requires a separate analysis from the issue 
+ of the inverse impedance problem, which has been widely treated in literature. 
+ Furthermore we conclude the exposition with some numerical simulations 
+ of the algorithms presented.
 \end{abstract}
 
 %\selectlanguage{italian}
@@ -151,14 +163,73 @@
 %  Italian Abstract
 % \end{abstract}
 % \selectlanguage{english}
-
+\chapter*{Introduzione}
+In questa tesi prenderemo in esame il \emph{problema inverso dell'impedenza}, 
+che descrive il comportamento di un campo elettromagnetico definito in un 
+ambiente con conduttività variabile.
+Il problema proposto per la prima volta alla comunità scientifica da 
+Calder\'on \cite{Ca}, è diventato un classico esempio di problema inverso, 
+noto come Electrical Impedance Tomography (EIT),
+in cui si chiede di stimare i parametri che compaiono nel modello matematico, 
+nel nostro caso la conduttività, avendo a disposizione la conoscenza completa 
+o parziale della mappa che descrive le grandezze misurabili (output) a partire dai 
+dati iniziali (input).
+Questo genere di problemi è di cruciale importanza nelle applicazioni, dove
+molto spesso lo scenziato non può accedere allo spazio in cui è definito il modello 
+matematico e deve accontentarsi di misurazioni all'esterno di esso. 
+Innumerevoli esempi sono dati da applicazioni non invasive in ambito biomedicale, 
+oltre a Raggi X o RMI, 
+dove la presenza di muscoli, cartilagini, ossa, tessuti molli o duri, determina 
+la variabilità della conduttività. La scala di valori dei parametri è ancora 
+più ampia in ambito geofisico, dove si vuole stimare le proprietà del 
+sottosuolo o individuare eventuali corpi estranei.
+L'equazione dell'impedenza per il potenziale $u$ è la seguente
+$$\left\{\begin{array}{ll}
+\mathrm{div}\big(\gamma\nabla u\big)=0, & \textrm{in }\Omega,\\
+u=f, & \textrm{on }\partial\Omega,
+\end{array}\right.$$
+dove $f\in H^{1/2}(\partial \Omega)$ è il potenziale fissato al bordo, e 
+$\partial u/\partial \nu$ è la densità di corrente.
+L'unicità di $\gamma$ in $\mathbb{R}^3$ è stata risolta da Sylvester e Uhlmann 
+in \cite{Sy-Uh} e in \cite{Sy-Uh86}, costruendo un insieme di soluzioni definite in 
+tutto $\mathbb{R}^3$, con andamento asintotico esponenziale, ispirandosi al lavoro 
+di Calder\'on.
+\par
+In questa tesi tratteremo un caso particolare dell'impedenza, noto come \emph{problema inverso 
+dell'inclusione}, in cui, nota la conduttività del materiale di fondo $a(x)$, si chiede di 
+stimare il supporto di una regione incognita $D\subset \Omega$ di conduttività $a(x) + b(x)$, 
+con $b(x)$ incognita. La discontinuità della conduttività lungo la superficie $\partial D$ 
+richiede una analisi a parte del problema, 
+del quale ci occuperemo in tutti gli aspetti. Dato per consolidata la 
+\emph{buona posizione} del problema diretto, ovvero \emph{esistenza}, \emph{unicità} e \emph{dipedendenza 
+continua} della soluzione $u$ dai dati, prenderemo in esame per il problema inverso
+\begin{enumerate}
+ \item l'\emph{unicità} della regione $D$ e della conduttività $a(x) + b(x)\chi_D$ incognite, data 
+ la completa conoscenza dei dati di Cauchy $u|_{\partial \Omega}$, 
+ $\partial_\nu u|_{\partial \Omega}$ al bordo;
+ \item la \emph{dipendenza continua dai dati}, necessaria per avere una formulazione stabile, 
+ che garantisca un controllo dell'errore della soluzione calcolata a partire da piccoli errori 
+ nei dati;
+ \item il \emph{metodo numerico} per ricostruire la regione incognita $D$.
+\end{enumerate}
+Il principale risultato di unicità per determinare $a(x)$ e $b(x)$ è stato dimostrato da Isakov in \cite{Is88}, 
+mentre Alessandrini e Di Cristo in \cite{Al-DC} hanno dimostrato un dipendenza di tipo logaritmico nella 
+stima di stabilità per il supporto $\partial D$.
+Nel seguito ci limiteremo al caso con conduttività costante, scegliendo in particolare $a(x)=1$ e $b(x)=k-1$ in $D$.
+Prenderemo in considerazione alcuni metodi già impiegati nell'affrontare il problema, 
+come il \emph{linear sampling method} nel Capitolo \ref{ch:linear-sampling} e il 
+\emph{factorization method} nel Capitolo \ref{ch:factorization}. Nel Capitolo \ref{ch:reciprocity} 
+esamineremo il \emph{reciprocity gap method}, già usato per il problema inverso dello 
+scattering, che verrà confrontato con i precedenti metodi nel Capitolo \ref{ch:link}.
+Infine nel Capitolo \ref{ch:implementation} proporremo i risultati ottenuti 
+dall'implementazione numerica degli algoritmi proposti.
 \chapter{Introduction}
 In this thesis we will consider the inverse conductivity problem, or Electrical Impedance Tomography (EIT),
-that was proposed to the mathematical community by Calderon \cite{Ca} in 1980.
+that was proposed to the mathematical community by Calder\'on \cite{Ca} in 1980.
 This problem is a classical problem in applications and its goal is to determine the conductivity of a body by making electrostatic
 measurements on the boundary. Since different materials display different electrical properties, the aim is to give a pointwise
-description of the conductivity and thus to image the internal geometry and features of the body, performing current and voltages measurements.
-These problems arise in non invasive techniques and it may be applied in various fields. For instance, there has been a
+description of the conductivity and thus to image the internal geometry and the features of the body, performing currents and voltages measurements.
+These problems arise in non invasive techniques and they may be applied in various fields. For instance, there has been a
 great development in medical applications as a possible diagnostic tool.
 Muscles tissues, fat tissues, bones, inner organs, lungs have different conductive properties, thus it should be possible, in principle,
 to give an imaging method that in some cases could accomplish other well known techniques such as X-rays or MRI, providing different information.
@@ -171,32 +242,32 @@ $\gamma$ reads
 $$\gamma(x)=1+(k-1)\chi_D,$$
 where $\chi_D$ is the characteristic function of the set $D$.
 
-Prescribing a voltage $f\in H^{1/2}(\partial\Omega)$, the induce potential $u$ is the solution of the problem
+Prescribing a voltage $f\in H^{1/2}(\partial\Omega)$, the induced potential $u$ is the solution of the problem
 $$\left\{\begin{array}{ll}
-\mathrm{div}((1+(k-1)\chi_D)\nabla u)=0, & \textrm{in }\Omega,\\
+\mathrm{div}\big((1+(k-1)\chi_D)\nabla u\big)=0, & \textrm{in }\Omega,\\
 u=f, & \textrm{on }\partial\Omega.
 \end{array}\right.$$
 The current density that we measure on the boundary is given by the normal derivative of the potential
-$\frac{\partial u}{\partial\nu}_{|\partial\Omega}$. The idea is to recover information on the inclusion $D$ performing infinitely many
+$\partial_\nu u|_{\partial\Omega}$. The idea is to recover information on the inclusion $D$ performing infinitely many
 boundary measurements. For this purpose we define the so called Dirichlet--to--Neumann map
-$$\begin{array}{ccccc}
-\Lambda_D & : & H^{1/2}(\partial\Omega) & \longrightarrow & H^{-1/2}(\partial\Omega)\\
-          &   &   f                     & \longrightarrow & \frac{\partial u}{\partial\nu}_{|\partial\Omega},
+$$\begin{array}{crcl}
+\Lambda_D : & H^{1/2}(\partial\Omega) & \longrightarrow & H^{-1/2}(\partial\Omega)\\
+            &   f                     & \longmapsto & \partial_\nu u|_{\partial\Omega},
 \end{array}$$
 which maps the voltage $f$ to the corresponding current density measured on the boundary.
 The inverse problem we are addressing to is to determine $D$ from a knowledge of the map $\Lambda_D$.
 We can divide this problem into three main issues.
 \begin{enumerate}
-\item Uniqueness: this means if it is possible to determine uniquely the inclusion $D$ form the Dirichlet--to--Neumann map.
+\item Uniqueness: this means if it is possible to determine uniquely the inclusion $D$ from the Dirichlet--to--Neumann map.
 \item Stability: how the inclusion $D$ depends on the Dirichlet--to--Neumann map. In particular it is interesting
 to determine the modulus of continuity of such a dependence.
-\item Numerical Reconstruction: provide numerical algorithm to find an approximation of the inclusion $D$ given the boundary data.
+\item Numerical Reconstruction: provide numerical algorithms to find an approximation of the inclusion $D$ given the boundary data.
 \end{enumerate}
 In this thesis we will focus our attention on the numerical reconstruction issue.
-Specifically we will derive a new method to reconstruct $D$ and we will compare if with several existing ones
+Specifically we will derive a new method to reconstruct $D$ and we will compare it with several existing ones
 emphasizing advantages and disadvantages.
 
-In the next two sections of this introduction, we will review he main results of uniqueness and stability
+In the next two sections of this introduction, we will review the main results of uniqueness and stability
 for the inverse conductivity problem and the inverse inclusion problem respectively.
 
 
@@ -210,31 +281,31 @@ For $f\in H^{1/2}(\partial\Omega)$,
 the potential $u\in H^{1}(\Omega)$ will be the weak
 solution of the boundary value problem
 \begin{eqnarray}
-\label{eqcond}
+\label{eqcond}  
 &\mathrm{div}(\gamma\nabla u)=0\qquad&\textrm{in }\Omega,\\
 \label{dirdatum}
 &u=f\qquad&\textrm{on }\partial\Omega.
 \end{eqnarray}
 Since for any $f\in H^{1/2}(\partial\Omega)$, there exists a unique solution $u\in H^{1}(\Omega)$
 to the Dirichlet problem (\ref{eqcond})--(\ref{dirdatum}),
-we can define the Dirichlet--to--Neumann map $\Lambda_{\gamma}$ as follow
+we can define the Dirichlet--to--Neumann map $\Lambda_{\gamma}$ as follows
 \begin{equation}
 \label{dirtoneum}
-\begin{array}{cccc}
+\begin{array}{crcl}
 \Lambda_{\gamma}:&H^{1/2}(\partial\Omega)&\longrightarrow&H^{-1/2}(\partial\Omega)\\
-&f&\longrightarrow&\left(\gamma\frac{\partial u}{\partial\nu}\right)_{|\partial\Omega}.
+&f&\longmapsto&\left(\gamma\partial_\nu u\right)|_{\partial\Omega}.
 \end{array}
 \end{equation}
 Using the divergence theorem we have
 \begin{equation}
 \label{Qmap}
-Q_{\gamma}(f)=\int_{\Omega}\gamma|\nabla u|^{2}dx
+Q_{\gamma}(f)\coloneqq\int_{\Omega}\gamma|\nabla u|^{2}dx
 =\int_{\partial\Omega}\Lambda_\gamma(f)fd\sigma,
 \end{equation}
 where $d\sigma$ denotes surface measure and $u$ is the solution
 of (\ref{eqcond})--(\ref{dirdatum}).
 
-Calder\`on consider the map
+Calder\'on considered the map
 \begin{equation}
 \label{Q}
 Q\,:\,\gamma\longrightarrow Q_{\gamma},
@@ -246,17 +317,17 @@ $f$ at the boundary.
 In \cite{Ca} the question was reduced to whether the products of gradients
 of harmonic functions is dense in $L^{2}(\Omega)$.
 
-Calder\`on
+Calder\'on
 took the following harmonic functions
 \begin{equation}
 \label{caldfun}
 u(x)=\mathrm{e}^{x\cdot\rho},\qquad v(x)=\mathrm{e}^{-x\cdot\overline{\rho}},
 \end{equation}
 where $\rho\in\mathbb{C}^{n}$ with $\rho\cdot\rho=0$ and he
-showed that if the Fr\`echet derivative of $Q$
+showed that if the Fr\'echet derivative of $Q$
 at $\gamma=\mathrm{const.}$ in the direction $h$ is zero,
-then $h=0$, that is $dQ_{|\gamma=\mathrm{const.}}$ is injective.
-Calder\`on also observed that using the solutions (\ref{caldfun})
+then $h=0$, that is $dQ|_{\gamma=\mathrm{const.}}$ is injective.
+Calder\'on also observed that using the solutions (\ref{caldfun})
 one can find an approximation for the conductivity $\gamma$ of the form
 \begin{equation}
 \label{1+gamma}
@@ -265,20 +336,19 @@ one can find an approximation for the conductivity $\gamma$ of the form
 with $h$ small enough in $L^{\infty}$ norm.
 Thus he was able to reconstruct conductivities $\gamma$ of the form (\ref{1+gamma}).
 
-Studying Calder\`on's solutions (\ref{caldfun}) Sylvester and Uhlmann in \cite{Sy-Uh}
+Studying Calder\'on's solutions (\ref{caldfun}) Sylvester and Uhlmann in \cite{Sy-Uh}
 (see also \cite{Sy-Uh86})
-constructed exponentially growing solutions of $L_{\gamma}=\mathrm{div}(\gamma\nabla u)=0$
+constructed exponentially growing solutions of $L_{\gamma}(u)=\mathrm{div}(\gamma\nabla u)=0$
 in $\Omega$ of the form
-$$u=\mathrm{e}^{x\cdot\xi}\gamma^{-1/2}(1+\psi(x,\xi)),$$
+$$u(x,\xi)=\mathrm{e}^{x\cdot\xi}\gamma^{-1/2}(1+\psi(x,\xi)),$$
 where $\xi\in\mathbb{C}^n$ with $\xi\cdot\xi=0$
 and $\psi\to0$ as $|\xi|\to+\infty$, see the subsequent Theorem~\ref{expgrowsol},
 that allow them to prove the following identifiability result.
 
 \begin{theorem}
 \label{sy-ul-teo}
-Let $\Omega\subset\mathbb{R}^n$ ($n\geq3$) be a domain with
-$C^{\infty}$ boundary. Suppose $\gamma_1$ and
-$\gamma_2\in C^{\infty}(\overline{\Omega})$,
+Let $\Omega\subset\mathbb{R}^n$, $n\geq3$, be a domain with
+$C^{\infty}$ boundary. Suppose $\gamma_1, \gamma_2\in C^{\infty}(\overline{\Omega})$,
 $\gamma_1$, $\gamma_2>0$ in $\overline{\Omega}$, and
 \begin{equation}
 \label{1=2}
@@ -297,7 +367,7 @@ For each $t\in[0,1]$, Sylvester and Uhlmann have proved the following theorem.
 Let $\Omega\subset\subset\mathbb{R}^n$, $n\geq3$, be a bounded domain
 and $s>n/2$.
 There exist constants $c_1$ and $c_2$ such that if
-$$\xi\cdot\xi=0,\qquad\xi\in\mathbb{C}^n$$
+$$\xi\cdot\xi=0,\qquad\xi\in\mathbb{C}^n,$$
 and
 $$|\xi|>c_1\Vert q\Vert_{H^s(\Omega)},
 \qquad q=\frac{\Delta\gamma^{1/2}}{\gamma^{1/2}},$$
@@ -316,10 +386,10 @@ where
 In addition,
 \begin{equation}
 \label{opt}
-u(x,\xi,0)_{|\partial\Omega}=u(x,\xi,1)_{|\partial\Omega}.
+u(x,\xi,0)|_{\partial\Omega}=u(x,\xi,1)|_{\partial\Omega}.
 \end{equation}
 \end{theorem}
-Note that for $|\xi|$ large, these solutions behave like Calder\`on's
+Note that for $|\xi|$ large, these solutions behave like Calder\'on's
 exponential solutions (\ref{caldfun}).
 
 Let
@@ -327,27 +397,27 @@ Let
 &w(t)=u(x,\xi_1,t),&v(t)=u(x,\xi_2,t).
 \end{align*}
 We denote by $Q_{\gamma}(f,g)$ the bilinear form obtained from the quadratic
-form by polarization. According to \eqref{1=2},
-$$0=Q_{\gamma_1}(w(0)_{|\partial\Omega},v(0)_{|\partial\Omega})-
-Q_{\gamma_2}(w(0)_{|\partial\Omega},v(0)_{|\partial\Omega}).$$
+form by polarization (or parallelogram identity). According to \eqref{1=2},
+$$0=Q_{\gamma_1}(w(0)|_{\partial\Omega},v(0)|_{\partial\Omega})-
+Q_{\gamma_2}(w(0)|_{\partial\Omega},v(0)|_{\partial\Omega}).$$
 Applying \eqref{opt},
-$$0=Q_{\gamma_1}(w(0)_{|\partial\Omega},v(0)_{|\partial\Omega})-
-Q_{\gamma_2}(w(1)_{|\partial\Omega},v(1)_{|\partial\Omega})$$
+$$0=Q_{\gamma_1}(w(0)|_{\partial\Omega},v(0)|_{\partial\Omega})-
+Q_{\gamma_2}(w(1)|_{\partial\Omega},v(1)|_{\partial\Omega})$$
 or
-$$0=\int_0^1dt\{Q_{\gamma}(w_{|\partial\Omega},v_{|\partial\Omega})\}^{\bullet},
-\qquad(\,\,)^{\bullet}=\frac{d}{dt}$$
+$$0=\int_0^1dt\{Q_{\gamma}(w|_{\partial\Omega},v|_{\partial\Omega})\}^{\bm\cdot},
+\qquad(\,\,)^{\bm\cdot}=\frac{d}{dt},$$
 which becomes
 \begin{equation}
 \label{sul}
 0=\int_0^1dt\left\{\int_{\Omega}\dot{\gamma}\nabla w\cdot\nabla v
 +\int_{\partial\Omega}\gamma\left(\dot{w}\frac{\partial v}{\partial\nu}+
-\dot{v}\frac{\partial w}{\partial\nu}\right)\right\}
+\dot{v}\frac{\partial w}{\partial\nu}\right)\right\},
 \end{equation}
 where we have integrated by parts.
-The following lemma holds (see \cite[Lemma 2.8]{Sy-Uh})
+The following lemma holds (see \cite[Lemma 2.8]{Sy-Uh}).
 \begin{lemma}
 \label{lemmasu}
-$$\int_0^1\int_{\partial\Omega}\gamma\left(\dot{w}\frac{\partial v}{\partial\nu}+
+$$\int_0^1dt\int_{\partial\Omega}\gamma\left(\dot{w}\frac{\partial v}{\partial\nu}+
 \dot{v}\frac{\partial w}{\partial\nu}\right)=0.$$
 \end{lemma}
 Application of the lemma to \eqref{sul} yields
@@ -359,31 +429,31 @@ where we have replaced the domain of integration by all of $\mathbb{R}^n$.
 It is possible to extend $\dot{\gamma}$ to be identically zero outside
 $\Omega$. The identity
 $$L_{\gamma}(uw)=wL_{\gamma}v+vL_{\gamma}w
-+2\gamma\nabla v\cdot\nabla w$$
++2\gamma\nabla v\cdot\nabla w,$$
 combined with \eqref{sul2} and an integration by parts yields
 $$0=\int_0^1dt\int_{\Omega}L_{\gamma}\left(
 \frac{\dot{\gamma}}{\gamma}\right)vw.$$
 If we recall \eqref{opticsol}, this becomes
 \begin{equation}
 \label{sul3}
-0=\int_0^1\int_{\mathbb{R}^n}\frac{1}{\gamma}
+0=\int_0^1dt\int_{\mathbb{R}^n}\frac{1}{\gamma}
 L_{\gamma}\left(\frac{\dot{\gamma}}{\gamma}\right)
 \mathrm{e}^{x\cdot(\xi_1+\xi_2)}(1+\psi(x,\xi_1,t))
 (1+\psi(x,\xi_2,t)),
 \end{equation}
 we choose
 \begin{align*}
-&\xi_1=i\left(\frac{k}{2}+r\eta\right)+\zeta
-&\xi_2=i\left(\frac{k}{2}-r\eta\right)-\zeta
+&\xi_1=i\left(\frac{k}{2}+r\eta\right)+\zeta,
+&\xi_2=i\left(\frac{k}{2}-r\eta\right)-\zeta,
 \end{align*}
 where $k$ is an arbitrary real vector, $r$ is an arbitrary number, and
 $\eta$ and $\zeta$ are real vectors chosen to satisfy
 \begin{align*}
-<k,\eta>\,=\,<k,\zeta>\,=\,<\eta,\zeta>=0\\
-|\eta|=1\quad|\zeta|^2=\frac{|k|^2}{4}+r^2.
+\langle k,\eta\rangle\,=\,\langle k,\zeta \rangle \,=\,\langle \eta,\zeta\rangle=0,\\
+|\eta|=1,\quad|\zeta|^2=\frac{|k|^2}{4}+r^2.
 \end{align*}
 With this choice of $\xi_1$ and $\xi_2$, \eqref{sul3} becomes
-$$0=\int_0^1\int_{\mathbb{R}^n}\frac{1}{\gamma}
+$$0=\int_0^1dt\int_{\mathbb{R}^n}\frac{1}{\gamma}
 L_{\gamma}\left(\frac{\dot{\gamma}}{\gamma}\right)
 \mathrm{e}^{x\cdot k}(1+\psi(x,\xi_1,t))
 (1+\psi(x,\xi_2,t)).$$
@@ -393,18 +463,18 @@ $$0=\int_{\mathbb{R}^n}\left[\int_0^1dtL_{\gamma}\left(\frac{\dot{\gamma}}{\gamm
 \right]\mathrm{e}^{ix\cdot k}\qquad\textrm{for all }k\in\mathbb{R}^n.$$
 The inversion theorem for the Fourier transform implies
 $$\int_0^1dtL_{\gamma}\left(\frac{\dot{\gamma}}{\gamma}\right)
-\frac{1}{\gamma}$$
+\frac{1}{\gamma},$$
 or
-$$0=\int_0^1dt[\Delta(\log\gamma+\frac{1}{2})|\nabla\gamma|^2]^{\cdot}.$$
-By the fundametal theorem calculus
+$$0=\int_0^1dt[\Delta(\log\gamma)+\frac{1}{2}|\nabla\log\gamma|^2]^{\bm{\cdot}}.$$
+By the fundamental theorem calculus
 $$0=\Delta(\log\gamma_2-\log\gamma_1)+\frac{1}{2}
-\left[|\nabla(\log\gamma_2)|^2-|\nabla(\log\gamma_1)|^2\right]$$
+\left[|\nabla(\log\gamma_2)|^2-|\nabla(\log\gamma_1)|^2\right],$$
 or
 $$0=\Delta(\log\gamma_2-\log\gamma_1)+\frac{1}{2}\nabla
-(\log\gamma_2+\log\gamma_1)\cdot(\log\gamma_2+\log\gamma_1)$$
-which is a linear equation for the function $\log\gamma_2+\log\gamma_1$, which vanishes
+(\log\gamma_2+\log\gamma_1)\cdot\nabla(\log\gamma_2-\log\gamma_1),$$
+which is a linear equation for the function $\log\gamma_2-\log\gamma_1$, which vanishes
 on $\partial\Omega$. The maximum principle applies to give
-$$\log\gamma_2-\log\gamma_1\equiv0\qquad\textrm{in }\Omega$$
+$$\log\gamma_2-\log\gamma_1\equiv0\qquad\textrm{in }\Omega,$$
 or
 $$\gamma_2\equiv\gamma_1\qquad\textrm{in }\Omega.$$
 \end{proof}
@@ -428,7 +498,7 @@ the uniqueness result of Nachman in
 in a domain $\Omega$ with $C^{1,1}$ boundary. Nachman uniquely recovers
 real valued conductivities $\gamma$ that are $C^{1,1}$ functions.
 Beside the relaxation of hypotheses on the domain and on the conductivity,
-the novelty here is that it is given a solution to Calder\`on reconstruction problem:
+the novelty here is that it is given a solution to Calder\'on reconstruction problem:
 calculate $\gamma$ in term of $Q_{\gamma}$.
 Nachman proves that one can reduce the problem of determining $\gamma$
 from $\Lambda_{\gamma}$
@@ -441,7 +511,7 @@ solutions
 \eqref{opticsol} proposed by Sylvester and Uhlmann in \cite{Sy-Uh}, whose uniqueness
 proof already contained the idea of converting the problem at the boundary
 to one ``at infinity'', hidden on the fact that solutions
-\eqref{opticsol} behave for $\xi$ large like Calder\`on's function \eqref{caldfun}.
+\eqref{opticsol} behave for $\xi$ large like Calder\'on's function \eqref{caldfun}.
 
 The stability issue of this problem has been studied by Alessandrini in \cite{Al88} who under
 some a priori constraints, shows that the modulus of continuity
@@ -471,7 +541,7 @@ and $\Omega$ such that
 \label{stabcond}
 \Vert\gamma_1-\gamma_2\Vert_{L^{\infty}(\Omega)}
 \leq c\,\omega\left(\Vert\Lambda_{\gamma_1}-\Lambda_{\gamma_2}
-\Vert_{\mathcal{L}(H^{1/2},H^{-1/2})} \right),
+\Vert_{\mathcal{L}(H^{1/2}(\partial \Omega),H^{-1/2}(\partial \Omega))} \right),
 \end{equation}
 where the function $\omega$ is such that
 \begin{equation}
@@ -498,44 +568,45 @@ defined in (\ref{dirtoneum}).
 Let $D_1$, $D_2$ be two possible inclusions,
 $b_1\in C^2(\overline{D}_1)$, $b_2\in C^2(\overline{D}_2)$
 and $\gamma_i=a(x)+b_i(x)\chi_{D_i}$, $i=1,2$.
-In 1988 Isakov \cite{Is88} proved the following theorem.
+In 1988 Isakov \cite{Is88} proved the following uniqueness theorem.
 \begin{theorem}
 \label{isuniq}
 Suppose $D_1$, $D_2$ are two open sets with Lipschitz boundary,
 $\overline{D}_i\subset\Omega$, $i=1,2$,
- and $\Omega\smallsetminus\overline{D}_i$ are connected.
+ and $\Omega\backslash\overline{D}_i$ are connected.
 If $\Lambda_{D_1}=\Lambda_{D_2}$ then
 $D_1=D_2$,
 $b_1=b_2$ on $\partial D_1$ and, in the case $n=3$,
-$a_1=a_2$ on $\Omega$.
+$\gamma_1=\gamma_2$ in $\Omega$.
 \end{theorem}
 
 Let $\mathcal{G}$ be the connected component of
-$\Omega\smallsetminus(\overline{D}_1\cup\overline{D}_2)$ whose boundary
+$\Omega\backslash(\overline{D}_1\cup\overline{D}_2)$ whose boundary
 contains
-$\partial\Omega$ and let $\Omega_D=\Omega\smallsetminus\overline{\mathcal{G}}$.
+$\partial\Omega$ and let $\Omega_D=\Omega\backslash\overline{\mathcal{G}}$.
 
 \begin{lemma}
+There holds the orthogonality relation
 \label{ortog}
 \begin{equation}
 \label{ortogrel}
 \int_{D_1}b_1\nabla u_1\cdot\nabla u_2=\int_{D_2}b_2\nabla u_1\cdot\nabla u_2,
 \end{equation}
 for solutions $u_1$, $u_2$ to equation (\ref{eqcond})
-with $\gamma$ replaced by $\gamma_1$, $\gamma_2$ respectively,
-in an open set that is an arbitrary
-vicinity of $\overline{\Omega}_D$.
+in an open set that is in arbitrary
+vicinities of $\overline{\Omega}_D$,
+with $\gamma$ replaced by $\gamma_1$, $\gamma_2$ respectively.
 \end{lemma}
 \begin{proof}
 Using unique continuation it is not difficult to see that
 $u_{1}=u_2$ on $\mathcal{G}$.
 Subtracting the equation (\ref{eqcond}) with $\gamma=\gamma_1$
-from those with $\gamma=\gamma_2$, one establish the equality
-(\ref{ortogrel}) for any solution $u_2$ and for $u_1$ which
+from those with $\gamma=\gamma_2$, one establishes the equality
+(\ref{ortogrel}) for any $u_2$ as in Lemma \ref{ortog} and for $u_1$ which
 is solution to problem (\ref{eqcond})--(\ref{dirdatum}).
 It is now possible to obtain the lemma using the Runge Approximation
 Theorem and extending the equality (\ref{ortogrel})
-onto all $u_1$ solving equation \eqref{eqcond}.
+onto all $u_1$ solving equation \eqref{eqcond} in the vicinities of $\overline{\Omega}_D$.
 
 Let $X$ be the space of such $u_1$. It is sufficient to prove that solution to
 the Dirichlet problem \eqref{eqcond}--\eqref{dirdatum}
@@ -543,41 +614,40 @@ with $\gamma=\gamma_1$ approximate in $H^1(\Omega_D)$ any
 solution from $X$.
 
 Denote by $X_1$ the space of solutions to the Dirichlet problem
-\eqref{eqcond}--\eqref{dirdatum}. Since
-Hahn--Banach theorem we show that for any $f\in H^{-1}(\Omega_D)$ which
+\eqref{eqcond}--\eqref{dirdatum}, for any boundary data $f$. In view of the
+Hahn--Banach theorem we show that any $f\in H^{-1}(\Omega_D)$ which
 is zero on $X_1$ is zero as well.
 For $f_1\in H^{1}(\Omega_D)$ we shall use the notation
-$f(f_1)=<f,f_1>$.
+$f(f_1)=\langle f,f_1\rangle$.
 Let $\Omega_0$ be a bounded domain with $C^2$ boundary
 such that $\Omega\subset\Omega_0$, $\Omega\neq\Omega_0$.
 Let $G_1(x,y)$ be the Green's function to the Dirichlet problem for the
-operator $\mathrm{div}(\gamma_1\nabla\cdot)$ in $\Omega_D$.
+operator $\mathrm{div}(\gamma_1\nabla\cdot)$ in $\Omega_0$, with forcing term 
+$\delta_x$.
 Let $f=0$ on $X_1$.
-For $x\in\Omega_0\smallsetminus\overline{\Omega}$,
+For $x\in\Omega_0\backslash\overline{\Omega}$,
 the function
 $u_1(\cdot)=G_1(x,\cdot)$ belongs to $X_1$.
 Thus the potential
-
-$$U_f(x)=<f,G_1(x,\cdot)>=0\qquad
-\textrm{on }\Omega_0\smallsetminus\overline{\Omega}$$
-
+$$U_f(x)\coloneqq\langle f,G_1(x,\cdot)\rangle=0\qquad
+\textrm{on }\Omega_0\backslash\overline{\Omega}.$$
 Since $\mathrm{supp}\,f\subset\overline{\Omega}_D$, $U_f$ solves
 the equation
 
 $$\mathrm{div}(a\nabla U_f)=0\qquad
-\textrm{in }\Omega_0\smallsetminus\overline{\Omega}_D.$$
+\textrm{in }\Omega_0\backslash\overline{\Omega}_D.$$
 
 Since $a\in C^1(\overline{\Omega})$, this equation has the property
-of unique continuation, therefore $U_f(x)=0$ in $\Omega_0\smallsetminus\overline{\Omega}_D$.
-Let $u_1\in X_1$, then $u_1$ is solution to the homogeneous
-equation in $\overline{\Omega}_1$, where
+of unique continuation, therefore $U_f(x)=0$ in $\Omega_0\backslash\overline{\Omega}_D$.
+Let $u_1\in X$, then $u_1$ is solution to the homogeneous
+equation near $\overline{\Omega}_1$, where
 $\Omega_1$ is an open set with $C^{\infty}$ boundary
 and $\overline{\Omega}_D\subset\Omega_1$, $\overline{\Omega}_1\subset\Omega$.
 Using the single layer potential representation we have
 $$u_1(y)=\int_{\partial\Omega_1}g(x)G_1(x,y)d\sigma(x),$$
-where $g\in C(\partial\Omega)$.
+where $g\in C(\partial\Omega_1)$.
 Applying the functional $f$ and using the equality $U_f(x)=0$
-if $x\in\partial D_1$, we get $<f,u_1>=0$.
+if $x\in\partial \Omega_1$, we get $\langle f,u_1\rangle=0$.
 So if $f=0$ on $X_1$ then $f=0$ on $X$.
 \end{proof}
 
@@ -587,32 +657,33 @@ we refer to \cite{Is88, Is98} for it.
 We  only show that $D_1=D_2$.
 Assume, by contradiction, that $D_1\neq D_2$.
 Then we may assume that $D_1$ is not contained in $D_2$,
-hence there exists a point $P\in\partial D_1\smallsetminus\overline{D}_2$
+hence there exists a point $P\in\partial D_1\backslash\overline{D}_2$
 such that $P\in\partial\mathcal{G}$.
 Let $r$ be a positive number such that
 $\overline{B}_r(P)\subset\Omega$,
-$\overline{B}_r(P)\cap D_2=\emptyset$ and $\partial\Omega_2\cap\overline{B}_r(P)$
+$\overline{B}_r(P)\cap D_2=\emptyset$ and $\partial\Omega_D\cap\overline{B}_r(P)$
 is a Lipschitz surface.
 There exists a $C^2(\overline{D}_1\cup\overline{B}_r(P))$-function
 $\gamma_3$ such that $\gamma_3\equiv\gamma_1$ on $D_1$.
 We extend $\gamma_3$ onto
-$\Omega\smallsetminus(\overline{D}_1\cup\overline{B}_r(P))$ as $a$.
+$\Omega\backslash(\overline{D}_1\cup\overline{B}_r(P))$ as $a$.
 Using Lemma \ref{ortog} it is possible to prove the following lemma.
 \begin{lemma}
 \label{ortog2}
 Under hypothesis of Lemma \ref{ortog}
-$$\int_{D_1}b_1\nabla u_3\cdot\nabla u_2
-=\int_{D_2}b_2\nabla u_3\cdot\nabla u_2,$$
+\begin{equation}
+\int_{D_1}b_1\nabla u_3\cdot\nabla u_2
+=\int_{D_2}b_2\nabla u_3\cdot\nabla u_2,
+\end{equation}
 for any solution $u_3$ to equation $\mathrm{div}(\gamma_3\nabla u_3)=0$
 near $\overline{\Omega}_D$ and any solution $u_2$
-to the equation \eqref{eqcond} with $\gamma=\gamma_2$
-near $\overline{\Omega}_D$.
+to the equation \eqref{eqcond} near $\overline{\Omega}_D$ with $\gamma=\gamma_2$.
 \end{lemma}
 Let $G_2$ be the Green's function to the Dirichlet problem for the
 operator $\mathrm{div}(\gamma_2\nabla\cdot)$
 in $\Omega$ and $G_3$ for the operator
 $\mathrm{div}(\gamma_3\nabla\cdot)$. Then, for $j=1,2$ we have
-(see \cite{Mi})
+(see \cite{miranda:book})
 \begin{equation}
 \label{mir}
 \nabla_y G_j(x,y)=c_j(y)\left(1+O(y,x-y)\right)|x-y|^{-n}(x-y),
@@ -624,28 +695,28 @@ $$\Vert O(y,x-y)\Vert\leq c|x-y|.$$
 Henceforth we can choose $r_1<r$ so that in $B_{r_1}(P)$
 $$\Vert O(y,x-y)\Vert\leq\frac{1}{2}.$$
 From \eqref{mir} and standard estimates of the Dirichlet problem in
-$\Omega\smallsetminus B_{r_1}(P)$, we deduce that
-$\nabla_y G_j(x,\cdot)$ are bounded in $L^2(\Omega\smallsetminus B_{r_1}(P))$
-provided $x$ close to $P$.
+$\Omega\backslash B_{r_1}(P)$, we deduce that
+$\nabla_y G_j(x,\cdot)$ are bounded in $L^2(\Omega\backslash B_{r_1}(P))$
+provided $x$ is close to $P$.
 
 From Lemma~\ref{ortog2} with $u_3=G_3(x,\cdot)$, $u_2=G_2(x,\cdot)$,
-$x\in B_{r_1}(P)\smallsetminus\overline\Omega_D$ we have
+$x\in B_{r_1}(P)\backslash\overline\Omega_D$ we have
 \begin{multline*}
 \int_{D_1\cap B_{r_1}(P)}b_1\nabla G_3(x,\cdot)\cdot\nabla G_2(x,\cdot)=
--\int_{D_1\smallsetminus B_{r_1}(P)}b_1\nabla G_3(x,\cdot)\cdot\nabla G_2(x,\cdot)\\
+-\int_{D_1\backslash B_{r_1}(P)}b_1\nabla G_3(x,\cdot)\cdot\nabla G_2(x,\cdot)\\
 +\int_{D_2}b_2\nabla G_3(x,\cdot)\cdot\nabla G_2(x,\cdot).
 \end{multline*}
 The right side is bounded when $x$ tends to $P$ and
-$x\in B_{r_1}(P)\smallsetminus\overline\Omega_D$.
+$x\in B_{r_1}(P)\backslash\overline\Omega_D$.
 
-Since our assumptions on the conductivity there exist $\varepsilon>0$ such that
+According to our assumptions on the conductivity there exist $\varepsilon>0$ such that
 either $0<\varepsilon<b_1$ or $b_1<-\varepsilon$ on $B_{r_1}(P)$.
 In the first case the representation \eqref{mir} and the choice of
 $B_{r_1}(P)$ give
 $$\varepsilon_1\int_{D_1\cap B_{r_1}(P)}|x-y|^{2-2n}dy
 \leq\int_{D_1\cap B_{r_1}(P)}b_1\nabla G_3(x,\cdot)\cdot\nabla G_2(x,\cdot).$$
-the left side tends to $+\infty$ as $x$ tends to $P$
-and $x\in B_{r_1}(P)\smallsetminus\overline\Omega_D$, so we have a contradiction
+The left side tends to $+\infty$ as $x$ tends to $P$
+and $x\in B_{r_1}(P)\backslash\overline\Omega_D$, so we have a contradiction.
 Similarly, we get a contradiction in the case $b_1<-\varepsilon$.
 Thus $D_1=D_2$.
 \end{proof}
@@ -659,17 +730,17 @@ $$\|\Lambda_{D_1}-\Lambda_{D_2}\|\leq\varepsilon,$$
 then
 $$d_\mathcal H(\partial D_1,\partial D_2)\leq\omega(\varepsilon),$$
 where $\omega$ is an increasing function on $[0,+\infty)$ which satisfies
-$$\omega(t)\leq C|\log|^{-\eta},\quad\textrm{ for every } 0<t<1$$
+$$\omega(t)\leq C|\log t|^{-\eta},\quad\textrm{ for every } 0<t<1,$$
 and $C>0$, $0<\eta<1$ are constants depending on the a priori data only.
 \end{theorem}
 We wish to mention here that the stability estimates of these problems are extremely weak
 and, keeping as minimal as possible the a priori assumptions, they can not be improved as it
 is showed in \cite{Ma} for the conductivity problem and in \cite{DC-Ro} for the inclusion problem.
-This emphasize the difficulty in the numerical reconstruction as small errors in the data
+This emphasizes the difficulty in the numerical reconstruction as small errors in the data
 can lead to enormous errors in the solution.
 In this thesis we will go through some numerical algorithms present in literature
-(linear sampling method Chapter \ref{ch:linear-sampling} and factorization method Chapter \ref{ch:factorization}), 
-and propose a new method (reciprocity gap principle Chapter \ref{ch:reciprocity}) to reconstruct the defect.
+(linear sampling method in Chapter \ref{ch:linear-sampling} and factorization method in Chapter \ref{ch:factorization}), 
+and propose a new method (reciprocity gap principle in Chapter \ref{ch:reciprocity}) to reconstruct the defect.
 We will also try in Chapter \ref{ch:link} to compare these methods and understand how they work.
 
 Let us conclude this introduction with a final remark concerning the boundary measurements.
@@ -677,41 +748,41 @@ It is physically meaningful prescribe the current density at the boundary and me
 In this case we define the Neumann--to--Dirichlet map $N_D$ (or $N_\gamma$ for the conductivity case) as follows.
 We will denote throughout the chapters, with the subscript zero, $H^s_0(\partial\Omega)\subset H^s(\partial\Omega)$, the closed subspace of functions with vanishing mean on the boundary
 \begin{align}
-&H^s_0(\partial\Omega) = \Big\{ f \in H^s(\partial\Omega): \langle f,1\rangle = 0\Big\}\\
-&H^1_0(\Omega) = \Big\{ u \in H^1(\Omega): u|_{\partial\Omega} \in H^{1/2}_0(\partial\Omega)\Big\}
+&H^s_0(\partial\Omega) = \Big\{ f \in H^s(\partial\Omega): \langle f,1\rangle = 0\Big\},\\
+&H^1_0(\Omega) = \Big\{ u \in H^1(\Omega): u|_{\partial\Omega} \in H^{1/2}_0(\partial\Omega)\Big\}.
 \end{align}
-The advantage, in this last definition, is to avoid trivial constant functions, and to recover uniqueness for second order differential problems.
-We introduce the following notation:
+The advantage, in this last definition, is to avoid trivial constant functions, to recover uniqueness for second order differential problems.
+We introduce the following notation
 \begin{enumerate}
- \item $u\in H^1_0(\Omega)$ the unique solution of the \emph{Laplace problem} with only background space
+ \item let $u\in H^1_0(\Omega)$ be the unique solution of the \emph{Laplace problem} in the background material
  \begin{equation}
  \label{eq:NtoD-laplace}
   \left\{
   \begin{aligned}
-  \Delta v = \divergence(\nabla v) &= 0 \quad\text{in}\,\Omega \\
-            \partial_\nu v &= f \quad\text{on}\,\partial \Omega
+  \Delta v = \divergence(\nabla v) &= 0, \quad\text{in}\,\Omega, \\
+            \partial_\nu v &= f, \quad\text{on}\,\partial \Omega,
   \end{aligned}
   \right.
  \end{equation}
- we define
+ and define
  \begin{align}
- &M_0: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && M_0f = v \label{eq:def-T_0}\\
- &{N_0}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_0} f = v|_{\partial\Omega}
+ &M_0: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && M_0f = v, \label{eq:def-T_0}\\
+ &{N_0}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_0} f = v|_{\partial\Omega},
  \end{align}
- \item at the same way, $v\in H^1_0(\Omega)$ is the unique solution of the \emph{inclusion problem} with $D$
+ \item let $v\in H^1_0(\Omega)$ be the unique solution of the \emph{inclusion problem} with $D\subset \Omega$
  \begin{equation}
  \label{eq:NtoD-inclusion}
   \left\{
   \begin{aligned}
-  \divergence(\gamma\nabla u) &= 0 \quad\text{in}\,\Omega \\
-            \partial_\gamma u &= f \quad\text{on}\,\partial \Omega
+  \divergence(\gamma\nabla u) &= 0, \quad\text{in}\,\Omega, \\
+            \partial_\gamma u &= f, \quad\text{on}\,\partial \Omega,
   \end{aligned}
   \right.
  \end{equation}
- with $\gamma(x) = \chi_{\Omega\backslash\overline{D}} + k(x)\,\chi_D$, we define
+ with $\gamma(x) = a(x)\chi_{\Omega\backslash\overline{D}} + k(x)\,\chi_D$, and define
  \begin{align}
- &M_D: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && M_Df = u \label{eq:def-T_D}\\
- &{N_D}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_D}f = u|_{\partial\Omega}
+ &M_D: H^{-1/2}_0(\partial \Omega) \to H^1_0(\Omega) && M_Df = u, \label{eq:def-T_D}\\
+ &{N_D}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_D}f = u|_{\partial\Omega}.
  \end{align}
 \end{enumerate}
 \begin{remark}
@@ -737,13 +808,13 @@ $$N_{D_1}-N_{D_2}=N_{D_2}(\tilde\Lambda_{D_2}-\tilde\Lambda_{D_1})N_{D_1}.$$
  \end{tikzpicture}
 \end{center}
 \end{figure}
-In this chapter we will analyze the classical formulation of the linear sampling method. It composes itself 
-of a direct part, which we'll try to invert, for further applications with data in the image space, 
+In this chapter we will analyze the classical formulation of the linear sampling method. 
+There is a direct part first, which we try to invert then, with data in the image space, 
 depending on the sampling point $z\in\Omega$.
 \par
 We denote by $\Omega$ an open simply connected domain, in which the differential problem is defined.
 To fix ideas, its boundary represents the external surface, where we usually are allowed to operate.
-We will consider inclusion $D$ of the following form.
+We will consider an inclusion $D$ of the following form.
 \begin{assumption}
 \label{assumption:connected}
  Let $\bigl\{D_j\bigr\}_{j=1}^N$ be a collection of open simply connected domains.
@@ -752,7 +823,7 @@ We will consider inclusion $D$ of the following form.
 Mostly we will deal with the case $D=D_1$, a single simply connected open set, but it's not restrictive, 
 since our results can be applied to any component of $D$, under the previous assumption.
 \section{Relative Neumann--to--Dirichlet map}
-In the previous chapter we have introduced two Dirichlet--to--Neumann type operators ${N_D}$ and ${N_0}$, 
+In the previous chapter we have introduced two Neumann--to--Dirichlet type operators ${N_D}$ and ${N_0}$, 
 whose properties are well summed up by Kirsch in \cite{kirsch:book}. 
 Following the approach of Somersalo \cite{somersalo:preprint}, throughout the chapter, 
 we formulate the linear sampling method.
@@ -761,15 +832,15 @@ Each weak formulation \eqref{eq:NtoD-inclusion} and \eqref{eq:NtoD-laplace} sati
 variational formulations, by coercivity in $H^1_0(\Omega)$ and continuity of bilinear forms. 
 \par
 In the inverse inclusion problem, a crucial role is played by the 
-\textit{relative} Dirichlet-to-Neumann map as well illustrated in \cite{somersalo:preprint}. More precisely we define 
+\textit{relative} Neumann--to--Dirichlet map as well illustrated in \cite{somersalo:preprint}. More precisely we define 
 \begin{equation}
  -{N_r} \coloneqq {N_D} - {N_0}.
 \end{equation}
-For fixed $f\in  H^{-1/2}(\partial \Omega)$
+For fixed $f\in  H^{-1/2}(\partial \Omega)$,
 \begin{enumerate}
- \item ${N_0} f$ is the trace of the potential generated by sources on the boundary $\partial \Omega$ 
+ \item ${N_0} f$ is the trace of the potential generated by sources on the boundary $\partial \Omega$;
  \item ${N_D} f$ is generated by sources on the boundary $\partial \Omega$ and by a simple layer of 
- zero mean on $\partial D$, induced by the presence of the field
+ zero mean on $\partial D$, induced by the presence of the field.
 \end{enumerate}
 Then it's reasonable to expect that the difference $\bigl({N_D}-{N_0}\bigr)f$, in some cases, 
 can approximate the scalar field of a dipole.
@@ -778,14 +849,14 @@ Moreover, the operator should be able to discriminate the support of the inclusi
 It is important to establish injectivity of ${N_D} - {N_0}$, so it guarantees that the operators 
 ${N_D}$ and ${N_0}$ map, in different ways, two geometries, with and without inclusion respectively, 
 yielding a non trivial difference.
-Injectivity can be achieved eventually by appropriate construction of quotient space with the kernel of the operator.
+Injectivity can be achieved eventually by an appropriate construction of quotient space with the kernel of the operator.
 \par
 To do this, we need to reformulate the problem differently.
 The relative operator ${N_D} - {N_0}$ is strictly connected to a formulation which
 \begin{enumerate}
  \item \emph{jointly involves} both ${N_D}$ and ${N_0}$,
- \item is \emph{located in the region} $D$, which is the real subject and responsible of different data, 
- see next section \ref{section:validation}.
+ \item \emph{is defined in the region} $D$, which is the real subject and responsible of different data  
+ (see next section \ref{section:validation}).
 \end{enumerate}
 
 \section{Interior Transmission Problem}
@@ -804,7 +875,7 @@ and in the sense of trace operator, given $f\in H^{1/2}(\partial D)$ and $g\in H
   u - v & = f, \quad\textup{ on }\partial D,\\
   \partial_\gamma u - \partial_\nu v & = g, \quad\textup{ on }\partial D.
 \end{align}
-Note $g\in H^{\,-1/2}_0(\partial D)$, follows from an application of divergence theorem to $\gamma\nabla u - \nabla v$.
+Note that $g\in H^{\,-1/2}_0(\partial D)$ follows from an application of divergence theorem to $\gamma\nabla u - \nabla v$.
 \end{problem}
 % \end{mybox}
 The equivalence class $(H^1(D) \times H^1(D))/\mathbb{C}$, in which we have the uniqueness of the solution $(u,v)$, is constructed from the equivalence relation
@@ -987,7 +1058,7 @@ Let us summarize all these facts in the following proposition.
  where $\psi_{0z}$ is a singular function that will be defined later on (see Definition \ref{def:lsm-psi}).
  \par
  This method has been widely employed in the context of inverse problems for scattering (see \cite{colton-haddar-piana:lsm}, \cite{cakoni-colton-haddar:lsm}) with different boundary conditions (sound-soft obstacles, sound-hard obstacles, impedance conditions). Our aim is to use it for electrical impedance tomography.
- We begin by stating the main properties of the relative Neumann-to-Dirichlet operator ${N_D} - {N_0}$.
+ We begin by stating the main properties of the relative Neumann--to--Dirichlet operator ${N_D} - {N_0}$.
  \begin{proposition}
   The operator ${N_D} - {N_0}:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$ is injective and has dense range
  \end{proposition}
@@ -1823,7 +1894,7 @@ Finally we can state the key theorem which provides a binary criterion to discri
 \begin{proof}
 We split the proof in two parts.
  \begin{enumerate}
-  \item Fixed $z \in D$, and using Neumann-to-Dirichlet operator of Laplace equation ${N_0}:H^{\,-1/2}_0(\partial D)\to H^{1/2}(\partial D)$,
+  \item Fixed $z \in D$, and using Neumann--to--Dirichlet operator of Laplace equation ${N_0}:H^{\,-1/2}_0(\partial D)\to H^{1/2}(\partial D)$,
     we have
     \begin{align}
     \mathcal{R}_{\partial \Omega}(u,\Psi_z) &= \mathcal{R}_{\partial D}(u,\Psi_z) \\
@@ -2074,7 +2145,7 @@ this technique was introduced by Kirsch (see \cite{kirsch:factorization}) in the
 several authors in different context. We will focus mainly on the reconstruction of inclusions relating this method to 
 the previous ones.
 \section{Factorization}
-The aim is to factorize the relative Dirichlet-to-Neumann map ${N_0} - {N_D}$, in the form
+The aim is to factorize the relative Neumann--to--Dirichlet map ${N_0} - {N_D}$, in the form
 \begin{equation}
  {N_r}\coloneqq{N_0} - {N_D} = A^*TA,
 \end{equation}
@@ -2324,7 +2395,7 @@ The linear sampling method deals with the resolution of a linear equation of the
 The first great question is how regularization of the equation in $L^2_0(\partial \Omega)$
 allows to construct a sequence converging in $L^2(D;\,\mathbb{R}^2)$, which exists as predicted by approximation theorem \ref{prop:lsm-constructive}.
 In \cite{arens:why} it's well explained the key role of the factorization 
-of the \textit{relative} Dirichlet-to-Neumann operator ${N_0} - {N_D}$
+of the \textit{relative} Neumann--to--Dirichlet operator ${N_0} - {N_D}$
 \begin{equation}
  {N_0} - {N_D} = A^*TA.
 \end{equation}
@@ -2555,6 +2626,7 @@ This last observation implies boundedness of the sequence $f_z^{\alpha_n}$ only 
 \end{enumerate}
 \end{corollary}
 \chapter{Numerical Implementation}
+\label{ch:implementation}
 In the previous chapters we arrived at a linear equation of the first kind (see \eqref{eq:lsm-approximate-lin-eq} and \eqref{eq:rg-approximate-eq}), of the form
 \begin{equation}
  Kx = y,\label{eq:first-to-inv}
@@ -3287,6 +3359,10 @@ This fast way for solving \eqref{eq:nystrom-semi}, can be interpreted as a collo
 Finally the result which compares the two solutions of \eqref{eq:nystrom-full} and of 
 \eqref{eq:nystrom-semi}, guarantees us for the convergence of Nystr\"om's method.
 The error analysis for the equation of the second kind is based on Theorem (10.9) contained \cite{kress:book}, where all details can be found.
+\begin{definition}
+\label{def:collectively-compact}
+ Let $\mathcal{A}=\{A:X\to Y\}$ be a set of linear operators between two normed spaces. It's called a \emph{collectively compact} set if for each bounded set $U\subset X$ the set of images $\mathcal{A}(U)=\{A(U):A\in\mathcal{A}\}$ is relatively compact.
+\end{definition}
 \begin{theorem}[Pointwise Convergence]
  Let $X$ be a Banach space, let $I-A:X\to X$ be injective, $A$ be linear compact, $A_n$ a sequence \emph{pointwise convergent}, of \emph{collectively compact} operators (Definition \ref{def:collectively-compact}), 
  then there holds the error estimate for the solution of the second kind equation $\phi-A\phi=f$, and its approximation $\phi_n - A_n\phi_n=f_n$
@@ -3558,7 +3634,7 @@ of the position of the different inclusions.
 }
 \subfloat[][\emph{Factorization method}.]
 {
-\includegraphics[width=.38\textwidth]{fig/first_compare_fm_drop0}
+\includegraphics[width=.48\textwidth]{fig/first_compare_fm_drop0}
 }
 \caption{Comparison between two method for a drop shaped inclusion.}
 \label{fig:first_compare_drop}
@@ -3687,62 +3763,6 @@ the linear sampling method still approximates the unknown inclusion.
 %\cleardoublepage
 % \FloatBarrier
 
-\section{Appendix A: Functional analysis}
-\begin{theorem}[Parseval]
- Let $X$ be a separable Hilbert space and $\{x_j\}_{j\in\mathbb{N}}$ a complete orthonormal basis, then
- \begin{enumerate}
-  \item for any $\{\lambda_j\}_{j\in\mathbb{N}} \in \ell ^2$, the sequence $\sum_{j}\lambda_jx_j$ converges in $X$ (also with a non complete basis)
-  \item for any $x \in X$ orthogonal decomposition (Fourier) holds
-  \begin{equation}
-   x = \sum_{j \in \mathbb{N}} \langle x, x_j\rangle x_j \quad \text{and} \quad \|x\|^2=\sum_{j \in \mathbb{N}} |\langle x, x_j\rangle|^2
-  \end{equation}
- \end{enumerate}
-\end{theorem}
-
-\begin{theorem}[Spectral Theorem]
- Let $X$ be an Hilbert space and $K:X\to X$ be a compact self-adjoint linear operator, then the spectrum contains only the regular part and the eigenvalues are:
- \begin{enumerate}
-  \item a finite set, (0 is eigenvalue with correspondent eigenspace of infinite dimension)
-  \item an infinite sequence converging to 0, (0 can be or not an eigenvalue with correspondent eigenspace with finite or infinite dimension)
- \end{enumerate}
- and eigenvectors can be taken such that they constitute a complete orthonormal basis of $X$
- \begin{center}
-  $\{(\lambda_j, x_j)\}_{j\in\mathbb{N}}$ is an orthonormal eigensystem
- \end{center}
-\end{theorem}
-
-\begin{definition}[Singular Values]
- Let $X$ and $Y$ be Hilbert spaces, and $K:X\to Y$ be a compact linear operator. Then, by spectral theorem, there exists an orthonormal eigensystem $\{(\lambda_j,x_j)\}_{j\in\mathbb{N}}$ with nonnegative eigenvalues $\lambda_j \geq 0$, from the self-adjoint compact nonnegative operator $K^*K$. The square roots $\mu_j = \sqrt{\lambda_j}$ are called singular values of $K$
-\end{definition}
-
-\begin{theorem}[Singular Value Decomposition]
-Let $K: X\to Y$ be a compact linear operator and $\mu_1\geq\mu_2...>0$ its positive singular values, then there exist two orthogonal bases $\{x_j\}_{j \in \mathbb{N}}\subset X$ and $\{y_j\}_{j \in \mathbb{N}}\subset Y$ such that
-\begin{equation}
- Kx_j = \mu_j y_j \quad \text{and}\quad K^* y_j = \mu_j x_j
-\end{equation}
-The system $\{(\mu_j,x_j,y_j)\}_{j \in \mathbb{N}}$ is called singular system and for any $x \in X$ there holds singular value decomposition (Fourier)
-\begin{align}
- & x = x_0 + \sum_{j \in \mathbb{N}} \langle x, x_j \rangle x_j\quad \text{with}\quad x_0 \in \mathcal{K}(K) \\
- & Kx = \sum_{j \in \mathbb{N}} \mu_j \langle x, x_j \rangle y_j
-\end{align}
-\end{theorem}
-
-\begin{theorem}[Picard]
-Let $K: X \to Y$ be a compact linear operator with singular system $\{(\mu_j,x_j,y_j)\}_{j \in \mathbb{N}}$, then the equation
-\begin{gather}
- Kx = y \,\,\text{is solvable}\\
- \text{if and only if}\\
- y \in \mathcal{K}(K^*)^\perp\quad\text{and} \quad \sum_{j \in \mathbb{N}}\frac{1}{\mu_j^2}|\langle y,y_j\rangle|^2< \infty
-\end{gather}
-In this case a possible solution is
-\begin{equation}
- x = \sum_{j \in \mathbb{N}}\frac{1}{\mu_j}\langle y,y_j\rangle x_j
-\end{equation}
-\end{theorem}
-\begin{definition}
-\label{def:collectively-compact}
- Let $\mathcal{A}=\{A:X\to Y\}$ be a set of linear operators between two normed spaces. It's called a \emph{collectively compact} set if for each bounded set $U\subset X$ the set of images $\mathcal{A}(U)=\{A(U):A\in\mathcal{A}\}$ is relatively compact.
-\end{definition}
 \chapter*{Conclusions}
 \addcontentsline{toc}{chapter}{Conclusions}
 The reciprocity gap principle turns out to be equivalent to the linear sampling method.
