@@ -1135,6 +1135,7 @@ The thesis follows observing the symmetry of the left hand side of \eqref{eq:adj
   \psi_{0z}(x) = \nabla_zN(x,z) \cdot \vec{d}.
  \end{equation}
  \begin{definition}
+ \label{def:layer-potentials}
  We define the following integral functions, for $\partial D$ of class $C^2$ and a given density $\psi\in C(\partial D)$
  \begin{enumerate}
   \item the \emph{single layer} potential
@@ -1260,7 +1261,7 @@ which implies a \emph{stronger result} that can't be obtained for the counterpar
 In this chapter we discuss another method to reconstruct inclusions in a conductor. 
 This method was first introduced in \cite{colton-haddar:rg} to recover obstacles from the far field data in acoustic inverse scattering theory 
 (see also \cite{cakoni-mbarek-haddar:electromagnetic} for the electromagnetic case). It has been developed later
-by \cite{dicristo-sun:2006, dicristo-sun:2007} when near field data are available. Our aim is to apply it in the context of electric impedance tomography to reconstruct inclusions.
+by \cite{dicristo-sun:2006}, \cite{dicristo-sun:2007}, when near field data are available. Our aim is to apply it in the context of electric impedance tomography to reconstruct inclusions.
 \section{The Fundamental Solution}
 \label{subsection:fundamental-solution}
 We introduce the problem starting from the \emph{fundamental solution}, that's the solution of 
@@ -1271,14 +1272,14 @@ We denote by $\Phi(x,x_0)$ the fundamental solution of the Laplace operator, tha
 \begin{equation}
  - \Delta \Phi(x,x_0) = \delta_{x_0} \quad \textup{ in }\mathcal{D}'(\mathbb{R}^m),\label{eq:fundamental-in-dist}
 \end{equation}
-and by $Phi_D(x, x_0)$ the corresponding fundamental solution of the inclusion differential operator, that is
+and by $\Phi_D(x, x_0)$ the corresponding fundamental solution of the inclusion differential operator, that is
 \begin{equation}
  - \divergence\bigl(\gamma(x)\nabla \Phi_D(x,x_0)\bigr) = \delta_{x_0}\quad\textup{ in }\mathcal{D}'(\mathbb{R}^m), \label{eq:fundamental-D-in-dist}
 \end{equation}
-with $\gamma(x) = 1+(k(x)-1)\chi_D$. 
-All the equations are meant in the distributional sense, that is, using the integral notation
+with $\gamma(x) = 1+(k-1)\chi_D$. 
+All the equations are meant in the distributional sense, that is, using the integral notation,
 \begin{equation}
- \int_{\mathbb{R}^m \backslash D}\nabla \Phi_D(x,x_0) \cdot \nabla v(x) \, dx + \int_{D} k(x) \, \nabla \Phi_D(x,x_0) \cdot \nabla v(x) \, dx = v(x_0) \, \forall v \in \mathcal{D}(\mathbb{R}^m).
+ \int_{\mathbb{R}^m \backslash D}\nabla \Phi_D(x,x_0) \cdot \nabla v(x) \, dx + \int_{D} k \, \nabla \Phi_D(x,x_0) \cdot \nabla v(x) \, dx = v(x_0) \, \forall v \in \mathcal{D}(\mathbb{R}^m).
 \end{equation}
 In the first case, $\Phi(x,x_0)$ can be explicitly written, up to any harmonic additive function,
 \begin{equation}
@@ -1325,6 +1326,7 @@ Selecting test functions in $C^\infty_c(D)$ and in $C^\infty_c(\mathbb{R}^m\back
 with \emph{transmission conditions}
 % \vspace{-0.2cm}
 \begin{subequations}
+\label{eq:transmissionSigma01}
 \begin{align}
  \bigl[\Sigma\bigr]^+_-\bigl(y,x_0\bigr) &=0, && y \in\partial D, \label{eq:transmissionF0}\\ 
  \bigl[\partial_\gamma \Sigma\bigr]^+_-\bigl(y,x_0\bigr) &= (k - 1)\partial_\nu \Phi(y,x_0), && y \in\partial D. \label{eq:transmissionF1}
@@ -1345,7 +1347,7 @@ with \emph{transmission conditions}
 % \end{mybox}
 \end{remark}
 \section{Surface Potentials and Representation Formulas}
-In the sequel, the domain $D$ will be of class $C^2$ satisfying assumptions \ref{assumption:connected}, will be of class $C^2$, if not differently specified.
+In the sequel, the domain $D$ will be of class $C^2$ satisfying Assumption \ref{assumption:connected}, will be of class $C^2$, if not differently specified.
 Most of the following notions, can be found in \cite{kirsch:book}, \cite{colton-kress:book}, \cite{salsa:book}.
 % We refer to previous definition of layer potentials \eqref{eq:definition-single-layer}--\eqref{eq:definition-double-layer}.
 \begin{remark}
@@ -1380,7 +1382,9 @@ For further properties of single and double layer potentials, it's convenient to
 The behavior of layer potentials across the surface $\partial D$ is described by the \emph{jumps relations}, 
 specified in the following theorem.
 \begin{theorem}
- Let $\psi\in C(\partial D)$, $\partial D$ be of class $C^2$, and let $\mathcal{S}(\psi,\partial D)$, $\mathcal{D}(\psi,\partial D)$ be the above defined potentials, then
+ Let $\psi\in C(\partial D)$, $\partial D$ be of class $C^2$, and let 
+ $\mathcal{S}(\psi,\partial D)$, $\mathcal{D}(\psi,\partial D)$ be the potentials in 
+ Definition \ref{def:layer-potentials}, then
  \begin{enumerate}
   \item the single layer is continuous and 
   \begin{subequations}
@@ -1398,14 +1402,15 @@ specified in the following theorem.
   \end{subequations}
  \end{enumerate}
 \end{theorem}
-Now, we will state some results essentials for our continuation.
-All details and proofs can be found in \cite{kress:book}.
+Now, we will state some essential results for our continuation.
+All the details and proofs can be found in \cite{kress:book}.
 \begin{definition}
- Let $X,Y$ be Banach spaces of functions defined on a domain $G$ (it will be a boundary $\partial \Omega$ for us), and $A:X\to Y$ be a \emph{Fredholm integral operator} with kernel $k(x,y)$, that is
+ Let $X,Y$ be Banach spaces of functions defined on a domain $G$ (it will be a boundary like $\partial \Omega$ for us), and $A:X\to Y$ be a \emph{Fredholm integral operator} 
+ with kernel $K(x,y):G\times G\to \mathbb{R}$, that is
  \begin{equation}
   A\phi(x)\coloneqq\int_G K(x,y)\phi(y)\,dy\quad x\in G. \label{eq:def-integral-operator}
  \end{equation}
- Then, denoting
+ Then, we denote
  \begin{enumerate}
   \item an integral equation of the \emph{first kind}
    \begin{equation}
@@ -1416,12 +1421,12 @@ All details and proofs can be found in \cite{kress:book}.
     \phi - A\phi=f,
    \end{equation}
  \end{enumerate}
-the operator $A$ is a compact.
+where, the operator $A$ is a compact.
 \end{definition}
 \begin{definition}
- Let $A$ be an integral operator with integral kernel $K(x,y):G \times G \to\mathbb{R}$. We define
+ Let $A$ be an integral operator with integral kernel $K(x,y):G \times G \to\mathbb{R}$. We say that
  \begin{enumerate}
-  \item $K$ is a \emph{continuous} kernel if $K(x,y)$ is continuous in $G\times G$
+  \item $K$ is a \emph{continuous} kernel if $K(x,y)$ is continuous in $G\times G$,
   \item $K$ is a \emph{weakly singular} kernel if it's defined and continuous for all $x,y\in G\subset \mathbb{R}^m$, $x\neq y$, and if there exists a positive constant $M$ and 
   there exists $\alpha\in (0,m]$ such that
   \begin{equation}
@@ -1450,7 +1455,7 @@ We limit ourselves to remind that \emph{jump relations for the double layer \eqr
  Both the operators $K,K'$ have spectrum
  \begin{equation}
  \label{eq:K-spectrum}
-  -\tfrac{1}{2}\in\sigma(K)=\sigma(K')\subset \bigl[\tfrac{1}{2}, \tfrac{1}{2}\bigr).
+  -\tfrac{1}{2}\in\sigma(K)=\sigma(K')\subset \bigl[-\tfrac{1}{2}, \tfrac{1}{2}\bigr).
  \end{equation}
 \end{theorem}
 
@@ -1496,7 +1501,8 @@ where $\Phi_D$ is the fundamental solution, which solves \eqref{eq:fundamental-D
 %  \end{tikzpicture}
 % \end{center}
 % \end{figure}
-At this point we have to decide which method to use to compute the solution of \eqref{eq:laplacian-D}--\eqref{eq:transmissionF1}. The natural choice, for this differential problem, is the Boundary Integrals method, which expresses the solution in terms of surface integrals, and looks for integral equations for unknown densities. 
+At this point we have to decide which method to use to compute the solution of \eqref{eq:laplacian-D}--\eqref{eq:transmissionSigma01}. The natural choice, for this differential problem, is the Boundary Integrals Method, 
+which expresses the solution in terms of surface integrals, and looks for integral equations for unknown densities. 
 \par
 The crucial step is to select the most suitable open set and representation formula. It's easy in this case, since the constant valued conductivity $k(x)=k$ implies Laplace equation \eqref{eq:laplacian-D} inside $D$, other than outside, for which the fundamental solution is well known.
 \par
@@ -1509,7 +1515,7 @@ The condition \eqref{eq:transmissionF0} implies continuity of $\Sigma$. Finally 
 \begin{equation}
  \Sigma(x)=\int_{\partial D}\Phi(x,y)\psi(y)\,dy = \mathcal{S}(\partial D, \psi).
 \end{equation}
-It's sufficient to substitute jump relations \eqref{eq:single-pm-1} of $\partial\mathcal{S}$ in \eqref{eq:transmissionF1} to derive the necessary \emph{integral equation of the second kind} for the unknown density
+It's sufficient to substitute jump relations \eqref{eq:single-pm-1} of $\partial_\nu\mathcal{S}$ in \eqref{eq:transmissionF1} to derive the necessary \emph{integral equation of the second kind} for the unknown density
 \begin{center}
 \begin{equation}
  \label{eq:eq-psi-ck}
@@ -1525,7 +1531,7 @@ with
 \end{lemma}
 \begin{proof}
  Equation \eqref{eq:eq-psi-ck} is an integral equation of the second kind, which involves a compact operator $K'$, 
- as in \ref{lemma:K-K'-compact}. The knowledge of the spectrum $-1/2 \in \sigma(K')=\sigma(K) \subset [-1/2,1/2)$ and the condition $\hat{c}(k)>1$ imply injectivity of the operator in the equation \eqref{eq:eq-psi-ck}. 
+ as stated in Lemma \ref{lemma:K-K'-compact}. The knowledge of the spectrum $-1/2 \in \sigma(K')=\sigma(K) \subset [-1/2,1/2)$ and the condition $\hat{c}(k)>1$ imply injectivity of the operator in the equation \eqref{eq:eq-psi-ck}. 
  By the Fredholm's alternative, the operator $K'+(\hat{c}(k)/2)I:C(\partial D)\to C(\partial D)$ is continuous and bijective, with bounded inverse.
  Therefore the equation is well-posed and there exists a unique solution $\psi$.
 \end{proof}
@@ -1554,6 +1560,7 @@ We show two ways, since they are useful in other contexts. By the knowledge of t
 {
 \begin{tikzpicture}
 \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2.5cm and 2cm);
+\node at (-1.9,1.9){$\partial B$};
 \end{tikzpicture}
 }
 \subfloat[][\emph{An isolated conductor with inclusion}.]
@@ -1567,6 +1574,8 @@ We show two ways, since they are useful in other contexts. By the knowledge of t
   .. controls ++(165:-1) and ++(145:-1) .. ( 1, 1)
   .. controls ++(145: 1) and ++(60: 0.7) .. (-1, 1)
   .. controls ++(60:-0.7) and ++(165: 1) .. ( 0, -1);
+\node at (-1.9,1.9){$\partial B$};
+\node at (-1.2,1.2){$\partial D$};
 \end{tikzpicture}
 }
 \caption{Two different geometries for impedance equation}
@@ -1588,7 +1597,7 @@ We compute it, by imposing $\partial_\nu \mathcal{S}_{c}^- = 0$ on $\partial B$,
 \begin{equation}
  \partial_\nu\mathcal{S}_{c}^-=\Bigl(K'+\dfrac{1}{2}I\Bigr)\alpha_{c}= 0\quad\textup{ on }\partial B. \label{eq:alpha_c-equation}
 \end{equation}
-The kernel $\mathcal{N}(K' + 1/2 I)=\textup{span}(\{\alpha_{c}\})$ is one dimensional as stated in \ref{theo:K-nullspace}, and the integral $\alpha_{cm} \cdot|\partial B|$ of any non trivial solution, where $\alpha_{cm}$ is the mean value, is equal to the total amount of electric charge.
+The kernel $\mathcal{N}(K' + 1/2 I)=\textup{span}(\{\alpha_{c}\})$ is one dimensional as stated in Theorem \ref{theo:K-nullspace}, and the integral $\alpha_{cm} \cdot|\partial B|$ of any non trivial solution, where $\alpha_{cm}$ is the mean value, is equal to the total amount of electric charge.
 \par
 Now we imagine the same conductor containing an inclusion with impedance $\gamma(x)=k$ inside $D$. The electric potential $\mathcal{E}$ generated by source charges on $\partial B$ is described by the single layer constructed with the fundamental solution $\Phi_D(x,x_0)$, which solves \eqref{eq:fundamental-D-in-dist}
 \begin{equation}
@@ -1609,10 +1618,12 @@ Now we state a proposition which explain the interest of $\alpha_{c}$.
 \begin{proof}
 We will prove that the unknown density $\psi_{\alpha_c}$ in the decomposition \eqref{eq:decomposition-E-c} is zero. 
 To show this, we take advantage of transmission conditions on $\partial D$. 
-Indeed from the definition we can derive two weak formulations for $\mathcal{S}(\partial B, \alpha_c)$ and $\mathcal{E}$ as in section \ref{subsection:fundamental-solution}
+Indeed from the definition we can derive two weak formulations for 
+$\mathcal{S}(\partial B, \alpha_c)$ and $\mathcal{E}_c$ 
+as in section \ref{subsection:fundamental-solution}
 \begin{align}
- &-\Delta\mathcal{S}(\partial B,\alpha_c) = 0,\quad\textup{ in }B,\\
- &-\divergence\bigl(\gamma\nabla\mathcal{E}\bigr) = 0,\quad\textup{ in }B.
+ -\Delta\mathcal{S}(\partial B,\alpha_c) &= 0,\quad\textup{ in }B,\\
+ -\divergence\bigl(\gamma\nabla\mathcal{E}_c\bigr) &= 0,\quad\textup{ in }B.
 \end{align}
 Taking the transmission conditions of the two equations on $\partial D$, we note that it's sufficient to change the forcing term equal to $(k-1)\,\partial_\nu\mathcal{S}(\partial B, \alpha_{c})$ in \eqref{eq:transmissionF1} to obtain the desired equation
 \begin{equation}
@@ -1637,12 +1648,12 @@ between the domain with the inclusion and without the inclusion
 for the corresponding case in inverse scattering).
 \begin{definition}
 \label{def:setV}
-Let $u\in\mathcal{U}$, the set defined in \ref{def:setU}. In the present case $u(x,x_0)=\Phi_D(x,x_0)$, with $x_0 \in \partial B$, then
+Let $u\in\mathcal{U}$, the set in Definition \ref{def:setU}. In our case $u(x,x_0)=\Phi_D(x,x_0)$, with $x_0 \in \partial B$, then
 \begin{enumerate}
  \item we denote by $\mathcal{V}(\overline{B})$ the set of harmonic function, continuously defined on $\overline{B}$,
  \item by $\mathcal{V}_0(\overline{B})$ the subspace of vanishing mean functions, that is
  \begin{equation}
-  \mathcal{V}_0(\overline{B})\coloneqq\Bigl\{v\in\mathcal{V}(\overline{B}):\int_{\partial B} v = 0\Bigr\}=\mathcal{V}(\overline{B})/\textup{span}\Bigl(\{1\}\Bigr),
+  \mathcal{V}_0(\overline{B})\coloneqq\Bigl\{v\in\mathcal{V}(\overline{B}):\int_{\partial B} v = 0\Bigr\}=\mathcal{V}(\overline{B})/\textup{span}\bigl(\{1\}\bigr),
  \end{equation}
  \item by $\textup{R} : \mathcal{V}(\overline{B})\to L^2(\partial B)$ the \emph{reciprocity gap} operator defined by
 \begin{equation}
@@ -1669,14 +1680,13 @@ Let $u\in\mathcal{U}$, the set defined in \ref{def:setU}. In the present case $u
 \end{remark}
 \begin{proposition}[Injectivity]
 \label{prop:injectivity}
- The operator $\textup{R}$ is injective in $\mathcal{V}_0(\overline{B})$. The kernel of $\textup{R}$ is the one dimensional vector space $\mathcal{N}(R)=\textup{span}(\{1\})$, spanned by the constant.
+ The operator $\textup{R}$ is injective in $\mathcal{V}_0(\overline{B})$. The kernel of $\textup{R}$ is the one dimensional vector space $\mathcal{N}(\textup{R})=\textup{span}(\{1\})$, spanned by the constant.
 \end{proposition}
 \begin{proof}
-\label{proof:injectivity}
-By \ref{rem:kernel-R}, we just need to show that the only harmonic functions such that $\textup{R}(v)(x_0)=0$ for $x_0\in\partial B$, are constant functions.
+By Lemma \ref{rem:kernel-R}, we just need to show that the only harmonic functions such that $\textup{R}(v)(x_0)=0$ for $x_0\in\partial B$, are constant functions.
 \par
 Let $v\in\mathcal{V}(\overline{B})$ and assume $\textup{R}(v)=0$. Applying the Green's representation formula in the open set $\Omega\backslash\overline{D}$ to $u\in\mathcal{U}$ and $v$, 
-which are both harmonic, with continuous extension up to the boundary, we get
+where they are both harmonic, with continuous extension up to the boundary, we get
 \begin{equation}
   \text{R}(v)(x_0)\coloneqq\mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr) = \mathcal{R}_{\partial D}\bigl(u^+(\cdot,x_0),v(\cdot)\bigr) = 0.
  \end{equation}
@@ -1691,7 +1701,7 @@ which are both harmonic, with continuous extension up to the boundary, we get
   f(x_0)\coloneqq \int_{\partial D} u(y,x_0)v_\nu(y)dy\quad x_0 \in \mathbb{R}^2\backslash\partial D.
  \end{equation}
  We note that $f(x_0)=0$ on $\partial B$ and 
- that $f(x_0)$ is harmonic in $\mathbb{R}^2\backslash\overline{D}$, by reciprocity relation \ref{prop:reciprocity}.
+ that $f(x_0)$ is harmonic in $\mathbb{R}^2\backslash\overline{D}$, by reciprocity relation Proposition \ref{prop:reciprocity}.
  Note that the density $v_\nu(y)$ has vanishing mean, since $v$ is harmonic. This implies that in $\mathbb{R}^2$, $f(x_0)$ is bounded at infinity, while in $\mathbb{R}^3$ boundedness of $D$ prevents any kind of this bad growth.
  \par
  By uniqueness of exterior boundary value problem in $\mathbb{R}^2\backslash\overline{B}$, and by continuation 
@@ -1741,7 +1751,7 @@ which are both harmonic, with continuous extension up to the boundary, we get
 \end{lemma}
 \begin{proof}
  First of all, we observe that any constant function defined on $\partial D$, is orthogonal 
- to $\partial_\nu v$ with $\mathcal{V}(\overline{B})$, indeed
+ to $\partial_\nu v$ with $v\in\mathcal{V}(\overline{B})$, indeed
  \begin{equation*}
   \langle \partial_\nu v, 1\rangle_{L^2(\partial D)} = \int_{\partial D}\partial_\nu v\,dy=0
  \end{equation*}
@@ -1762,7 +1772,7 @@ which are both harmonic, with continuous extension up to the boundary, we get
  which vanishes $f(y)=0$ on $y\in\partial B$, as we have previously shown.
  It is harmonic in $\mathbb{R}^2\backslash\partial D$ and bounded, as any double layer potential. 
  By uniqueness of bounded harmonic functions for exterior Dirichlet problem and by continuation principle, we obtain $f=0$ in $\mathbb{R}^2\backslash\overline{D}$. At this point, the double layer potential $f$ vanishes outside $D$, and the boundary integral operator has $\mathcal{N}(K+1/2\,I)=\textup{span}(\{1\})$. This force $\beta$ to be a generic constant. 
- We have just shown that $\{(\partial_\nu v )|_{\partial D}\}^\perp \subset \textup{span}(\{1\})$, 
+ We have just shown that $\{(\partial_\nu v )|_{\partial D}\}^\perp = \textup{span}(\{1\})$, 
  which concludes the proof.
 \end{proof}
 \begin{remark}
@@ -1773,10 +1783,9 @@ which are both harmonic, with continuous extension up to the boundary, we get
  The range of the operator $\textup{R} : \mathcal{V}(\overline{B})\to L^2(\partial B)$  has codimension one, indeed $\mathcal{R}(R)^\perp=\textup{span}(\{\alpha_c\})$, where $\alpha_c$ is the solution of \eqref{eq:alpha_c-equation}.
 \end{proposition}
 \begin{proof}
-\label{proof:surjectivity}
  We consider $\alpha\in L^2(\partial B)$ and assume the product with $\textup{R}(v)$ to be equal to zero for all $\forall v\in\mathcal{V}(\overline{B})$
  \begin{equation*}
-  0 =\langle\,\textup{R}(v), \alpha\rangle_{L^2(\partial B)} = \langle \mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr), \alpha(x_0)\rangle._{\partial B}
+  0 =\langle\,\textup{R}(v), \alpha\rangle_{L^2(\partial B)} = \langle \mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr), \alpha(x_0)\rangle_{L^2(\partial B)}.
  \end{equation*}
  Switching the order of integration between the sources' boundary $\partial B$ and
  the observations' boundary $\partial \Omega$ and defining a new source layer with density $\alpha$, 
@@ -1784,7 +1793,7 @@ which are both harmonic, with continuous extension up to the boundary, we get
  \begin{equation}
   0 = \mathcal{R}_{\partial \Omega}(\mathcal{E},v),\quad\textup{ where }\quad\mathcal{E}(x):=\int_{\partial B}u(x,x_0)\alpha(x_0)\, dx_0,
  \end{equation}
- By Green's identity and the transmission conditions \eqref{eq:transmissionPhiD0}--\eqref{eq:transmissionPhiD1} for $\mathcal{E}$, as in the Proof \ref{proof:injectivity}, we have
+ By Green's identity and the transmission conditions \eqref{eq:transmissionPhiD0}--\eqref{eq:transmissionPhiD1} for $\mathcal{E}$, as in the proof of Proposition \ref{prop:injectivity}, we have
  \begin{equation}
   0 = \mathcal{R}_{\partial \Omega}(\mathcal{E},v)=(1-k)\int_{\partial D} \partial_\nu\mathcal{E}^-(y)v(y)\,dx\quad \forall v \in \mathcal{V}(\overline{B}).
  \end{equation}
@@ -1841,7 +1850,7 @@ we obtain
 \begin{equation}
  \langle \, \tilde{\textup{R}}(\Phi_z) ,\alpha_{c}\rangle_{L^2(\partial B)} = c\,\int_{\partial\Omega}\partial_\nu\Phi_z\,dy = c\,\textup{Flux}\bigl(\partial\Omega, \Phi_z\bigr) = c\,(-1),
 \end{equation}
-while in the proof of surjectivity \ref{proof:surjectivity}, we concluded 
+while in the proof of Proposition \ref{prop:surjectivity}, we concluded 
 \begin{equation}
  \langle \, \textup{R}(v) ,\alpha_{c}\rangle_{L^2(\partial B)}=0\quad \forall v\in\mathcal{V}(\overline{B}).
 \end{equation}
@@ -1887,17 +1896,17 @@ and $|\vec{d}\,|=1$ is a unit vector.
 Finally we can state the key theorem which provides a binary criterion to discriminate the inclusion from the background.
 \begin{theorem}[Reciprocity Gap Approximation Theorem]
  \label{theo:approximation-rg} 
- Let $D\subset\Omega\subset B$  be an inclusion satisfying \ref{assumption:connected}, let $\{(u|_{\partial \Omega},\partial_\nu u|_{\partial \Omega})\}$ 
- be a set of measured data with $u\in\mathcal{U}$ defined in \ref{def:setU} and 
+ Let $D\subset\Omega\subset B$  be an inclusion satisfying Assumption \ref{assumption:connected}, let $\{(u|_{\partial \Omega},\partial_\nu u|_{\partial \Omega})\}$ 
+ be a set of measured data with $u\in\mathcal{U}$ as in Definition \ref{def:setU} and 
  let consider the class $\mathcal{V}(\overline{B})$ of harmonic test functions 
- defined in \ref{def:setV}. Then
+ in Definition \ref{def:setV}. Then
 %  At the right hand side, we consider the directional derivative along some unit vector $\vec{d}$ of the fundamental solution, defined above in \ref{def:fund-sol-deriv-Psi}. Then
  \begin{enumerate}
   \item if $z \in D$ then there exists a sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
    \begin{equation}
      \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U},\label{eq:rg-lim-constructive}
    \end{equation}
-   where $\Psi_z$ is defined in \ref{def:fund-sol-deriv-Psi}, and $v_n|_{\partial D}\to g$ in $L^2(\partial D)$ and consequently  it's bounded in the same norm $\|v_n\|_{L^2(\partial D)}$;
+   where $\Psi_z$ as in Definition \ref{def:fund-sol-deriv-Psi}, and $v_n|_{\partial D}\to g$ in $L^2(\partial D)$ and consequently  it's bounded in the same norm $\|v_n\|_{L^2(\partial D)}$;
   \item if $z \in \Omega \backslash D$ then any sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
    \begin{equation}
      \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U}\label{eq:rg-lim-counterpart}
@@ -1908,7 +1917,7 @@ Finally we can state the key theorem which provides a binary criterion to discri
 \begin{proof}
 We split the proof in two parts.
  \begin{enumerate}
-  \item Fixed $z \in D$, and using Neumann--to--Dirichlet operator of Laplace equation ${N_0}:H^{\,-1/2}_0(\partial D)\to H^{1/2}(\partial D)$,
+  \item Fixed $z \in D$, and using Neumann--to--Dirichlet operator of Laplace equation in $D$, ${N_0}:H^{\,-1/2}_0(\partial D)\to H^{1/2}(\partial D)$,
     we have
     \begin{align}
     \mathcal{R}_{\partial \Omega}(u,\Psi_z) &= \mathcal{R}_{\partial D}(u,\Psi_z) \\
@@ -1920,9 +1929,9 @@ We split the proof in two parts.
   \begin{equation}
    \mathcal{R}_{\partial \Omega}(u,v) = \mathcal{R}_{\partial D}(u,v) = \int_{\partial D}(1-k)(\partial_\nu u^- )v\,dy.
   \end{equation}
-  By density result \ref{lemma:density-V-0}, there exists a sequence $\{v_n\}\subset \mathcal{V}(\overline{B})$ converging strongly and weakly in $L^2(\partial D)$ to the argument in the right integral $\bigl( {N_0}(\partial_\nu\Psi_z) - k \Psi_z)\bigr)(1-k)^{-1}\in H^{1/2}(\partial D)$.
+  By density result Lemma \ref{lemma:density-V-0}, there exists a sequence $\{v_n\}\subset \mathcal{V}(\overline{B})$ converging strongly and weakly in $L^2(\partial D)$ to the argument in the right integral $\bigl( {N_0}(\partial_\nu\Psi_z) - k \Psi_z)\bigr)(1-k)^{-1}\in H^{1/2}(\partial D)$.
   Once selected the sequence, the convergence holds for all $u\in\mathcal{U}$, but in general the convergence is not uniform in $x_0\in \partial B$.
-  \item Fixed $z \in \Omega\backslash D$ and using Green's representation formula with derivatives \eqref{prop:repr-deriv}, on the right hand side
+  \item Fixed $z \in \Omega\backslash D$ and using Green's representation formula with derivatives \eqref{prop:repr-deriv} in $\Omega\backslash\overline{D}$, on the right hand side
   \begin{equation}
    \mathcal{R}_{\partial \Omega}(u,\Psi_z) = \partial_{\vec{d}}\,u(z,x_0) + \mathcal{R}_{\partial D}(u,\Psi_z) = \partial_{\vec{d}}\,u(z,x_0) + w(x_0),
   \end{equation}
@@ -1936,7 +1945,7 @@ We split the proof in two parts.
   \end{equation}
  Since both $\partial_{\vec{d}}\,u(z,x_0) + w(x_0)$ and $\widetilde{w}(x_0)$ are bounded harmonic functions
  in $\mathbb{R}^2\backslash\overline{B}$, coincident on $\partial B$, by uniqueness
- and continuation principle, we can conclude that they coincide on $\mathbb{R}^2\backslash D$ arriving at a contradiction, by letting $x_0\to z$.
+ and continuation principle, we can conclude that they coincide on $\mathbb{R}^2\backslash (D\cup\{z\})$ arriving at a contradiction, by letting $x_0\to z$.
  \end{enumerate}
 \end{proof}
 \begin{remark}
@@ -1959,6 +1968,9 @@ with $\textup{R}_u:\partial B\to \partial B$ and $r_z\in C(\partial B)$ defined 
 \end{remark}
 
 \section{Technicalities}
+In this section we first present an example which clarifies the dependence of density results 
+on the dimension of the ambient space $\mathbb{R}^m$. Then we collect some technical results 
+which has been used in the previous proofs.
 \begin{example}
  \label{example:van-s-lay}
  In dimension $m=2$, there exists a simple layer potential on $\partial B_R(0)$ for any $R<1$ vanishing on a contour $\Gamma = \partial B_1(0)$:
