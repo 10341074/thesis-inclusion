@@ -893,20 +893,21 @@ We denote \emph{strong solution} of the MITP, the couple {$(u,v) \in H^1(D) \tim
   u - v & = f, \quad\textup{ on }\partial D,\\
   \partial_\gamma u - \partial_\nu v & = g, \quad\textup{ on }\partial D.
 \end{align}
-given $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}(\partial D)$.
+given $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}(\partial D)$ and assuming $\gamma>1$ in $D$.
 \end{problem}
 % \end{mybox}
 Following on ideas of \cite{cakoni-colton-haddar:lsm}, we define the space
 \begin{equation}
- H_{\divergence}(D)\coloneqq\bigl\{\bm{w}\in L^2(D;\,\mathbb{R}^3):\divergence\bm{w} \in L^2(D),\, \curl\bm{w}=0 \bigr\},
+ H_{\divergence}(D)\coloneqq\bigl\{\bm{w}\in L^2(D;\,\mathbb{R}^3):\divergence\bm{w} \in L^2(D) \textup{ and } \curl\bm{w}=0 \bigr\},
 \end{equation}
 equipped with the norm
 \begin{equation}
  \|\bm{w}\|_{H_{\divergence}(D)}\coloneqq\bigl(\|\bm{w}\|^2_{L^2(D;\,\mathbb{R}^3)} + \|\divergence\bm{w}\|^2_{L^2(D)}\bigr)^{1/2},
 \end{equation}
-and introduce the bilinear form $a$, defined for $U,V\in H^1(D)\times H_{\divergence}(D)$, where $U=(u,\bm{w})$ and $V=(\phi,\bm{\psi})$,
+and introduce the bilinear form $a$, defined for $U,V\in H^1(D)\times H_{\divergence}(D)$, where $U=(u,\bm{w})$ and $V=(\phi,\bm{\psi})$, 
+and dualities $\langle\cdot,\cdot\rangle$ are defined on $H^{-1/2}(\partial D)\times H^{1/2}(\partial D)$,
 \begin{equation}
- a(U,V)\coloneqq \int_D \gamma \nabla u\cdot\nabla \phi\,dy + \int_D\divergence \bm{w}\divergence\bm{\psi} + \int_D\bm{w}\cdot\bm{\psi} - \langle \bm{w}\cdot\nu, \phi \rangle- \langle u,\bm{\psi}\cdot\nu\rangle,
+ a(U,V)\coloneqq \int_D \gamma \nabla u\cdot\nabla \phi + \int_D\divergence \bm{w}\divergence\bm{\psi} + \int_D\bm{w}\cdot\bm{\psi} - \langle \bm{w}\cdot\nu, \phi \rangle- \langle u,\bm{\psi}\cdot\nu\rangle,
 \end{equation}
 \begin{equation}
  L(V)\coloneqq \langle g, \phi\rangle - \langle f, \bm{\psi}\cdot\nu\rangle.
@@ -919,6 +920,7 @@ We recall the identity
 \begin{proposition}
 \label{prop:MITP-variational}
  Let $H_{\divergence}(D)$ be the subspace defined above. Then the variational problem, given $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}(\partial D)$,
+ assuming $\gamma>1$ in $D$,
  \begin{equation}
  \label{eq:MITP-variational}
   \textup{find }U\in H^1(D)\times H_{\divergence}(D):\,a(U,V)=L(V) \quad\forall V\in H^1(D)\times H_{\divergence}(D),
@@ -933,29 +935,30 @@ which depends continuously from data and there exists a positive constant $C$ su
 We divide the proof into three steps.
  \begin{enumerate}
  \item 
- The problem is coercive in the Hilbert triplet $(V,H,V^*)$ with $V=H^1(D)\times H_{\divergence}(D)$ and $H=L^2(D)\times H_{\divergence}(D)$.
- Indeed using the identity \eqref{eq:identity-duality} we have the Schwarz's inequality $|\langle u ,\bm{w}\cdot\nu\rangle |\leq\|u\|_{H^1(D)}\|\bm{w}\|_{H_{\divergence}(D)}$ and
+ The problem is weakly coercive in the Hilbert triplet $(V,H,V^*)$ with $V=H^1(D)\times H_{\divergence}(D)$ and $H=L^2(D)\times H_{\divergence}(D)$.
+ Indeed using the identity \eqref{eq:identity-duality} we have the Schwarz's inequality $|\langle u ,\bm{w}\cdot\nu\rangle |\leq\|u\|_{H^1(D)}\|\bm{w}\|_{H_{\divergence}(D)}$ and 
+ denoting by $\gamma_0 = \textup{inf}\,\gamma$
 \begin{align}
- |a(U,V)|&\geq \gamma\|\nabla u\|_{L^2(D)}^2 + \|\bm{w}\|_{H_{\divergence}(D)}-2\langle u ,\bm{w}\cdot\nu\rangle \\
- &\geq \gamma\|\nabla u\|_{L^2(D)}^2 + \|\bm{w}\|_{H_{\divergence}(D)}-2\|u\|_{H^1(D)}\|\bm{w}\|_{H_{\divergence}(D)}.
+ |a(U,V)|&\geq \gamma_0\|\nabla u\|_{L^2(D)}^2 + \|\bm{w}\|^2_{H_{\divergence}(D)}-2\langle u ,\bm{w}\cdot\nu\rangle \\
+ &\geq \gamma_0\|\nabla u\|_{L^2(D)}^2 + \|\bm{w}\|^2_{H_{\divergence}(D)}-2\|u\|_{H^1(D)}\|\bm{w}\|_{H_{\divergence}(D)}.
  \end{align}
  By Young's inequality
  \begin{equation}
- |a(U,V)| + \gamma\|u\|_{L^2(D)} \geq \gamma\|u\|_{H^1(D)}^2 + \|\bm{w}\|_{H_{\divergence}(D)}-\epsilon\|u\|_{H^1(D)} - \frac{1}{\epsilon}\|\bm{w}\|_{H_{\divergence}(D)},
+ |a(U,V)| + \gamma_0\|u\|^2_{L^2(D)} \geq \gamma_0\|u\|_{H^1(D)}^2 + \|\bm{w}\|^2_{H_{\divergence}(D)}-\epsilon\|u\|^2_{H^1(D)} - \frac{1}{\epsilon}\|\bm{w}\|^2_{H_{\divergence}(D)},
  \end{equation}
- and taking $\epsilon=t\gamma$, for $t\in[0,1]$ sufficiently close to $1$ such that $t\gamma>1$ (since $\gamma>1$) we get
+ and taking $\epsilon=t\gamma_0$, for $t\in[0,1]$ sufficiently close to $1$ such that $t\gamma_0>1$ (since $\gamma>1$) we get
  \begin{equation}
-  |a(U,V)| + \gamma\|u\|_{L^2(D)}\geq (1-t)\gamma\|u\|_{H^1(D)}^2 + \frac{t\gamma - 1}{t\gamma}\|\bm{w}\|_{H_{\divergence}(D)}.
+  |a(U,V)| + \gamma_0\|u\|^2_{L^2(D)}\geq (1-t)\gamma_0\|u\|_{H^1(D)}^2 + \frac{t\gamma_0 - 1}{t\gamma_0}\|\bm{w}\|^2_{H_{\divergence}(D)}.
  \end{equation}
- \item We proceed with the identification of the kernel of the adjoint form $a^*(U,V)$.
+ \item We proceed with the identification of the kernel of the adjoint form $a^*(U,V)$
 \begin{equation*}
-  a^*(U,V)= \int_D \gamma \nabla \phi \cdot\nabla u\,dy + \int_D\divergence \bm{\psi}\divergence\bm{w} + \int_D\bm{\psi}\cdot\bm{w} - \langle \bm{\psi}\cdot\nu, u \rangle- \langle \phi,\bm{w}\cdot\nu\rangle.
+  a^*(U,V)= \int_D \gamma \nabla \phi \cdot\nabla u + \int_D\divergence \bm{\psi}\divergence\bm{w} + \int_D\bm{\psi}\cdot\bm{w} - \langle \bm{\psi}\cdot\nu, u \rangle- \langle \phi,\bm{w}\cdot\nu\rangle.
 \end{equation*}
  Denoting by $A_c\coloneqq\{x\in D: u>c\}$ we take $V=(\phi_c^+, \bm{0})$ with $\phi_c^+(x)\coloneqq (u(x)-c)\chi_{A_c}(x) + c$
 \begin{equation*}
   0 = a^*(U,V)= \int_{A_c} |\nabla u|^2\,dy - c\int_{\partial D}\bm{w}\cdot\nu\, dy.
 \end{equation*}
- Instead taking $V=(\phi_c^-,\bm{0})$ with $\phi_c^-(x)\coloneqq (2c - u(x) - c)\chi_{A_c}(x) + c$, we get 
+ Instead taking $V=(\phi_c^-,\bm{0})$ with $\phi_c^-(x)\coloneqq (2c - u(x) - c)\chi_{A_c}(x) + c$, we get that
  $\int_{\partial D}\bm{w}\cdot\nu\,dy$ vanishes and $\nabla u=0$ in $D$. 
  Now, since the arbitrariness of $V=(\phi, \bm 0)$, we get $\bm{w}\cdot\nu =0$.
  On the other end, taking $V=(0, \bm{w})$, after last substitutions, we get
@@ -971,19 +974,19 @@ Continuous dependence of solution from data derives from the Bounded Inverse Map
 \end{proof}
 \begin{proposition}
 \label{prop:MITP-equivalence}
- The strong formulation of MITP \ref{problem:MITP-dist} and variational formulation 
+ The strong formulation of MITP (Problem \ref{problem:MITP-dist}) and variational formulation 
  \eqref{eq:MITP-variational} are equivalent.
- Namely, for any strong solution $(u,v)$ of MITP, $U\coloneqq(u,\nabla v)$ satisfies the variational one. 
+ That is, for any strong solution $(u,v)$ of MITP, $U\coloneqq(u,\nabla v)$ satisfies the variational one. 
  On the contrary, for any solution $U=(u,\bm w)$, we can construct a couple $(u,v({\bm w}))$ 
  which solves MITP, such that $\nabla v(\bm w)=\bm w$.
 \end{proposition}
 \begin{proof}
  The first implication is left to the reader, since it's sufficient to multiply and integrate by parts, 
- for any test function. Let us prove only the converse.
+ for any test function $\phi$ and $\divergence\bm \psi$. Let us prove only the converse.
  Let $U=(u, \bm w)$ be a solution of the variational formulation \eqref{eq:MITP-variational}. 
  Since $\curl \bm w=0$ and $D$ is simply connected, there exists a potential $v$ 
  for the vector field $\bm w = \nabla v$, which is determined up to an additive constant. 
- For $\phi$ in $H^1_0(D)$ and in $H^1(D)$ we obtain
+ For $\phi\in H^1_0(D)$ and $\phi\in H^1(D)$ we obtain
  \begin{align}
   -\divergence(\gamma\nabla u)&=0,\quad\textup{ in }D, \\
   \partial_\gamma u - \partial_\nu v&= g,\quad\textup{ on }\partial D.
@@ -991,7 +994,7 @@ Continuous dependence of solution from data derives from the Bounded Inverse Map
  The remaining part is
  \begin{equation}
  \label{eq:remaining-equivalence}
-  \int_D(\Delta v - v)\divergence\bm\psi\, dy + \langle v-u + f,\bm\psi\cdot\nu\rangle = 0 \quad \forall\bm\psi\in H_{\divergence}(D).
+  \int_D(\Delta v - v)\divergence\bm\psi + \langle v-u + f,\bm\psi\cdot\nu\rangle = 0 \quad \forall\bm\psi\in H_{\divergence}(D).
  \end{equation}
 Following \cite{cakoni-colton-haddar:lsm}, we first consider $\bm w_1 = \nabla \chi_1 $, 
 where $\chi_1$ is the solution, for $\phi \in L^2_0(D)$, of
@@ -1005,7 +1008,8 @@ This forces $\Delta v - v = c_1$ to be constant, equal to $c_1$. Next, for $\bm 
  \partial_\nu \chi_2 &= \phi,\, \textup{ on }\partial D,
 \end{align}
 we find the condition $v-u+f=c_2$ on $\partial D$, constant equal to $c_2$. 
-If we substitute two founded conditions in \eqref{eq:remaining-equivalence}, then must be satisfied $c_1=c_2=c=v-u+f$. Finally the corrected couple $(u,v-c)$ solves
+If we substitute these two founded conditions in \eqref{eq:remaining-equivalence}, 
+then must be satisfied $-c_1=c_2=c=v-u+f$. Finally the corrected couple $(u,v-c)$ solves
  \begin{align}
   - \Delta v + v&=0,\,\textup{ in } D,\\
   u-v &= f,\,\textup{ on }\partial D.
@@ -1013,25 +1017,25 @@ If we substitute two founded conditions in \eqref{eq:remaining-equivalence}, the
 \end{proof}
 \begin{proposition}
 \label{prop:ITP-ex-un}
- Under assumption $\gamma(x)=1+(k-1)\chi_D$, with $k$ constant, there exist a unique solution $(u,v)\in(H^1(D) \times H^1(D))/\mathbb{C}$ of ITP. Or equivalently it's unique in the subspace $H^1(D)\times H^1_0(D)$.
+ Under assumption $\gamma(x)=k$ in $D$, with $k$ constant, there exists a unique solution $(u,v)\in(H^1(D) \times H^1(D))/\mathbb{C}$ of ITP. Or equivalently it's unique in the subspace $H^1(D)\times H^1_0(D)$.
 \end{proposition}
 \begin{remark}
-Under the following assumptions for $\gamma$
+Under the following assumptions for a generic symmetric $\gamma(x)$
 \begin{align}
- &\exists\, \alpha>0\,\forall \zeta \in \mathbb{C}\quad \real(?z\overline{\zeta}\cdot\gamma(x)\zeta)     \geq\,  \alpha|\zeta|^2 \quad x\in \Omega, \text{ for some } z \in \mathbb{C},\\
- &\exists\, \beta>0\,\forall \zeta \in \mathbb{C}\quad \imag(\overline{\zeta}\cdot\gamma(x)\zeta)        \leq\,  -\beta|\zeta|^2 \quad x\in \mathcal{O} \subset D \text{ some open set },
+ &\exists\, \alpha>0\,\forall \zeta \in \mathbb{C}^m\quad \real(\overline{\zeta}\cdot\gamma(x)\zeta)     \geq\,  \alpha|\zeta|^2 \quad x\in \Omega,\\
+ &\exists\, \beta>0\,\forall \zeta \in \mathbb{C}^m\quad \imag(\overline{\zeta}\cdot\gamma(x)\zeta)        \leq\,  -\beta|\zeta|^2 \quad x\in \mathcal{O} \subset D \text{ some open set },
 \end{align}
 uniqueness  of ITP is easily demonstrated in \cite{somersalo:preprint}, while existence requires a weak formulation starting from the article \cite{cakoni-colton-haddar:lsm}, where the Helmholtz equation for the scattering problem is studied.
 \end{remark}
 \begin{proof}[Proof of \ref{prop:ITP-ex-un}]
  We prove uniqueness, in the framework of the above proposition. 
  We assume $f=g=0$, and define $w\coloneqq u-v$ be the difference, then it's harmonic, 
- with homogeneous data on the boundary $w=0$ on $\partial D$: uniqueness for Dirichlet data implies $w=0$. Neumann data can be rewritten, under $u=v$, as $k\partial_\nu u - \partial_\nu v = (k-1)\partial_\nu u = 0$.
+ with homogeneous Dirichlet data on the boundary $w=0$ on $\partial D$. Then uniqueness implies $w=0$. Neumann data can be rewritten, under $u=v$, as $k\partial_\nu u - \partial_\nu v = (k-1)\partial_\nu u = 0$.
  This homogeneous Neumann condition, with Laplace equation for $u$, yields to the conclusion which $u=v=c$ must be constant, equivalent to $u=v=0$ according with the equivalence class definition.
 \end{proof}
-Now going back to the initial ITP problem, we define the Sobolev space of solutions, with its induced stronger norm,
+To prove existence for ITP, going back to the initial ITP problem, we define the Sobolev space of solutions, with its induced stronger norm,
 \begin{equation}
- X\coloneqq\Bigl\{(u,v)\in H^1(D)\times H^1(D):\divergence(\gamma\nabla u)\in L^2(D),\,\Delta v\in L^2(D) \Bigr\},
+ X\coloneqq\Bigl\{(u,v)\in H^1(D)\times H^1(D):\divergence(\gamma\nabla u)\in L^2(D) \textup{ and } \Delta v\in L^2(D) \Bigr\},
 \end{equation}
 and the space of data
 \begin{equation}
@@ -1042,11 +1046,16 @@ We also define the two operators $T,K:X\to Y$:
 & T \coloneqq \bigl(-\divergence(\gamma\nabla u), -\Delta v + v, (u - v)|_{\partial D}, (\partial_\gamma u -\partial_\nu v)|_{\partial D}\bigr),\\
 & K \coloneqq (0, -v, 0 , 0).
 \end{align}
-By compact embedding of $H^1(D)$ in $L^2(D)$, both $T$ and $T+K$ are Fredholm operators, with the same index. 
-Theorems \ref{prop:MITP-variational} and \ref{prop:MITP-equivalence} shows that $T$ is continuous bijective with bounded inverse. But since $T+K$ is not injective, by the fact that $\mathcal{N}(T+K)=\textup{span}(\{(1,1)\})$, we expect $\textup{codim}(\mathcal{R}(T+K))=1$. This is true since $\mathcal{R}(T+K)$ is equal to $Y$ after substitution of forth slot with $H^{-1/2}_0(\partial D)$. Substituting even second slot in $X$ with $H^1_0(D)$ for $v$, we construct a bijective and continuous map, with bounded inverse.
+By compact embedding of $H^1(D)$ in $L^2(D)$, both $T$ and $T+K$ are Fredholm operators, 
+with the same index. Theorems \ref{prop:MITP-variational} and \ref{prop:MITP-equivalence} show 
+that $T$ is continuous bijective with bounded inverse. But since $T+K$ is not injective, by the 
+fact that $\mathcal{N}(T+K)=\textup{span}(\{(1,1)\})$, we expect 
+$\textup{codim}(\mathcal{R}(T+K))=1$. This is true since $\mathcal{R}(T+K)$ is equal to 
+$Y$ after substitution of the forth slot with $H^{-1/2}_0(\partial D)$. Substituting even 
+the second slot in $X$ with $H^1_0(D)$ for $v$, we construct a bijective and continuous map, with bounded inverse.
 Let us summarize all these facts in the following proposition.
 \begin{proposition}
- Let $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}_0(\partial D)$, then ITP \ref{problem:ITP-dist} has a unique solution in $H^1(D)\times H^1_0(D)$, which depends continuously from data $f,g$.
+ Let $f\in H^{1/2}(\partial D)$ and $g\in H^{\,-1/2}_0(\partial D)$, assuming $\gamma>1$ in $D$, then ITP (Problem \ref{problem:ITP-dist}) has a unique solution in $H^1(D)\times H^1_0(D)$, which depends continuously from data $f,g$.
 \end{proposition}
 \section{Linear Sampling Method}
  The linear sampling method consists in sampling a region $\Omega$ with an hypothetic function 
@@ -1060,22 +1069,23 @@ Let us summarize all these facts in the following proposition.
  This method has been widely employed in the context of inverse problems for scattering (see \cite{colton-haddar-piana:lsm}, \cite{cakoni-colton-haddar:lsm}) with different boundary conditions (sound-soft obstacles, sound-hard obstacles, impedance conditions). Our aim is to use it for electrical impedance tomography.
  We begin by stating the main properties of the relative Neumann--to--Dirichlet operator ${N_D} - {N_0}$.
  \begin{proposition}
-  The operator ${N_D} - {N_0}:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$ is injective and has dense range
+  The operator ${N_D} - {N_0}:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$ is injective and has dense range.
  \end{proposition}
  This is proved in \cite{kirsch:book}, but we present the proof for injectivity contained in \cite{somersalo:preprint}, to highlight the link with ITP.
  \begin{proof}
- Assume $({N_D} - {N_0})f = 0$. Let $u=M_Df$ and $v=M_0f$, the difference $w=u-v$ is harmonic in $\Omega\backslash\overline{D}$ with vanishing Cauchy conditions on $\partial \Omega$, which entails $w=0$ in $\Omega\backslash\overline{D}$. Then the pair $(u|_D,v|_D)$ solves the ITP with conditions
+ Assume $({N_D} - {N_0})f = 0$. Let $u=M_Df$ and $v=M_0f$ the corresponding solutions of \eqref{eq:NtoD-inclusion} and \eqref{eq:NtoD-laplace},
+ the difference $w=u-v$ is harmonic in $\Omega\backslash\overline{D}$ with vanishing Cauchy conditions on $\partial \Omega$, which entails $w=0$ in $\Omega\backslash\overline{D}$. Then the pair $(u|_D,v|_D)$ solves the ITP with conditions
  \begin{align}
-  u^--v^- &=u^+ - v^+ = 0 ,\\
-  \partial_\gamma u^- - \partial_\nu v^- &= \partial_\nu u^+ - \partial_\nu v^+ = 0 ,
+  u^--v^- &=u^+ - v^+ = 0 ,&& \textup{on }\partial D,\\
+  \partial_\gamma u^- - \partial_\nu v^- &= \partial_\nu u^+ - \partial_\nu v^+ = 0 ,&& \textup{on }\partial D.
  \end{align}
-The uniqueness of ITP implies $u,v$ and $f$ identically zero. 
+The uniqueness of ITP implies that $u,v$ and $f$ are identically zero. 
  \end{proof}
 \begin{proposition}
   All the operators ${N_D}, {N_0}, {N_r}$ are self-adjoint.
  \end{proposition}
  \begin{proof}
- The result derives directly from the weak formulation, taking $\phi=u_f$ in the variational formulation for $u_g$. Namely
+ The result derives directly from the weak formulation, taking $\phi=u_f$ (we denote by $u_f=M_Df$) in the variational formulation for $u_g$. Namely
  \begin{align}
   \int_{\Omega}\gamma\nabla u_g \cdot \nabla \phi\,dy &= \int_{\partial\Omega}g\,\phi\,dy \quad \forall \phi\in H^1_0(\Omega) ,\\
   \int_{\Omega}\gamma\nabla u_g \cdot \nabla u_f\,dy &= \langle g, {N_D} f\rangle_{L^2(\partial \Omega)} \label{eq:adjoint-NtoD}.
@@ -1091,23 +1101,23 @@ The thesis follows observing the symmetry of the left hand side of \eqref{eq:adj
  \end{aligned}
  \right.
  \end{equation}
- with unit vector $|\vec{d}\,|=1$. Using the notation $\vec{\Psi}(x,z)\coloneqq\nabla_x\Phi(x,z)$ the derivative of the fundamental solution, we write the structure of the right term, which will be effectively implemented numerically.
+ with unit vector $|\vec{d}\,|=1$. Using the notation $\vec{\Psi}(x,z)\coloneqq\nabla_x\Phi(x,z)$ for the derivative of the fundamental solution, we write the structure of the right term, which will be effectively implemented numerically.
  \begin{definition}
  \label{def:lsm-psi}
-  Letting $T_0$ and $T_D$ are defined as in \eqref{eq:def-T_0}, \eqref{eq:def-T_D}, we denote
+  Let $M_0$ and $M_D$ be defined as in \eqref{eq:def-T_0}, \eqref{eq:def-T_D}, we denote
  \begin{equation}
- \psi_{0z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - T_0\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr),
+ \psi_{0z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - M_0\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr),
   \end{equation}
   and
   \begin{equation}
-  \psi_{z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - T_D\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr),
+  \psi_{z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - M_D\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr),
   \end{equation}
   with $m_z$ the mean of $\vec{\Psi_z}\cdot\vec{d}$ on $\partial \Omega$. We will use the same notation for their traces on $\partial \Omega$.
  \end{definition}
  \begin{remark}
   Note that $\psi_z$ is not harmonic in $\Omega\backslash\{z\}$ and
   \begin{equation*}
-  \partial_\nu \psi_{0z} = \partial_\nu \psi_z = 0,\quad\text{on}\,\partial \Omega.
+  \partial_\nu \psi_{0z} = \partial_\nu \psi_z = 0,\quad\textup{ on }\,\partial \Omega.
   \end{equation*}
  \end{remark}
  Kirsch in \cite{kirsch:book} introduces the same function, starting from the \emph{Green's function for Neumann boundary problem}: $N(x,z)=\Phi(x,z)-\tilde{N}(x,z)$, with $\tilde{N}(x,z)$ such that
@@ -1115,16 +1125,17 @@ The thesis follows observing the symmetry of the left hand side of \eqref{eq:adj
  \left\{
  \begin{aligned}
    -\Delta N(x,z) &= 0, &&\textup{ in }\Omega\backslash\{z\} ,\\
-   \partial N(x,z) &= -1/|\partial \Omega|,&&\textup{ on }\partial \Omega.
+   \partial_\nu N(x,z) &= -1/|\partial \Omega|,&&\textup{ on }\partial \Omega.
  \end{aligned}
  \right.
  \end{equation}
- By uniqueness, since both satisfy $\partial_\nu\psi_{0z}(x)=0$ on $\partial \Omega$, there holds the identity
+ By uniqueness, since both $\psi_{0z}$ and $\nabla_zN \cdot\vec{d}$ satisfy homogeneous Neumann
+ boundary conditions  on $\partial \Omega$, there holds the identity
  \begin{equation}
   \psi_{0z}(x) = \nabla_zN(x,z) \cdot \vec{d}.
  \end{equation}
  \begin{definition}
- We define the following integral functions, for a given density $\psi\in C(\partial D)$ and $\partial D$ of class $C^2$
+ We define the following integral functions, for $\partial D$ of class $C^2$ and a given density $\psi\in C(\partial D)$
  \begin{enumerate}
   \item the \emph{single layer} potential
    \begin{equation}
@@ -1187,7 +1198,7 @@ and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\t
    \partial_\gamma u_z &= \partial_\nu v_z + \partial_\nu \psi_{0z}, &&\textup{ on }\partial D. \label{eq:proof-ITP-1}
   \end{align}
   \end{subequations}
-  \item By density result \ref{lemma:lsm-density}, for any $\delta(\epsilon)>0$ there exists $v^\epsilon_z\coloneqq\mathcal{S}(\partial B, \omega^\epsilon_z)$ such that
+  \item By density result Lemma \ref{lemma:lsm-density}, for any $\delta(\epsilon)>0$ there exists $v^\epsilon_z\coloneqq\mathcal{S}(\partial B, \omega^\epsilon_z)$ such that
   \begin{equation}
    \|v_z-v_z^\epsilon\|_{H^1(D)}<\delta.
   \end{equation}
@@ -1197,7 +1208,7 @@ and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\t
   \end{equation}
   such that $(\partial_\nu u^\epsilon_z -\partial_\nu v^\epsilon_z )|_{\partial\Omega}=\partial_\nu\psi_{0z}|_{\partial\Omega}=0$, and define the solution of the inclusion problem $w^\epsilon_z$, with the same boundary derivative
   \begin{align}
-   w^\epsilon_z&\coloneqq T\partial_\nu u^\epsilon_z, \\
+   w^\epsilon_z&\coloneqq M\partial_\nu u^\epsilon_z, \\
    r^\epsilon_z&\coloneqq w^\epsilon_z - u^\epsilon_z,
   \end{align}
   and the residual satisfies 
@@ -1223,15 +1234,18 @@ and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\t
    &\leq\|r^\epsilon_z\|_{H^{1/2}(\partial \Omega)}\leq C\delta,
   \end{align}
   with arbitrary small $\delta(\epsilon)>0$.
+  \qedhere
  \end{enumerate}
 \end{proof}
-We note that in the step 2 of the last proof, \emph{for fixed $z \in D$}, we could have construct a sequence $v^{\epsilon_n}_z$ converging to $v_z$ in $H^1(D)$
+We note that in the step 2 of the last proof, \emph{for fixed $z \in D$}, we could have constructed a sequence $v^{\epsilon_n}_z$ converging to $v_z$ in $H^1(D)$
 \begin{equation}
  \|v^{\epsilon_n}_z - v_z\|_{H^1(D)} < \delta_n, \quad \textup{ for }\delta_n \to 0,
 \end{equation}
 which implies a \emph{stronger result} that can't be obtained for the counterpart, when $z\in\Omega\backslash\overline{D}$.
 \begin{remark}
- For fixed $z\in D$, there exist a sequence $v^{\epsilon_n}_z\coloneqq\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$ such that it's approximating, as above, that is
+ For fixed $z\in D$, there exist a sequence 
+ $v^{\epsilon_n}_z\coloneqq\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$ 
+ such that it's approximating as above, that is
 \begin{equation}
  \|({N_D} - {N_0})\partial_\nu v^{\epsilon_n}_z - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \epsilon_n, \quad \textup{ for }\epsilon_n\to 0,
 \end{equation}
