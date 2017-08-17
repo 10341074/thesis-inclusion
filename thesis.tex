@@ -2168,7 +2168,7 @@ from the fact that it can be represented as the sum of the fundamental solution 
 \label{ch:factorization}
 In this chapter we will review a third method to reconstruct inclusions in a conductor. Known as Factorization Method, 
 this technique was introduced by Kirsch (see \cite{kirsch:factorization}) in the framework of inverse scattering theory and later developed by 
-several authors in different context. We will focus mainly on the reconstruction of inclusions relating this method to 
+several authors in different contexts. We will focus mainly on the reconstruction of inclusions relating this method to 
 the previous ones.
 \section{Factorization}
 The aim is to factorize the relative Neumann--to--Dirichlet map ${N_0} - {N_D}$, in the form
@@ -2261,17 +2261,19 @@ By analytic extension, $\nabla v_f = 0$ in $\Omega$, entailing $v_f=0$, since $v
 
 \section{Equivalent Characterization}
 At this point, it's clear that the linear sampling method determines the support of $D$, according 
-with approximation results in the image space. We recall a first result, common to 
+with approximation results in the image space. We recall a first result, common to the
 scattering case, whose proof can be found in \cite{somersalo:preprint}.
 \begin{proposition}
+\label{prop:underestimated-range}
  Let $\psi_{0z}$ be defined by \ref{def:lsm-psi}. If $\psi_{0z}\in\mathcal{R}({N_0}-{N_D})$, then $z\in D$.
 \end{proposition}
-Unfortunately, the inverse of the proposition doesn't hold. This means that the range $\mathcal{R}({N_0} - {N_D})$ underestimates the inclusion $D$.
-\par
+\begin{remark}
+ The inverse of the Proposition \ref{prop:underestimated-range} doesn't hold. This means that the range $\mathcal{R}({N_0} - {N_D})$ underestimates the inclusion $D$.
+\end{remark}
 For this reason, one of the advantages of the factorization, is the following equivalent condition, which can be found in \cite{kirsch:book}, along with its proof.
 \begin{theorem}
 \label{theo:equivalence}
- Let assumptions \ref{assumption:connected} for inclusion $D$ hold, let $\psi_{0z}$ 
+ Let Assumption \ref{assumption:connected} for inclusion $D$ hold, let $\psi_{0z}$ 
  be defined by \ref{def:lsm-psi}, the potential of a dipole with homogeneous 
  Neumann data on $\partial \Omega$ and let $A^*$ be the adjoint of the operator $A$ defined by \eqref{eq:def-A}.
  Then there holds the equivalence 
@@ -2330,7 +2332,7 @@ We take advantage of the representation of ${N_r}:L^2_0(\partial \Omega)\to L^2_
 \begin{center}
 the singular system for ${N_r}^{1/2}$: $\bigl\{(\sqrt{\lambda_j}, \psi_j, \psi_j)\bigr\}_{j\in\mathbb{N}}$.
 \end{center}
-From the application of the Picard's theorem, follows the range criterion.
+From the application of the Picard's theorem, there follows the range criterion.
 \begin{proposition}
  In the previous framework, there holds
  \begin{equation}
@@ -2345,16 +2347,21 @@ Observe that $\chi(z):=\textup{sign}\,W(z)$ approximates the characteristic func
 Hanke and Br\"{u}hl suggested in \cite{hanke-bruhl:recent} a test to establish the convergence of the previous sum, with finitely many terms, after discretization. In most of geometries, the decay of singular values $\bigl\{\lambda_j\bigr\}_j$ is typically exponential, as it can be easily plotted. 
 Let's assume an exponential behavior for the components $(\psi_{0z},\psi_j )^2$, parametrized as
 \begin{align}
- \lambda_j &\sim a_j (r_j) ^j,  & \log\lambda_j &\sim c_j + j\log r_j,\\
- (\psi_{0z}, \psi_j)^2 &\sim A_j(R_j)^j, & \log(\psi_{0z}, \psi_j)^2 &\sim C_j + j\log R_j,
+ \lambda_j &\sim a_j (r_j) ^j,  & \log\lambda_j &\sim c_j + j\log r_j,\label{eq:straightline-eig}\\
+ (\psi_{0z}, \psi_j)^2 &\sim A_j(R_j)^j, & \log(\psi_{0z}, \psi_j)^2 &\sim C_j + j\log R_j\label{eq:straightline-data},
 \end{align}
-then the range criterion leads to comparing the slopes of the straight line interpolating computed data
+then the range criterion leads to comparing the slopes of the straight lines interpolating 
+eigenvalues \eqref{eq:straightline-eig} and computed data \eqref{eq:straightline-data}
 \begin{equation}
  z\in D \,\Longleftrightarrow\, \dfrac{R_j}{r_j} < 1 \,\Longleftrightarrow\, \log R_j < \log r_j.
 \end{equation}
 
 \chapter{Validation of the methods}
 \label{ch:link}
+This chapter is devoted to emphasize some features of the reconstruction methods we have analyzed 
+up to now. We will first show what is the connection between the reciprocity gap method and the linear 
+sampling method. We will then proceed by studying the existence of a converging sequence as predicted 
+by the general Theorem \ref{prop:lsm-constructive} of the linear sampling method.
 \section{Link between two methods}
 In this subsection we will link the \textit{reciprocity gap functional method} to the \emph{linear sampling method}.
 The former is formulated as
