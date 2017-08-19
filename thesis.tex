@@ -2363,18 +2363,19 @@ up to now. We will first show what is the connection between the reciprocity gap
 sampling method. We will then proceed by studying the existence of a converging sequence as predicted 
 by the general Theorem \ref{prop:lsm-constructive} of the linear sampling method.
 \section{Link between two methods}
-In this subsection we will link the \textit{reciprocity gap functional method} to the \emph{linear sampling method}.
-The former is formulated as
+We have seen that the reciprocity gap method is formulated as an integral equation 
+of the form
 \begin{equation}
  \mathcal{R}(u, v) = \mathcal{R}(u, \vec{\Psi}_z\cdot\vec{d})\quad \forall u \in \mathcal{U},
 \end{equation}
-while the linear sampling method deals with the following equation
+whereas the linear sampling method deals with the following equation
 \begin{equation}
 \label{eq:eq-lsm-link}
  ({N_D} - {N_0})f = \psi_{0z} \quad \text{ on }\partial \Omega.
 \end{equation}
 The number of players suggest to compute the duality of \eqref{eq:eq-lsm-link}, with a generic 
-${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)}$, by self-adjoint properties (denoting $u,v$ solutions of \eqref{eq:NtoD-laplace}, \eqref{eq:NtoD-inclusion}), we have
+${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)}$, by self-adjoint properties (denoting $u,v$ solutions of 
+\eqref{eq:NtoD-inclusion}), \eqref{eq:NtoD-laplace}, we have
 \begin{align}
  \label{eq:link-duality-left}
  \langle({N_D} - {N_0})f,g\rangle & =  \langle f,{N_D} g\rangle - \langle {N_0} f,g\rangle \\
@@ -2382,21 +2383,23 @@ ${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)
                                         & = \mathcal{R}(u,v).
 \end{align}
 \begin{proposition}
- The \textit{reciprocity gap functional method} correspond to the weak formulation of the \textit{linear sampling method} with a modified right term. Consequently, provided the choice of $\psi_z$ as right side in \eqref{eq:eq-lsm-link}, the two methods are equivalent.
+ The \textit{reciprocity gap functional method} correspond to the weak formulation of the \textit{linear sampling method} with a modified right term. Consequently, provided the choice of $\psi_z$ as right side in \eqref{eq:eq-lsm-link}
+ instead of $\psi_{0z}$, the two methods are equivalent.
 \end{proposition}
 \begin{proof} We prove the equivalence.
 \begin{enumerate}
- \item The r.g. formulation can be obtained from the duality with a generic test function $g\in H^{\, -1/2}_0(\partial \Omega)$, with $\psi_z$ defined in \ref{def:lsm-psi}, resulting in \eqref{eq:link-duality-left} and in
+ \item The r.g. formulation can be obtained from the duality with a generic test function $g\in H^{\, -1/2}_0(\partial \Omega)$, with $\psi_{0z}$ substituted by $\psi_z$ defined in \ref{def:lsm-psi}, resulting in \eqref{eq:link-duality-left} and in
 \begin{align}
  \langle \psi_z , g \rangle  & = \langle \vec{\Psi}(x,z)\cdot\vec{d} - m_z - {N_D}(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}) , g \rangle \\
                              & = \langle \vec{\Psi}(x,z)\cdot\vec{d},\partial_\nu u\rangle - 0 - \langle\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d},u\rangle.
 \end{align}
  \item The l.s. formulation can be recovered from the weak one, thanks to density of $\{\partial_\nu u|_{\partial \Omega}\}=\{g\}$ in $L_0^2(\partial \Omega)$.
+\qedhere
 \end{enumerate}
 \end{proof}
 The approximation result for linear sampling method can be restated, exactly the same, as we could expect after approximation theorem for reciprocity gap method.
 \begin{remark}
- The approximation result \ref{prop:lsm-constructive} holds for the modified case with $\psi_z$ as right term (instead of $\psi_{0z}$).
+ The approximation result Theorem \ref{prop:lsm-constructive} holds for the modified case with $\psi_z$ as right term (instead of $\psi_{0z}$).
 \end{remark}
 \begin{proof}
  The proof can be obtained from Theorem \ref{prop:lsm-constructive} with some modifications. 
@@ -2426,9 +2429,10 @@ The linear sampling method deals with the resolution of a linear equation of the
  ({N_0} - {N_D}) f = \psi_{0z},\quad \textup{ on }\partial \Omega.
 \end{equation}
 The first great question is how regularization of the equation in $L^2_0(\partial \Omega)$
-allows to construct a sequence converging in $L^2(D;\,\mathbb{R}^2)$, which exists as predicted by approximation theorem \ref{prop:lsm-constructive}.
+allows to construct a sequence converging in $L^2(D;\,\mathbb{R}^2)$, which exists 
+as predicted by approximation Theorem \ref{prop:lsm-constructive}.
 In \cite{arens:why} it's well explained the key role of the factorization 
-of the \textit{relative} Neumann--to--Dirichlet operator ${N_0} - {N_D}$
+of the relative Neumann--to--Dirichlet operator ${N_0} - {N_D}$
 \begin{equation}
  {N_0} - {N_D} = A^*TA.
 \end{equation}
@@ -2436,7 +2440,7 @@ We introduce the following notation for the intermediate space.
 \begin{definition}
 We define the closed subspace
 \begin{equation}
- Z\coloneqq\bigl\{\phi\in L^2(D;\,\mathbb{R}^2):\divergence\phi=0, \curl\phi=0\bigr\}
+ Z\coloneqq\bigl\{\phi\in L^2(D;\,\mathbb{R}^2):\divergence\phi=0 \textup{ and } \curl\phi=0\bigr\}
 %  H_{\divergence}(D)\coloneqq\bigl\{\bm{w}\in L^2(D;\,\mathbb{R}^3):\divergence\bm{w} \in L^2(D),\, \curl\bm{w}=0 \bigr\}
 \end{equation}
 in the weak sense, equipped with the $L^2(D;\,\mathbb{R}^2)$ norm. Indeed, any sequence $\phi_n$ converging to $\phi$ in $L^2(D;\,\mathbb{R}^2)$, converges even in the distributional sense
@@ -2448,19 +2452,19 @@ and continuity of differential operators $L=\divergence$, $L=\curl$, with respec
 Furthermore, we change the functional spaces of definition of previous operators $A:L^2_0(\partial \Omega)\to Z$ and $T:Z \to Z$. 
 Note that both operators have well defined values in the image spaces.
 \end{definition}
-Let $v_f$ be an harmonic function with Neumann data $f$, and consider $Af=\nabla v$ and $\phi\in Z$. Then, integrating by parts,
+Let $v_f$ be an harmonic function with Neumann data $f$, and consider $Af=\nabla v|_{D}$ and $\phi\in Z$. Then, integrating by parts,
 \begin{equation}
  \int_D\nabla v\cdot \phi\,dy=\int_{\partial D}v \phi\cdot\nu\,dy.
 \end{equation}
 By density result for $\mathcal{V}(\overline{\Omega})$ analogous to \ref{lemma:density-V-0}, $\phi\cdot \nu=0$ on $\partial D$ yields $\phi=0$ for any $\phi\in Z$.
 This computation leads to the next density result.
-\begin{remark}
+\begin{lemma}
  The operator $A$ has dense image in $Z$. And by injectivity and self-adjointness, the operator $T$ has dense image too, that is
  \begin{equation}
   \forall\alpha\in Z: 0=(T\alpha,\beta)=(\alpha,T\beta)\,\Rightarrow \, T\beta = 0 \, \Rightarrow \beta=0.
  \end{equation}
- Furthermore $A^*$ is injective, by the fact that $\mathcal{N}(A^*)=\mathcal{R}(A)^\perp$
-\end{remark}
+ Furthermore $A^*$ is injective, by the fact that $\mathcal{N}(A^*)=\mathcal{R}(A)^\perp$.
+\end{lemma}
 We remind all properties of Neumann--to--Dirichlet operator in \eqref{eq:NtoD_firstkind}.
 \begin{remark}
  The operator ${N_0} - {N_D}: L^2_0(\partial \Omega) \to L^2_0(\partial \Omega)$ is injective, with dense image, self-adjoint, compact and positive
@@ -2468,12 +2472,12 @@ We remind all properties of Neumann--to--Dirichlet operator in \eqref{eq:NtoD_fi
   (({N_D} - {N_0})f,f) = ( Af,TAf) \geq c\|Af\|^2_{L^2(D;\,\mathbb{R}^2)} > 0 \quad \forall f\in L^2_0(\partial \Omega) \quad f\neq0.
  \end{equation} 
 \end{remark}
-\begin{remark}
+\begin{lemma}
  In the previous framework, let the operator $A^*$ be defined only on $Z$, then Theorem \ref{theo:equivalence} remains valid:
   \begin{equation}
   z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(A^*).
  \end{equation}
-\end{remark}
+\end{lemma}
 % \begin{center}
 % \begin{tikzpicture}
 %     % set up the nodes
@@ -2522,14 +2526,14 @@ an orthogonal eigensystem $\{(\lambda_j, \psi_j)\}_{j\in\mathbb{N}}$ for ${N_0} 
 with all $\lambda_j>0$, by injectivity.
 We introduce the following sets of vectors, with the aim of using them as bases for the intermediate space $Z$.
 \begin{definition}
-Let $\lambda_j$ and $\psi_j$, as above be the eigenvalues and eigenvectors of ${N_r}$, we define
+Let $\lambda_j$ and $\psi_j$ be the eigenvalues and eigenvectors of ${N_r}$, we define
 \begin{equation}
  \phi_j\coloneqq \frac{1}{\sqrt{\lambda_j}}A\psi_j, \quad \tilde{\phi}_j\coloneqq T\phi_j,\quad j\in\mathbb{N}. 
 \end{equation}
 \end{definition}
 We remark that we have the following orthogonality relation
 \begin{equation}
- (\phi_j, T\phi_k) =  ( \frac{1}{\sqrt{\lambda_j}} A\psi_j, \frac{1}{\sqrt{\lambda_j}} TA\psi_k) = \frac{1}{\lambda_j}( \psi_j, A^*TA\psi_k) = \delta_{jk}.
+ (\phi_j, T\phi_k) =  ( \frac{1}{\sqrt{\lambda_j}} A\psi_j, \frac{1}{\sqrt{\lambda_k}} TA\psi_k) = \frac{1}{\sqrt{\lambda_j}\sqrt{\lambda_k}}( \psi_j, A^*TA\psi_k) = \delta_{jk}.
 \end{equation}
 \begin{remark}
  The sequences $\{\phi_j\}_{j\in\mathbb{N}}$ and $\{\tilde{\phi}_j\}_{j\in\mathbb{N}}$ are biorthogonal.
@@ -2553,7 +2557,7 @@ In general, this conclusion can be reached by several intermediate results. Assu
  and the following decompositions hold
  \begin{align}
   & \alpha = \sum_{j \in \mathbb{N}}(\alpha,\phi_j)_T \phi_j,\\
-  & \alpha = \sum_{j \in \mathbb{N}}(\alpha,T\phi_j) T\phi_j. 
+  & \alpha = \sum_{j \in \mathbb{N}}(\alpha,\phi_j) T\phi_j. 
  \end{align}
 \end{proposition}
 % \begin{proof}
@@ -2586,6 +2590,7 @@ In general, this conclusion can be reached by several intermediate results. Assu
 % \end{enumerate} 
 % \end{proof}
 The general purpose is to construct a regularization scheme  $R_\alpha$ from the image space $L^2_0(\partial\Omega)$ to the intermediate space $Z$, whenever there is given a regularization $\tilde{R}_\alpha$ for the relative Neumann--to--Dirichlet operator ${N_0}-{N_D}$, as represented graphically. Indeed the range $\mathcal{R}(A^*)$ approximates data for source $z\in D$ sharper than the corresponding $\mathcal{R}({N_0} -{N_D})$.
+Further notions about regularization theory can be found in Chapter \ref{ch:implementation}.
 \begin{center}
 \begin{tikzpicture}
  \node at (0,0) {$ L^2_0(\partial \Omega) \xrightarrow{A} Z \xrightarrow{T} Z\xrightarrow{A^*} L^2_0(\partial\Omega)$};
@@ -2607,11 +2612,11 @@ The general purpose is to construct a regularization scheme  $R_\alpha$ from the
 \end{center}
 We try to express the generic vector, resulting from the regularization, in terms of an appropriate Riesz's basis of $Z$:
 \begin{align}
-  R_\alpha A^*\phi :=& TA\tilde{R}_\alpha A^*\Big(\sum_{j=1}^\infty(\phi,\phi_j)_TT\phi_j\Big) \\
-  =& TA\tilde{R}_\alpha A^*\Big(\sum_{j=1}^\infty(\phi,\phi_j)_T\frac{1}{\sqrt{\lambda_j}}TA\psi_j\Big) \\
-  =& TA\tilde{R}_\alpha \Big(\sum_{j=1}^\infty(\phi,\phi_j)_T\sqrt{\lambda_j}\psi_j\Big) \\
-  =& TA\Big(\sum_{j=1}^\infty\frac{q(\alpha,\lambda_j)}{\sqrt{\lambda_j}}(\phi,\phi_j)_T\psi_j\Big) \\
-  =&\sum_{j=1}^\infty q(\alpha,\lambda_j)(\phi,\phi_j)_TT\phi_j.
+  R_\alpha A^*\phi :=& TA\tilde{R}_\alpha A^*\Big(\sum_{j=1}^\infty(\phi,\phi_j)T\phi_j\Big) \\
+  =& TA\tilde{R}_\alpha A^*\Big(\sum_{j=1}^\infty(\phi,\phi_j)\frac{1}{\sqrt{\lambda_j}}TA\psi_j\Big) \\
+  =& TA\tilde{R}_\alpha \Big(\sum_{j=1}^\infty(\phi,\phi_j)\sqrt{\lambda_j}\psi_j\Big) \\
+  =& TA\Big(\sum_{j=1}^\infty\frac{q(\alpha,\lambda_j)}{\sqrt{\lambda_j}}(\phi,\phi_j)\psi_j\Big) \\
+  =&\sum_{j=1}^\infty q(\alpha,\lambda_j)(\phi,\phi_j)T\phi_j.
 \end{align}
 % \begin{align}
 %   R_\alpha A^*T\phi :=& A\tilde{R}_\alpha A^*T\Big(\sum_{j=1}^\infty(\phi,\phi_j)_T\phi_j\Big) \\
@@ -2660,12 +2665,17 @@ This last observation implies boundedness of the sequence $f_z^{\alpha_n}$ only 
 \end{corollary}
 \chapter{Numerical Implementation}
 \label{ch:implementation}
-In the previous chapters we arrived at a linear equation of the first kind (see \eqref{eq:lsm-approximate-lin-eq} and \eqref{eq:rg-approximate-eq}), of the form
+In the reconstruction methods we have seen, we always end up with a linear integral equation of the 
+first kind (see \eqref{eq:lsm-approximate-lin-eq} and \eqref{eq:rg-approximate-eq}) of the form
 \begin{equation}
  Kx = y,\label{eq:first-to-inv}
 \end{equation}
-with $K$ compact. The common difficulty is that equation \eqref{eq:first-to-inv} is \emph{ill-posed} according to Proposition \ref{prop:ill-posed}.
+where $K$ is a compact operator.
+Typically these equations are ill-posed in the sense of Hadamard (see Definition \ref{def:well-posed-lineareq} below) 
+and this represents a big difficulty for the numerical reconstruction. It is necessary therefore a regularization 
+theory. In this chapter we will show a possible strategy to prevent this difficulty and provide some numerical examples.
 \begin{definition}
+\label{def:well-posed-lineareq}
  Let $K:X\to Y$ be a linear bounded operator. The equation $Kx=y$ is \emph{well-posed}, in the sense that
  \begin{enumerate}
   \item there exists a solution (\emph{existence});
@@ -2681,10 +2691,9 @@ of a bounded inverse operator of $K$.
  the equation $Kx=y$ is ill-posed if $X$ is of infinite dimension.
 \end{proposition}
 \begin{proof}
- It's a classical proof. If we assume existence of a bounded inverse $K^{-1}$, then the bounded unit ball $B_1(0)\subset X$ would be mapped to 
+ Assuming the existence of a bounded inverse $K^{-1}$, then the bounded unit ball $B_1(0)\subset X$ would be mapped to 
  a compact $K(B_1(0))\subset Y$ and to a compact $K^{-1}K(B_1(0))=B_1(0)$ coincident with itself, yielding to a contradiction if $X$ is not of finite dimension.
-\end{proof}
-In this chapter, we'll sketch the regularization theory for inverse problems, whenever they are ill-posed, like in our case.
+\end{proof}     
 \begin{remark}
  Since we are dealing with an approximate equation $Kx=y$, it's not guaranteed that $y\in \mathcal{R}(K)$. 
  Then we will limit to observe the behavior of the approximating sequence $x^{\alpha_n}$, computed from the regularization.
@@ -2697,7 +2706,7 @@ In this chapter, we'll sketch the regularization theory for inverse problems, wh
 In the last part of this chapter, we'll describe the steps followed in the code \cite{}, and we'll report some error estimates.
 \section{Introduction to Inverse Problems}
 In this section, we sketch main notions of the inverse formulation of a given problem. All results 
-on inverse problems can be found in \cite{kirsch:book}.
+can be found in \cite{kirsch:book}.
 \begin{definition}
  Let $X,Y$ be Banach spaces, $K:X\to Y$ a linear and bounded operator, $X_1\subset X$ a subspace with a stronger norm, that is
  \begin{equation}
@@ -2725,15 +2734,22 @@ In this context, the roles of $\mathcal{R}(K^*)$ and $\mathcal{R}({K^*K)}$ are p
   furthermore, for every $E>0$ there exists a sequence $\delta_n\to 0$ such that $\mathcal{F}(\delta_n, E, \|\cdot\|_1) = \delta_n^{2/3} E^{1/3}$.
  \end{enumerate}
 \end{theorem}
-An approximate solution $x^\alpha$, for a fixed error level $\delta$ and a priori information $E$, computed with a regularization method dependent on a parameter $\alpha$, has a generic error
+In general we attempt to solve the perturbed equation
 \begin{equation}
- \|x^\alpha -x\| \leq \mathcal{E}(\alpha, \delta, E, \|\cdot\|_1), \quad \mathcal{F}(\delta, E, \|\cdot\|_1)\leq\mathcal{E}(\alpha, \delta, E, \|\cdot\|_1).
+ Kx^\delta = y^\delta,
+\end{equation}
+where it's not guaranteed that $y^\delta$ belongs to the range $\mathcal{R}(K)$.
+Then we can hope that the error bound for $x^\delta$ is not much worse than the 
+worst-case error $\mathcal{F}$
+% An approximate solution $x^\alpha$, for a fixed error level $\delta$ and a priori information $E$, computed with a regularization method dependent on a parameter $\alpha$, has a generic error
+\begin{equation}
+ \|x^\delta -x\| \leq \mathcal{E}(\delta, E, \|\cdot\|_1), \quad \mathcal{F}(\delta, E, \|\cdot\|_1)\leq\mathcal{E}(\delta, E, \|\cdot\|_1).
 \end{equation}
 Since $\mathcal{F}$ is the best we can obtain, we can not improve the worst-case error (the error of the worst approximating sequence).
 \begin{definition}
-A regularization method with a regularization strategy $\alpha(\delta, E)$ is \emph{optimal} if 
+A regularization method is \emph{asymptotically optimal} if 
 \begin{equation}
- \|\tilde{x} - x\|_X \leq c\,\mathcal{F}(\delta, E, \|\cdot\|_1)
+ \|x^\delta - x\|_X \leq c\,\mathcal{F}(\delta, E, \|\cdot\|_1).
 \end{equation}
 \end{definition}
 \section{Regularization Theory}
@@ -2771,14 +2787,13 @@ The fundamental error estimate for any regularized solution is
                             &\leq \|R_\alpha\| \|y^\delta - y\| + \|R_\alpha Kx - x\|.
 \end{align}
 \end{remark}
-The above estimate represents the decomposition of the approximation error, for a fixed maximum error 
-level $\delta$ in the data $\|y^\delta - y\|\leq \delta$. By ill-posed nature of the problem, the norm 
+The above estimate represents the decomposition of the approximation error, for a fixed error 
+level $\delta$ in the data $\|y^\delta - y\|\leq \delta$. By the ill-posed nature of the problem, the norm 
 $\|R_\alpha\|$ diverges as $\alpha\to 0$, while the regularization implies a converging regularized 
 solution $x^{\alpha} = R_\alpha y$ to $x=K^{-1}y$, equivalent to $\|R_\alpha Kx -x\|\to 0$, as $\alpha\to0$.
 Hence, \emph{we have to accept a compromise for the choice of the parameter $\alpha$, between 
 the accuracy $\|R_\alpha Kx -x\|$ and the stability $\|R_\alpha\|$}, and we have to elaborate a 
-strategy $\alpha(\delta)$ which guarantees convergence of the error $\|x^{\alpha,\delta} - x\|$, 
-with accuracy of data $\delta$.
+strategy $\alpha(\delta)$ which guarantees convergence of the error $\|x^{\alpha,\delta} - x\|$.
 \par
 \begin{figure}[]
 \begin{center}
@@ -2846,7 +2861,7 @@ whose details are stated by the Picard's theorem.
   \begin{equation}
    \|R_\alpha Kx - x\|\leq c_1\sqrt{\alpha}\|z\|,\quad \textup{ where }x=K^*z,
   \end{equation}
-  \item[3c.] if $x\in\mathcal{R}(K^*K)$ and exists $c_2>0$ such that $|q(\alpha,\mu) - 1|\leq c_1\dfrac{\alpha}{\mu^2}$
+  \item[3c.] if $x\in\mathcal{R}(K^*K)$ and exists $c_2>0$ such that $|q(\alpha,\mu) - 1|\leq c_2\dfrac{\alpha}{\mu^2}$
   then
   \begin{equation}
    \|R_\alpha Kx - x\|\leq c_2\,\alpha\|z\|,\quad \textup{ where }x=K^*Kz.
@@ -2871,27 +2886,27 @@ Let us introduce the following functional.
 \end{theorem}
 This is a classical result in Optimization Theory. It's sufficient to apply Direct Method of calculus of variations
 to the bilinear coercive form $J_\alpha$.  
-Necessary conditions \eqref{eq:normal-equation}, which in general provides a candidate, actually are solved by the minimizer.
+Necessary equation \eqref{eq:normal-equation}, which in general provides a candidate, actually is solved by the minimizer.
 \begin{remark}
  The Tikhonov regularization $R_\alpha\coloneqq (\alpha I + K^*K)^{-1}K^*$ is equivalent 
  to the regularization constructed in Theorem \ref{theo:regularization-filter} with filter 
  $q(\alpha,\mu) = \mu^2/(\alpha + \mu^2)$.
 \end{remark}
 Details of the proof are contained in \cite{kirsch:book}.
-The choice of $\alpha$ is usually made \emph{a priori}, hence before the computation of $x^\alpha$. In the next section 
-we'll present a criterion such that it will be made an \emph{a posteriori} choice of $\alpha$, based on the residual $Kx^\alpha - y$, which will lead to better approximations.
+The choice of $\alpha$ is usually made \emph{a priori}, before the computation of $x^\alpha$. In the next section 
+we'll present a criterion such that it will be made an \emph{a posteriori} choice of $\alpha$, based on the residual $Kx^\alpha - y$, which leads to better approximations.
 \section{Discrepancy Principle of Morozov}
-The Tikhonov regularization for the equation with perturbed data $y^\delta$ yields to solving
+The Tikhonov regularization for the equation with perturbed data $y^\delta$ yields to solve
 \begin{equation}
 \label{eq:tikh-equation-2}
  \alpha x^{\alpha, \delta} + K^*Kx^{\alpha, \delta} = K^*y^\delta.
 \end{equation}
-The wrong approach would be to establish the optimal regularization parameter $\alpha$ for the fixed error level $\delta$. 
+A possible approach would be to establish the optimal regularization parameter $\alpha$ for the fixed error level $\delta$. 
 Instead, our aim is to construct a full strategy $\alpha(\delta)$ which guarantees the diminishing 
 of the error. 
 \par
 The most used criterion is the so-called Morozov discrepancy principle. 
-It's \emph{a posteriori} criterion, based on the residual $Kx^{\alpha,\delta} - f^\delta$. 
+It's \emph{a posteriori} criterion, based on the residual $Kx^{\alpha,\delta} - y^\delta$. 
 It fixes an upper bound proportional to $\delta$ for the residual, avoiding to require excessively small values 
 of $\alpha$, which would carry on only further instability. 
 It consists in computing $\alpha$ which satisfies
@@ -2899,7 +2914,7 @@ It consists in computing $\alpha$ which satisfies
 \label{eq:discrepancy-zero}
  \|Kx^{\alpha, \delta} - y ^\delta \|= \delta.
 \end{equation}
-A variant of this criterion, according with \cite{kirsch:shape-1998}, fixes the normalized residual proportional to $\delta$ and the computation of $\alpha$ consists in
+A variant of this criterion, according to \cite{kirsch:shape-1998}, fixes the normalized residual proportional to $\delta$ and the computation of $\alpha$ consists in
 \begin{equation}
 \label{eq:discrepancy-relative-zero}
  \|Kx^{\alpha, \delta} - y ^\delta \|= \delta\|x^{\alpha,\delta}\|.
@@ -2921,7 +2936,7 @@ We introduce the discrepancy function to reformulate Morozov principle.
 In the next proposition, we state the main properties of the discrepancy function.
 \begin{proposition}
 \label{prop:properties-disc}
- Let $x^{\alpha,\delta}$ be the solution of \ref{eq:tikh-equation-2}, then 
+ Let $x^{\alpha,\delta}$ be the solution of \eqref{eq:tikh-equation-2}, then 
  it depends continuously from $y^\delta$ and $\alpha$. Furthermore
  \begin{enumerate}
   \item the map $\alpha\mapsto \|x^{\alpha, \delta}\|$ is nonincreasing
@@ -2941,7 +2956,8 @@ of the unique zero of the function $\Delta(\alpha)$.
 \label{prop:strategy-disc}
  By previous Proposition \ref{prop:properties-disc}, let $\delta$ be fixed, then there 
  exists unique zero $\alpha^*(\delta)$ of the discrepancy function, 
- such that $\Delta\bigl(\alpha^*\bigr)=0$. The same is still true for $\Delta_N(\alpha)$.
+ such that $\Delta\bigl(\alpha^*\bigr)=0$. The same is still true for $\Delta_N(\alpha)$ 
+ (see \cite{kirsch:shape-1998}).
  Therefore, let $\delta$ be fixed, then there exists a unique 
  couple $(\alpha(\delta), x^{\alpha(\delta)})$ such that
  \begin{equation}
@@ -2961,7 +2977,7 @@ Differentiation of \eqref{eq:def-disc} with respect to $\alpha$ gives
 \begin{equation}
  \Delta'(\alpha) = \dfrac{2 \langle  Kx^{\delta, \alpha} - y^\delta, K\frac{d}{d\alpha}x^{\alpha, \delta}\rangle}{2\|Kx^{\alpha,\delta} - y^\delta\|}.
 \end{equation}
-The equation for the gradient $dx^{\alpha,\delta}/d\alpha$ is obtained by differentiation of \ref{eq:tikh-equation-2}
+The equation for the gradient $dx^{\alpha,\delta}/d\alpha$ is obtained by differentiation of \eqref{eq:tikh-equation-2}
 \begin{equation}
  \alpha\frac{d}{d\alpha}x^{\alpha, \delta} + K^*K\frac{d}{d\alpha}x^{\alpha, \delta} = -x^{\delta, \alpha},
 \end{equation}
