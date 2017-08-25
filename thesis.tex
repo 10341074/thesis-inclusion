@@ -3351,18 +3351,18 @@ on $\partial B$ of a single layer defined on $\partial A$, that is
 \end{equation}
 and they have a smooth integral kernel (we can compute derivation under integral's sign).
 \subsection{Nystr\"om Method}
-Both the equations \eqref{eq:2kind-laplace} and \eqref{eq:2kind-inclusion} can be expressed in the form of 
-a \emph{second kind} equation
+Both equations \eqref{eq:2kind-laplace} and \eqref{eq:2kind-inclusion} can be expressed as 
+a \emph{second kind} equation of the form
 \begin{equation}
 \label{eq:nystrom-full}
  \phi-A\phi = f,
 \end{equation}
-with $A$ a \emph{compact} linear operator (and therefore continuous) and $I-A:X\to Y$ \emph{injective}. 
+where $A$ is a \emph{compact} linear operator (and therefore continuous) and $I-A:X\to Y$ is \emph{injective}. 
 In the first case \eqref{eq:2kind-laplace}, $X=X_0=\{\phi_0\}^\perp \subset L^2(\partial \Omega)$, 
 while in the second case \eqref{eq:2kind-inclusion}, $X=X_0\times L^2(\partial D)$, where $\phi_0$ is the only non trivial eigenvector in $\mathcal{N}(K' + 1/2I)$ on $\partial\Omega$.
 \par
-The \emph{Nystr\"om method} consists in substituting a convergent (according to Definition \ref{def:convergent-quadrature-rule}) 
-quadrature rule $A_n$ instead of $A$ in the previous equation \eqref{eq:nystrom-full}. 
+The \emph{Nystr\"om method} consists in substituting $A$ with a convergent (according to Definition \ref{def:convergent-quadrature-rule}) 
+quadrature rule $A_n$ in the previous equation \eqref{eq:nystrom-full}. 
 This first discretization yields to the \emph{semi--discretized equation} finite dimensional
 \begin{equation}
 \label{eq:nystrom-semi}
@@ -3372,18 +3372,19 @@ This first discretization yields to the \emph{semi--discretized equation} finite
 We will consider only the case of $\partial \Omega$ of class $C^2$, such that the 
 integral kernel of $A$, in the next equation, is continuous 
 (for boundaries with corners the integral kernel is weakly singular and we need to integrate separately on each smooth piece through a graded mesh).
-Therefore in the sequel, the quadrature operator $A_n\phi$ reduces to \eqref{eq:quad-rule-continuous} (we suppress the curve's parametrization $c$ and use quadrature nodes $x_k=c(\tau_k^{(n)})$), that is
+Therefore in the sequel, the quadrature operator $A_n\phi$ reduces to \eqref{eq:quad-rule-continuous} 
+(we neglect the curve's parametrization $c$ and use quadrature nodes $x_k=c(\tau_k^{(n)})$), that is
 \begin{equation}
 \label{eq:quad-rule-continuous-synt}
  A_n\phi(x) = \sum_{k=1}^n\alpha_k K(x,x_k)\phi(x_k).
 \end{equation}
-We report Theorem (12.7) in \cite{kress:book}, which expresses the solution of \eqref{eq:nystrom-semi} as a finite sum.
+We report Theorem 12.7 in \cite{kress:book}, which expresses the solution of \eqref{eq:nystrom-semi} as a finite sum.
 \begin{theorem}
  Let $A$ be an integral operator with a continuous integral kernel $K(x,y)$, 
  and consider the semi--discretized equation \eqref{eq:nystrom-semi}, more explicitly
  \begin{equation}
   \label{eq:nystrom-semi-continuous}
-  \phi_n(x) -\sum_{k=1}^n\alpha_k K(x,x_k)\phi_n(x_k)=f(x) \quad x\in \partial \Omega,
+  \phi_n(x) -\sum_{k=1}^n\alpha_k K(x,x_k)\phi_n(x_k)=f(x), \quad x\in \partial \Omega,
  \end{equation}
  then
  \begin{enumerate}
@@ -3391,11 +3392,11 @@ We report Theorem (12.7) in \cite{kress:book}, which expresses the solution of \
   at nodes $x_j$ satisfy the following linear system
   \begin{equation}
     \label{eq:nystrom-system}
-    \phi_j^{(n)} - \sum_{k=1}^n\alpha_k K(x_j,x_k)\phi_k^{(n)} = f(x_j)\quad j=1,...,n,
+    \phi_j^{(n)} - \sum_{k=1}^n\alpha_k K(x_j,x_k)\phi_k^{(n)} = f(x_j),\quad j=1,...,n,
   \end{equation}
   \item conversely, if values $\phi_j^{(n)}$ satisfy the linear system \eqref{eq:nystrom-system}, then $\phi_n$ such constructed solves the approximate equation
   \begin{equation}
-   \phi_n(x)\coloneqq f(x) + \sum_{k=1}^n\alpha_k K(x,x_k)\phi_k^{(n)} \quad x\in \partial\Omega.
+   \phi_n(x)\coloneqq f(x) + \sum_{k=1}^n\alpha_k K(x,x_k)\phi_k^{(n)}, \quad x\in \partial\Omega.
   \end{equation}
  \end{enumerate}
 \end{theorem}
@@ -3403,25 +3404,28 @@ This fast way for solving \eqref{eq:nystrom-semi}, can be interpreted as a collo
 \par
 Finally the result which compares the two solutions of \eqref{eq:nystrom-full} and of 
 \eqref{eq:nystrom-semi}, guarantees us for the convergence of Nystr\"om's method.
-The error analysis for the equation of the second kind is based on Theorem (10.9) contained \cite{kress:book}, where all details can be found.
+The error analysis for the equation of the second kind is based on Theorem 10.9 contained \cite{kress:book}, where all details can be found.
 \begin{definition}
 \label{def:collectively-compact}
  Let $\mathcal{A}=\{A:X\to Y\}$ be a set of linear operators between two normed spaces. It's called a \emph{collectively compact} set if for each bounded set $U\subset X$ the set of images $\mathcal{A}(U)=\{A(U):A\in\mathcal{A}\}$ is relatively compact.
 \end{definition}
 \begin{theorem}[Pointwise Convergence]
- Let $X$ be a Banach space, let $I-A:X\to X$ be injective, $A$ be linear compact, $A_n$ a sequence \emph{pointwise convergent}, of \emph{collectively compact} operators (Definition \ref{def:collectively-compact}), 
+ Let $X$ be a Banach space, let $I-A:X\to X$ be injective, 
+ where $A$ is linear compact, 
+ and let $A_n$ be a sequence \emph{pointwise convergent}, of \emph{collectively compact} operators 
+ (see Definition \ref{def:collectively-compact}), 
  then there holds the error estimate for the solution of the second kind equation $\phi-A\phi=f$, and its approximation $\phi_n - A_n\phi_n=f_n$
  \begin{equation}
-  \|\phi_n - \phi \| \leq \frac{1 + \|(I-A)^{-1}A_n\|}{1-\|(I-A)^{-1}(A_n-A)A_n\|}\{\|(A_n - A)\phi\| + \| f_n - f\|\},
+  \|\phi_n - \phi \| \leq \frac{1 + \|(I-A)^{-1}A_n\|}{1-\|(I-A)^{-1}(A_n-A)A_n\|}\{\|(A_n - A)\phi\| + \| f_n - f\|\}.
  \end{equation}
- and for sufficiently large $n$ (such that the denominator in the coefficient is positive), thanks to uniform boundedness with respect to $n$, there holds      
+ Moreover for sufficiently large $n$ (such that the denominator in the coefficient is positive), thanks to uniform boundedness with respect to $n$, there holds      
  \begin{equation}
   \|\phi_n - \phi \| \leq C\{\|(A_n - A)\phi\| + \| f_n - f\|\}.
  \end{equation}
 \end{theorem}
 \begin{corollary}
  Let $K(x,y)$ be a continuous integral kernel of $A$, let $I-A$ be injective and $A_n$ be a sequence of convergent quadrature rules. 
- If $f$ is continuous, then $\phi,\phi_n$ are continuous themselves. 
+ If $f$ is continuous, then $\phi,\phi_n$ are continuous. 
 \end{corollary}
 % For an integral operator with continuous kernel, the trapezoidal rule gives
 % \begin{equation}
@@ -3429,10 +3433,10 @@ The error analysis for the equation of the second kind is based on Theorem (10.9
 % \end{equation}\begin{figure}
 Since in our case we use directly $f_n=f$, there holds the a priori error estimate
  \begin{equation}
-  \|\phi_n - \phi \|_{\infty} \leq C\{\|(A_n - A)\phi\|_{\infty}\}
+  \|\phi_n - \phi \|_{\infty} \leq C\{\|(A_n - A)\phi\|_{\infty}\}.
  \end{equation}
 Let $-N_r=N_D - N_0$ be the relative Neumann--to--Dirichlet map. In the previous section, we described
-how we computed the approximation of $-{N_r}f$, which we'll denote by $-{N_{rn}}f$, that is the difference 
+how we computed the approximation of $-{N_r}f$, which we denote by $-{N_{rn}}f$, that is the difference 
 of the two discretized maps $N_{0n}$ and $N_{Dn}$ valued on $f$
 \begin{equation}
  {N_{0n}}f = S_n\phi_n = SP_n\phi_n\quad and \quad{N_{Dn}}f = S_n\phi_{\Omega n} + S_n\phi_{D n},
@@ -3443,7 +3447,7 @@ are the approximate solution of the semi-discretized equation, computed with the
 \par
 The error estimate of the relative map is
 \begin{equation}
- \|{N_r}f - {N_{rn}}f\|\leq\|S\|\|\phi-\phi_n\| + \|S\phi_n - S_n\phi_n\| = err_{Nystr\textit{\"{o}}m} + err_{Num\,Int}
+ \|{N_r}f - {N_{rn}}f\|\leq\|S\|\|\phi-\phi_n\| + \|S\phi_n - S_n\phi_n\| = err_{Nystr\textit{\"{o}}m} + err_{Num\,Int}.
 \end{equation}
 Convergence results of quadrature rules for the integration of a double or a single layer potential 
 contained in the previous sections, lead us to expect an exponential convergence both for the Nystr\"{o}m method and 
