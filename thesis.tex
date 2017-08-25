@@ -3003,14 +3003,14 @@ the strategy $\alpha(\delta)$ of Proposition \ref{prop:strategy-disc}, according
  The result for the classical definition of discrepancy $\Delta(\alpha)$ can be found in \cite{kirsch:book}. The same author proves the result for $\Delta_N(\alpha)$ in \cite{kirsch:shape-1998}.
 \section{Numerical Discretization}
 We now report the details of the numerical discretization of the linear sampling method. The main 
-steps are
+steps are:
 \begin{enumerate}
  \item the choice of a basis of functions for the space $L^2_0(\partial \Omega)$;
- \item the solution of the \emph{direct} Laplace problem and the \emph{direct} inclusion problem, 
+ \item the solution of the direct Laplace problem and the direct inclusion problem, 
  which will be done by the use of the Nystr\"om method;
  \item the construction of the discrete relative Neumann--to--Dirichlet map;
  \item the regularization and the computation of the solution of the linear system related 
- to the \emph{inverse} problem.
+ to the inverse problem.
 \end{enumerate}
 Our choice is to solve the Laplace and the inclusion direct problems  
 through \emph{boundary integrals}. Their numerical approximation requires the definition of discrete 
@@ -3029,14 +3029,14 @@ Collocation methods. We will adopt the Nystr\"{o}m method for an equation
 of the second kind, which can be interpreted as a 
 collocation method with quadrature nodes coincident with collocation nodes. 
 We are advantaged by the reduced amount of computation, since Nystr\"{o}m method requires only 
-one integration, while there are needed two integrations for the Galerkin method, and three 
+one integration, while two integrations are needed for the Galerkin method, and three 
 integrations for the Least Squares method.
 We list main advantages of the formulation of the problem through boundary integrals, 
 instead of using for instance the discretization of the variational formulation with the FEM.
 \begin{enumerate}
  \item The expression of the solution reduces to a boundary integral,
  and allows not to consider the full domain. The discretization of a curve, instead of an area 
- in two dimension (or a surface instead of a volume in three dimension), is more advantageous.
+ in two dimension (or a surface instead of a volume in three dimension), is less expensive.
  \item We can deal with unbounded regions in exterior problems, as easily as we do with bounded regions.
  \item Most of the times, for smooth boundaries and smooth data, the rate of convergence is very high, even exponential.
 \end{enumerate}
@@ -3049,18 +3049,17 @@ On the other end, we present the main disadvantages.
  differential problem with non constant parameters.
  \item Main difficulties comes from singularities of the integral kernels, 
  which requires a convergent quadrature method.
- \item Some attention must be payed to boundaries with corner, 
+ \item Some attention must be payed to boundaries with corners, 
  where the unknown densities are singular. The quadrature rule requires a more 
  careful collocation of the nodes.
 \end{enumerate}
 
 \section{Numerical Integration of Layer Potentials}
-We recall assumptions for $D$ and $\Omega$.     
-\begin{assumption}
- In the sequel we'll mean satisfied Assumption \ref{assumption:connected} for the inclusion $D$. 
- More importance will be given to the regularity of the boundaries, 
- which affects the methods and their convergence. If not differently specified, we'll consider $\partial \Omega$ and $\partial D$ of class $C^2$.
-\end{assumption}
+Let us consider $D$ and $\Omega$
+satisfying Assumption \ref{assumption:connected}. 
+Moreover we assume $\partial D$ and $\partial \Omega$ of class $C^2$.
+This last assumption on the boundary affects the methods and their convergence.
+\par
 We will make wide use of integral potentials, with integral kernel $K(x,y)$, and density $\phi(y)$, defined on a compact boundary $\partial \Omega$
 \begin{equation}
 \label{eq:quad-def-operator}
@@ -3069,7 +3068,7 @@ We will make wide use of integral potentials, with integral kernel $K(x,y)$, and
 Most of the times, for $x\in\mathbb{R}^2\backslash\partial \Omega$, the kernel $K(x,y)$ is 
 continuous. We concentrate our 
 attention to the case with $x\in\partial\Omega$.
-In the sequel, let $\partial\Omega$ be a curve in $\mathbb{R}^2$ of class $C^2$ parametrized by
+In the sequel, $\partial\Omega$ will be a curve in $\mathbb{R}^2$ of class $C^2$ parametrized by
 \begin{equation}
 c(t):[0,2\pi]\to\mathbb{R}^2.
 \end{equation}
@@ -3091,13 +3090,13 @@ it's well defined the diagonal term (with $\xi,\zeta \in [t,\tau]$)
 \begin{align}
  &\lim_{\tau \to t}\frac{1}{2\pi}\frac{c(t)-c(\tau)}{|c(t) - c(\tau)|^2}\cdot\nu(c(\tau))|c'(\tau)| \\
  =&\lim_{\tau \to t}\frac{1}{2\pi}\frac{-\frac{1}{2}c''(\xi)|t-\tau|^2\cdot\nu(c(\tau))|c'(\tau)|}{|c'(\zeta)|^2|t-\tau|^2}
- = -\frac{1}{4\pi}\frac{c''(\tau)\cdot\nu(\tau)}{|c'(\tau)|} = -\frac{1}{4\pi}\kappa(\tau)|c'(\tau)|,
+ = -\frac{1}{4\pi}\frac{c''(t)\cdot\nu(t)}{|c'(t)|} = -\frac{1}{4\pi}\kappa(t)|c'(t)|,
 \end{align}
 by $c''(\tau)=v(\tau)T(\tau) + \kappa(\tau)v^2(\tau)N(\tau)$ (denoting $v(\tau)=|c'(\tau)|$). Note that the integral kernel of $K'$ has the same diagonal value.
 \end{lemma}
 The quadrature rule substitutes the integral
 \begin{equation}
- A\phi(c(t))=\int_0^{2\pi} K(c(t),c(\tau))\phi(c(\tau))|w'(\tau)|\,d\tau=\int_0^{2\pi}g(t,\tau)d\tau \quad t\in[0,2\pi]
+ A\phi(c(t))=\int_0^{2\pi} K(c(t),c(\tau))\phi(c(\tau))|c'(\tau)|\,d\tau=\int_0^{2\pi}g(t,\tau)d\tau \quad t\in[0,2\pi]
 \end{equation}
 with its discretization, which makes use of values of the density $\phi(c(t))$ in quadrature 
 nodes $\tau_k^{(n)}$, that is
@@ -3133,20 +3132,16 @@ Further details about interpolation and numerical integration can be founded in 
 % A quadrature rule $S_n\phi$, uniformly bounded in $x(t)$, is composed by the Discrete Fourier Transform (DFT) (obtained by the trigonometric interpolation based on an equidistant subdivision) for the first integral, and a generic convergent quadrature rule for the second one (for example the trapezoidal rule based on lagrangian interpolation with equidistant nodes) 
 \subsection{Double Layer Potentials and Composite Polynomial Interpolation}
 In the case of double layer potentials, we will use the trapezoidal rule 
-correspondent to the linear piecewise interpolation of the integrand function, 
+corresponding to the linear piecewise interpolation of the integrand function, 
 since they have a continuous kernel.
-\begin{assumption}
-\label{assumption:holom-ext}
- Let $g:\mathbb{R}\to\mathbb{R}$ be analytic and $2\pi$-periodic
-\end{assumption}
 \begin{proposition}
- Let Assumption \ref{assumption:holom-ext} hold, then there exists a strip $D_S=\mathbb{R}\times(-s, s)\subset\mathbb{C}$ with $s>0$, such that
+ Let $g:\mathbb{R}\to\mathbb{R}$ be analytic and $2\pi$-periodic, then there exists a strip $D_S=\mathbb{R}\times(-s, s)\subset\mathbb{C}$ with $s>0$, such that
  $g$ can be extended to a holomorphic and $2\pi$-periodic bounded function $g:D_S\to\mathbb{C}$.
 \end{proposition}
-In \cite{kress:book} is demonstrated, in Theorem (12.6), the exponential 
+In \cite{kress:book} is demonstrated, in Theorem 12.6, the exponential 
 convergence for analytic integrands, which we'll verify numerically.
 \begin{proposition}
- Let $g$ be as prescribed by Assumption \ref{assumption:holom-ext}. Then the error of the composite trapezoidal rule
+ Let $g$ be as above, then the error of the composite trapezoidal rule
  \begin{equation}
   E_T(g)\coloneqq \frac{1}{2\pi}\int_0^{2\pi}g\,dy - \frac{1}{2n}\sum_{j=0}^{2n-1}g\Bigl(\frac{j\pi}{n}\Bigr)
  \end{equation}
@@ -3166,7 +3161,7 @@ resulting in
 \begin{equation}
 \begin{cases}
  M_1(t,\tau)= -1/(4\pi), \\
- M_2(t,\tau)=M(t,\tau) - M_1(t,\tau)\ln\Big(4\sin^2\dfrac{t-\tau}{2}\Big) & t\neq \tau,
+ M_2(t,\tau)=M(t,\tau) - M_1(t,\tau)\ln\Big(4\sin^2\dfrac{t-\tau}{2}\Big), & t\neq \tau,
 \end{cases}
 \end{equation}
 with a diagonal term
@@ -3192,19 +3187,19 @@ trigonometric interpolation
 such that $g_n(\tau_j) = g(\tau_j)$ for $j=0,\dots,2n-1$, based on equidistant quadrature nodes $\tau_j\coloneqq j\pi/n$. 
 The quadrature rule gives
 \begin{equation}
- Q_ng(t)\coloneqq \sum_{j=0}^{2n-1}R_j^{(n)}(t)g(\tau_j)\quad j=0,\dots, 2n-1.
+ Q_ng(t)\coloneqq \sum_{j=0}^{2n-1}R_j^{(n)}(t)g(\tau_j),\quad j=0,\dots, 2n-1.
 \end{equation}
 The weights $R_j^{(n)}(t)=QL_j(\tau)$ are the integrals of the Lagrange basis's functions $L_j(\tau)$ of the trigonometric interpolation, that are
 \begin{equation}
- L_j(t)=\frac{1}{2n}\Big\{1+2\sum_{k=1}^{n-1}\cos k(t- \tau_j) + \cos n(t - \tau_j)\Big\}\quad j=0,\dots,2n-1,
+ L_j(t)=\frac{1}{2n}\Big\{1+2\sum_{k=1}^{n-1}\cos k(t- \tau_j) + \cos n(t - \tau_j)\Big\},\quad j=0,\dots,2n-1,
 \end{equation}
 \begin{equation}
- R_j^{(n)}(t)=\frac{1}{2\pi}\int_0^{2\pi}\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)L_j(\tau)d\tau \quad j=0,\dots,2n-1,
+ R_j^{(n)}(t)=\frac{1}{2\pi}\int_0^{2\pi}\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)L_j(\tau)d\tau, \quad j=0,\dots,2n-1,
 \end{equation}
 \begin{equation}
- R_j^{(n)}(t)=-\frac{1}{n}\Bigl\{\sum_{m=1}^{n-1}\frac{1}{m}\cos m(t-\tau_j) + \frac{1}{2n}\cos n(t-\tau_j)\Bigr\} \quad j=0,\dots,2n-1.
+ R_j^{(n)}(t)=-\frac{1}{n}\Bigl\{\sum_{m=1}^{n-1}\frac{1}{m}\cos m(t-\tau_j) + \frac{1}{2n}\cos n(t-\tau_j)\Bigr\}, \quad j=0,\dots,2n-1.
 \end{equation}
-We report Lemma (8.21) contained in \cite{kress:book}.
+We report Lemma 8.21 contained in \cite{kress:book}.
 \begin{lemma}
 For the trigonometric monomials, we have the integrals
 \begin{equation}
@@ -3220,10 +3215,10 @@ We compute the estimate of the quadrature error $E_ng\coloneqq Qg - Q_ng$, direc
  |E_ng|(t)=|Qg-Q_ng|(t)&\leq\frac{1}{2\pi}\int_0^{2\pi}\Big|\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)\Big||g(\tau)-g_n(\tau)|\,d\tau \\
  &\leq \frac{1}{2\pi} \int_0^{2\pi}\Big|\ln\Bigl(4\sin^2\frac{t-\tau}{2}\Bigr)\Big|\,d\tau\|g(\tau) - g_n(\tau)\|_{\infty}.
 \end{align}
-The trigonometric interpolation operators are not uniformly bounded. We report convergence results contained in \cite{kress:book}. 
+The trigonometric interpolation operators are not uniformly bounded.
 Provided additional regularity of the integrand $g$, we have uniform convergence of the integrals. 
-The following propositions are Theorems (11.6) and (11.7) contained in \cite{kress:book}, which give 
-a result of this kind.
+The following propositions are Theorems 11.6 and 11.7 contained in \cite{kress:book}, which give 
+a result in this direction.
 \begin{proposition}
  Let $g\in C^{m,\alpha}_{2\pi}$ be a H\"{o}lder--continuous $2\pi$-periodic function with $n\in\mathbb{N}$ and $\alpha\in(0,1]$. Then there holds the estimate for the trigonometric interpolation error
  \begin{equation}
@@ -3231,26 +3226,26 @@ a result of this kind.
  \end{equation}
 \end{proposition}
 \begin{proposition}
- Let $g$ be an analytic $2\pi$-periodic function. Then, in the framework of Assumption \ref{assumption:holom-ext}, there exists an holomorphic extension and the estimate for the trigonometric interpolation error decrease exponentially with $n$
+ Let $g$ be an analytic $2\pi$-periodic function, then there exists an holomorphic extension and the estimate for the trigonometric interpolation error decrease exponentially with $n$
  \begin{equation}
   \|P_ng - g\|_{\infty}\leq M(g)\frac{\coth\frac{s}{2}}{\sinh ns} \leq C(g)e^{-ns}.
  \end{equation}
 \end{proposition}
 
 \subsection{Domains with Corners}
-Let $\partial \Omega$ be the boundary of a domain with corners, therefore the parametrization $c(t)$ presents jumps in the first derivative.
+Let $\partial \Omega$ be the boundary of a domain with corners, therefore the parametrization $c(t)$ has jumps in the first derivative.
 We will refer to a smooth portion of $\partial \Omega$, and we parametrize it between $[0,2\pi]$. 
-By this way, in the case of the operators $K,K'$, the integrand function, for fixed $t$, is smooth in $(0,2\pi)$ and presents 
+Therefore, in the case of the operators $K,K'$, the integrand function, for fixed $t$, is smooth in $(0,2\pi)$ and presents 
 singularities at the end--points, that we write as
 \begin{equation}
 \label{eq:corners-double}
- K\phi(t)=\int_0^{2\pi}K(c(t),c(\tau))\phi(c(\tau))c'(\tau)\,d\tau=\int_0^{2\pi}g(t,\tau)\,d\tau.
+ K\phi(t)=\int_0^{2\pi}K(c(t),c(\tau))\phi(c(\tau))|c'(\tau)|\,d\tau=\int_0^{2\pi}g(t,\tau)\,d\tau.
 \end{equation}
-The idea is to adapt the quadrature nodes such that we can neglect the end--points.
+The idea is to adapt the quadrature nodes in a such a way that we can neglect the end--points.
 We substitute the variable $\tau=w(\sigma)$ (it's convenient to evaluate $K\phi$ in $t=w(s)$)
 \begin{equation}
 \label{eq:corners-generic}
- K\phi(w(s))=\int_0^{2\pi}g(w(s),w(\sigma))w'(\sigma)\,d\sigma.
+ K\phi(w(s))=\int_0^{2\pi}g(w(s),w(\sigma))|w'(\sigma)|\,d\sigma.
 \end{equation}
 The function $w$ is required to be a bijection of $[0,2\pi]$ to itself, with vanishing derivatives at the end--points. In \cite{kress:bie-scattering} is cited the choice of Sag and Szekeres in \cite{Sa-Sz64}, that is
 \begin{equation}
@@ -3260,30 +3255,31 @@ To avoid overgrading, since high convergence order is effective only for large $
 \begin{equation}
  w(s)=2\pi\frac{[v(s)]^q}{[v(s)]^q + [v(2\pi - s)]^q},\label{eq:graded-parametrization-power}
 \end{equation}
-where the cubic is defined such that to distribute equally grid points on two sides
+where the cubic is defined such that grid points are equally distributed on two sides
 \begin{equation}
  v(s)=\Bigl(\frac{1}{q} - \frac{1}{2}\Bigr)\Bigl(\frac{\pi - s}{\pi}\Bigr)^3 + \frac{1}{q}\frac{s-\pi}{\pi} + \frac{1}{2}.
 \end{equation}
 By applying trapezoidal rule on equidistant nodes, the quadrature rule for the approximate integral \eqref{eq:corners-generic} based on the graded mesh $\tau_j=w(\sigma_j)$ 
 with equidistant nodes $\sigma_j=j\pi/n$ is 
 \begin{equation}
- K_n\phi(w(s))=\frac{\pi}{n}\sum_{j=1}^{2n-1}a_jg(w(s), w(\sigma_j))\quad a_j=w'(j\pi/n)\quad j=1,\dots,2n-1.
+ K_n\phi(w(s))=\frac{\pi}{n}\sum_{j=1}^{2n-1}a_jg(w(s), w(\sigma_j)),\quad a_j=w'(j\pi/n),\quad j=1,\dots,2n-1.
 \end{equation}
-We proceed at the same way for the single layer operator $S$ defined on a boundary $\partial \Omega$ with corners. 
+We proceed in the same way for the single layer operator $S$ defined on a boundary $\partial \Omega$ with corners. 
 We consider a smooth portion of the boundary and we substitute its parametrization in the integral kernel $M(t,\tau)$ defined in \eqref{eq:def-kernel-M}
 \begin{equation}
  S\phi(w(s))=\int_0^{2\pi}M(w(s),w(\sigma))\phi(c(w(\sigma)))|c'(w(\sigma))|w'(\sigma)\,d\sigma.
 \end{equation}
-After the variable change, we need to solve the logarithmic singularity of the kernel by a suitable quadrature rule. Again, we isolate it
+After the variable change, we need to solve the logarithmic singularity of the kernel by a suitable quadrature rule.
+We define
 \begin{equation}
 \label{eq:def-kernel-tildeM}
  \tilde{M}(s,\sigma)\coloneqq-\frac{1}{2\pi}\ln|c(w(s))-c(w(\sigma))|=\tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\frac{s - \sigma}{2}\Big)+\tilde{M}_2(s,\sigma),
 \end{equation}
-resulting in
+where
 \begin{equation}
 \begin{cases}
  \tilde{M}_1(s,\sigma) = M_1(w(s),w(\sigma))= -1/(4\pi), \\
- \tilde{M}_2(s,\sigma) = \tilde{M}(s,\sigma) - \tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\dfrac{s - \sigma}{2}\Big) & s\neq \sigma, \\
+ \tilde{M}_2(s,\sigma) = \tilde{M}(s,\sigma) - \tilde{M}_1(s,\sigma)\ln\Big(4\sin^2\dfrac{s - \sigma}{2}\Big), & s\neq \sigma, \\
 \end{cases}
 \end{equation}
 with a diagonal term
@@ -3295,8 +3291,8 @@ with a diagonal term
 with $\tilde{M}_2(t,\tau)$ continuous and bounded (both kernels $\tilde{M}_1, \tilde{M}_2$ turn out to be analytic). 
 Then we can apply respectively quadrature rule generated by trigonometric interpolation on equidistant nodes, and trapezoidal rule on equidistant nodes $\sigma_j = j\pi/n$ for $j=1,\dots,2n-1$, neglecting end--points with vanishing $w'(0)=w'(2\pi)=0$.
 \section{Neumann--to--Dirichlet maps' Discretization}
-In this section, we describe how we discretized Neumann--to--Dirichlet maps defined in 
-\eqref{eq:NtoD-laplace} and in \eqref{eq:NtoD-inclusion}. We are advantaged by the 
+In this section, we describe how we discretize Neumann--to--Dirichlet maps defined in 
+\eqref{eq:NtoD-laplace} and in \eqref{eq:NtoD-inclusion}. We take advantage of the 
 structure of natural representation formulas of the solutions. Indeed, they entail two 
 integral equations of the second kind, which are well-posed, meaning that the 
 operators are bijective and have continuous inverse.
