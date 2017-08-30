@@ -18,6 +18,10 @@
 \usepackage[usenames,dvipsnames]{xcolor} % before tikz, options for more colors
 \definecolor{light-gray}{gray}{0.95}
 
+% \usepackage[sort, numbers]{natbib}
+% \setcitestyle{square}
+
+
 \usepackage{graphicx}
 
 \usepackage{booktabs}
@@ -63,6 +67,22 @@
 
 \usepackage{hyperref}
 \hypersetup{pdftex,colorlinks=true,allcolors=blue}
+
+% \usepackage[hidelinks]{hyperref}
+% \usepackage{xcolor}
+% \AtBeginDocument{
+% \hypersetup{
+% %     colorlinks=false,
+% %     citebordercolor = {Green},
+% %     filebordercolor = {Red}
+% %     linkbordercolor = {Red}
+% %     linkcolor={red!50!black},
+% %     citecolor={blue!50!black},
+% %     urlcolor={blue!80!black}
+% }
+% }
+
+
 \usepackage{hypcap}
 \usepackage{etoolbox}
 
@@ -797,6 +817,7 @@ $$N_{D_1}-N_{D_2}=N_{D_2}(\tilde\Lambda_{D_2}-\tilde\Lambda_{D_1})N_{D_1}.$$
 
 \chapter{Linear Sampling Method}
 \label{ch:linear-sampling}
+
 \begin{figure}[tb]
 \begin{center}
  \begin{tikzpicture}
@@ -809,7 +830,9 @@ $$N_{D_1}-N_{D_2}=N_{D_2}(\tilde\Lambda_{D_2}-\tilde\Lambda_{D_1})N_{D_1}.$$
   \node at (2,2){$D,k$};
  \end{tikzpicture}
 \end{center}
+\caption{Geometry of the problem}
 \end{figure}
+
 In this chapter we will analyze the classical formulation of the linear sampling method. 
 There is a direct part first, which we try to invert then, with data in the image space, 
 depending on the sampling point $z\in\Omega$.
@@ -1555,9 +1578,11 @@ We show two ways, since they are useful in other contexts. By the knowledge of t
   -\psi=\partial_\nu \Phi_D^+-\partial_\nu \Phi_D^-=(1-\frac{1}{k})\partial_\nu \Phi_D^+ = (k-1)\partial_\nu \Phi_D^-.
  \end{equation*} 
 \end{proof}
+
 \section{The Conductor Problem}
+
 \begin{figure}
-\centering
+% \centering
 \subfloat[][\emph{An isolated conductor}.]
 {
 \begin{tikzpicture}
@@ -1583,6 +1608,8 @@ We show two ways, since they are useful in other contexts. By the knowledge of t
 \caption{Two different geometries for impedance equation}
 \label{fig:subfig}
 \end{figure}
+
+
 In this subsection we describe a common physical experiment to show a particular solution, which will be useful later.
 \par
 In electrostatics, we define \emph{conductor} a material in which electric charges are 
@@ -1663,6 +1690,8 @@ Let $u\in\mathcal{U}$, the set in Definition \ref{def:setU}. In our case $u(x,x_
 \end{equation}
 \end{enumerate}
 \end{definition}
+
+
 \begin{figure}[]
 \begin{center}
  \begin{tikzpicture}
@@ -1675,7 +1704,10 @@ Let $u\in\mathcal{U}$, the set in Definition \ref{def:setU}. In our case $u(x,x_
   \node at (2,2){$D,k$};
  \end{tikzpicture}
 \end{center}
+\caption{Geometry of the problem}
 \end{figure}
+
+
 \begin{remark}
  \label{rem:kernel-R}
  Observe, by simple substitution, that for any constant function, $\textup{R}(v_c)=0$, where $v_c(x)\coloneqq c$, $c\in\mathbb{C}$, $x\in\overline{B}$.
@@ -2097,6 +2129,9 @@ from the fact that it can be represented as the sum of the fundamental solution 
 % 
 %   \end{tikzpicture}
 % \end{center}
+
+
+\begin{figure}
 \begin{center}
  \begin{tikzpicture}
   \draw [densely dotted] (2,2) ellipse (4cm and 3cm);
@@ -2121,6 +2156,10 @@ from the fact that it can be represented as the sum of the fundamental solution 
 
   \end{tikzpicture}
 \end{center}
+\caption{Geometry of the domain of integration}
+\end{figure}
+
+
 \begin{proposition}[Reciprocity relations]
  \label{prop:reciprocity}
  Let $u$ indicate the fundamental solution $\Phi_D$ for the inclusion problem \eqref{eq:fundamental-D-in-dist} with constant impedance $k$ in $D$, and let the source $\delta_{x_0}$ move in the open $\mathbb{R}^2\backslash\overline{D}$, then there hold these reciprocity relations
@@ -3441,7 +3480,7 @@ Let $-N_r=N_D - N_0$ be the relative Neumann--to--Dirichlet map. In the previous
 how we computed the approximation of $-{N_r}f$, which we denote by $-{N_{rn}}f$, that is the difference 
 of the two discretized maps $N_{0n}$ and $N_{Dn}$ valued on $f$
 \begin{equation}
- {N_{0n}}f = S_n\phi_n = SP_n\phi_n\quad and \quad{N_{Dn}}f = S_n\phi_{\Omega n} + S_n\phi_{D n},
+ {N_{0n}}f = S_n\phi_n = SP_n\phi_n\quad \textup{and} \quad{N_{Dn}}f = S_n\phi_{\Omega n} + S_n\phi_{D n},
 \end{equation}
 where $S_n$ is the quadrature rule of the single layer operator $S$, and 
 $\phi_n, \phi_{\Omega n}, \phi_{Dn}$ 
@@ -3453,69 +3492,94 @@ The error estimate of the relative map is
 \end{equation}
 Convergence results of quadrature rules for the integration of a double or a single layer potential 
 contained in the previous sections, lead us to expect an exponential convergence both for the Nystr\"{o}m method and 
-for the numerical integration of $S$.
-\par
-We tested the convergence order of $N_0$, for which we can easily compute the exact solution, 
-from the knowledge of the explicit expression of a harmonic function. In Figures 
-\ref{fig:convergence-N_0-smooth} and \ref{fig:convergence-N_0-Lipschitz} with 
-logarithmic scale for both axes, we used 
-the harmonic function $v(x,y)=x^3 - 3 xy^2$. We can observe the exponential convergence 
-to the exact solution $N_{0n}f\to v|_{\partial \Omega}$. The integration for the ellipse 
-is exact, while for a generic smooth curve we could expect a good, but not a optimal result.
-Instead, in Figure \ref{fig:contourplots_direct} we can compare the direct implementation of two 
-direct maps the Laplace problem and the inclusion problem.
+for the numerical integration of $S$. In Figure \ref{fig:contourplots_direct} we can compare the implementation of the two 
+direct maps which discretize the Laplace problem and the inclusion problem.
 \iftoggle{fig}{
 \begin{center}
 \begin{figure}
-\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ elliptic}.]
-{
-\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_ellipse}
-}
-\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
-{
-\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_kite}
-}
-\caption{Loglog plot of the convergence order for two smooth inclusions: an ellipse, and a kite shaped domain, computed with the infinity norm.}
-\label{fig:convergence-N_0-smooth}
-\end{figure}
-\end{center}
-}
-
-\iftoggle{fig}{
-\begin{center}
-\begin{figure}
-\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ elliptic}.]
-{
-\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_drop}
-}
-\subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
-{
-\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_triangle}
-}
-\caption{Loglog plot of the convergence order for two Lipschitz inclusions: 
-a drop shaped domain with one vertex, and a triangle, computed with the infinity norm.}
-\label{fig:convergence-N_0-Lipschitz}
-\end{figure}
-\end{center}
-}
-
-\iftoggle{fig}{
-\begin{center}
-\begin{figure}
-\subfloat[][\emph{Computed solution for direct Laplace problem}.]
+% \subfloat[][\emph{Computed solution for direct Laplace problem}.]
 {
 \includegraphics[width=.48\textwidth]{fig/contourplots_direct_0}
 }
-\subfloat[][\emph{Computed solution for direct problem with an elliptic inclusion}.]
+% \subfloat[][\emph{Computed solution for direct problem with an elliptic inclusion}.]
 {
 \includegraphics[width=.48\textwidth]{fig/contourplots_direct_D}
 }
-\caption{Numerical discretization of the direct problems, with Neumann boundary data given by the 
-harmonic function $(x-2)^2-y^2$.}
+\caption{Numerical discretization of the direct Laplace problem and the inclusion problem respectively,
+with Neumann boundary data given by the harmonic function $(x-2)^2-y^2$.}
 \label{fig:contourplots_direct}
 \end{figure}
 \end{center}
 }
+
+\par
+We tested the convergence order of $N_0$, for which we can easily compute the exact solution, 
+from the knowledge of the explicit expression of a harmonic function. 
+% In Figures \ref{fig:convergence-N_0-smooth} and \ref{fig:convergence-N_0-Lipschitz}
+In Figure \ref{fig:convergence-N_0-Lipschitz}
+with logarithmic scale for both axes, we used 
+the harmonic function $v(x,y)=x^3 - 3 xy^2$. We can observe the exponential convergence 
+to the exact solution $N_{0n}f\to v|_{\partial \Omega}$. The integration for the ellipse 
+is exact, while for a generic smooth curve we could expect a good, but not a optimal result.
+\par
+Instead in \ref{fig:convergence-N_D-kite} we can observe the order of convergence of 
+the $L^2(\partial \Omega)$ norm of $N_Df$, the solution of the direct inclusion problem (with a kite
+shaped inclusion), where we used, as exact values, the numerical solution computed with 
+a large number of quadrature nodes. This procedure called \emph{mesh over-refinement} is adopted whenever
+we have not an explicit expression. We want underline the fact that to compute a good
+approximation of $N_0f$ or $N_Df$ at a certain point on the boundary $p\in\partial\Omega$, it's fundamental
+to include it from the beginning, due to the singularity in the kernel of the single layer representing 
+the solution. Furthermore we validated the numerical solution of the map $N_D$
+computed by the Nystr\"{o}m method, with the solution computed by another method, the Finite Element
+Method through the software FreeFem++ \cite{FreeFem}. We remark that in Figure \ref{fig:convergence-N_D-fem}, 
+the order of convergence seems to flatten because the Nystr\"{o}m method reaches convergence faster
+than FEM.
+
+
+\begin{center}
+\begin{figure}[]
+% \subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ elliptic}.]
+{
+\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_ellipse}
+}
+% \subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
+{
+\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_kite}
+}
+\\
+{
+\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_drop}
+}
+% \subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
+{
+\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_triangle}
+}
+\caption{Loglog plot of the convergence order of $N_0$, in the case of a smooth boundary $\partial\Omega$, 
+and in the Lipschitz regular case (a drop shaped domain with one vertex, and a triangle), compared
+with the exact solution imposed $x^3- 3xy^2$.}
+\label{fig:convergence-N_0-Lipschitz}
+\end{figure}
+\end{center}
+
+
+\begin{center}
+\begin{figure}[]
+% \centering
+\subfloat[][\emph{Convergence order of $N_D$ with a kite shaped inclusion, and $n=500$ 
+quadrature nodes on the boundary $\partial\Omega$ for the exact solution (mesh over-refinement)}.]
+{
+\includegraphics[width=.48\textwidth]{fig/convergence_inclusion_onekite_bemfem_bem_bemerr}
+}
+\subfloat[][\emph{Convergence order of $N_D$ for the same problem, validated with the solution 
+computed with the Finite Element Method}.]
+{
+\includegraphics[width=.48\textwidth]{fig/convergence_inclusion_onekite_bemfem_bem}
+\label{fig:convergence-N_D-fem}
+}
+\caption{Convergence order of $N_D$.}
+\label{fig:convergence-N_D-kite}
+\end{figure}
+\end{center}
 
 Since the map $-N_{rn}$ uses only the values of $f$ in the quadrature nodes $x_j$, we can easily 
 construct a map defined on the finite dimensional vector subspace in $\mathbb{R}^{2n}$ of 
@@ -3566,23 +3630,24 @@ $\psi_{0z}$, we will plot the inverse of the ratio of the two norms, namely
 such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
 In figure \ref{fig:contourplots_rhs}, we can see the numerical discretization of the right hand side $\psi_{z0}$, 
 compared with $\psi_{z}$.
-\iftoggle{fig}{
+
+
 \begin{center}
-\begin{figure}
-\subfloat[][\emph{Computed solution for direct Laplace problem}.]
+\begin{figure}[]
+% \subfloat[][\emph{Computed solution for direct Laplace problem}.]
 {
 \includegraphics[width=.48\textwidth]{fig/contourplots_rhs_0}
 }
-\subfloat[][\emph{Computed solution for direct problem with an elliptic inclusion}.]
+% \subfloat[][\emph{Computed solution for direct problem with an elliptic inclusion}.]
 {
 \includegraphics[width=.48\textwidth]{fig/contourplots_rhs_D}
 }
-\caption{Numerical discretization of the direct problems, with Neumann boundary data given by the 
-harmonic function $(x-2)^2-y^2$.}
+\caption{Numerical test functions $\psi_{z0}$ and $\psi_z$ respectively, computed from
+the maps $N_0$ and $N_D$, used as right side in the linear equation.}
 \label{fig:contourplots_rhs}
 \end{figure}
 \end{center}
-}
+
 
 % \input{thesis_section_numres_old}
 

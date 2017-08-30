@@ -18,10 +18,10 @@ Linear Sampling Method.
 We can observe in Figures 
 \ref{fig:one_ellipse0}, \ref{fig:one_ellipse1}, and \ref{fig:one_ellipse2} the 
 reconstruction of the inclusion through the LSM, with different values of 
-the regularization parameter $\alpha$. We see that for small and sharp shapes, 
-we need to be more accurate with smaller values for $\alpha$. Furthermore
-the vicinity of the observation boundary doesn't affect the reconstruction in a relevant
-way, as in other methods.
+the regularization parameter $\alpha$, and $m$ eigenvalues considered in the FM. We see that for small and sharp shapes, 
+we need to be more accurate with smaller values for $\alpha$. Furthermore in Figure \ref{fig:one_ellipse1}
+it's clear that the vicinity of the observation boundary doesn't affect the reconstruction in a relevant
+way, as in other methods does.
 \par
 In Table \ref{tab:ellipse-parameters} we can compare the approximate inclusion 
 computed through the FM with the exact shape.
@@ -30,9 +30,12 @@ of the inclusion. Moreover, the FM computes with a good accuracy also its size.
 
 \input{thesis_notes/fig_one_ellipse}
 
+\noindent
 Now we consider different geometries, like the kite shape (smoothly parametrized), 
-and the drop shape or any polygonal inclusion, for which must be used a graded quadrature mesh 
-(we used the parametrization \eqref{eq:graded-parametrization-power}) which excludes the values in the vertexes. 
+and the drop shape or any polygonal inclusion, for which must be 
+used a graded quadrature mesh 
+(we used the parametrization \eqref{eq:graded-parametrization-power}) which excludes the 
+values in the vertexes. 
 The results are reported in Figures \ref{fig:first_compare_kite}, \ref{fig:first_compare_drop} 
 and \ref{fig:first_compare_triangle}, which show a good approximation of the shapes and 
 of the position of the different inclusions. 

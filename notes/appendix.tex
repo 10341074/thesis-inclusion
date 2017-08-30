@@ -1,0 +1,53 @@
+\section{Appendix A: Functional analysis}
+\begin{theorem}[Parseval]
+ Let $X$ be a separable Hilbert space and $\{x_j\}_{j\in\mathbb{N}}$ a complete orthonormal basis, then
+ \begin{enumerate}
+  \item for any $\{\lambda_j\}_{j\in\mathbb{N}} \in \ell ^2$, the sequence $\sum_{j}\lambda_jx_j$ converges in $X$ (also with a non complete basis)
+  \item for any $x \in X$ orthogonal decomposition (Fourier) holds
+  \begin{equation}
+   x = \sum_{j \in \mathbb{N}} \langle x, x_j\rangle x_j \quad \text{and} \quad \|x\|^2=\sum_{j \in \mathbb{N}} |\langle x, x_j\rangle|^2
+  \end{equation}
+ \end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Spectral Theorem]
+ Let $X$ be an Hilbert space and $K:X\to X$ be a compact self-adjoint linear operator, then the spectrum contains only the regular part and the eigenvalues are:
+ \begin{enumerate}
+  \item a finite set, (0 is eigenvalue with correspondent eigenspace of infinite dimension)
+  \item an infinite sequence converging to 0, (0 can be or not an eigenvalue with correspondent eigenspace with finite or infinite dimension)
+ \end{enumerate}
+ and eigenvectors can be taken such that they constitute a complete orthonormal basis of $X$
+ \begin{center}
+  $\{(\lambda_j, x_j)\}_{j\in\mathbb{N}}$ is an orthonormal eigensystem
+ \end{center}
+\end{theorem}
+
+\begin{definition}[Singular Values]
+ Let $X$ and $Y$ be Hilbert spaces, and $K:X\to Y$ be a compact linear operator. Then, by spectral theorem, there exists an orthonormal eigensystem $\{(\lambda_j,x_j)\}_{j\in\mathbb{N}}$ with nonnegative eigenvalues $\lambda_j \geq 0$, from the self-adjoint compact nonnegative operator $K^*K$. The square roots $\mu_j = \sqrt{\lambda_j}$ are called singular values of $K$
+\end{definition}
+
+\begin{theorem}[Singular Value Decomposition]
+Let $K: X\to Y$ be a compact linear operator and $\mu_1\geq\mu_2...>0$ its positive singular values, then there exist two orthogonal bases $\{x_j\}_{j \in \mathbb{N}}\subset X$ and $\{y_j\}_{j \in \mathbb{N}}\subset Y$ such that
+\begin{equation}
+ Kx_j = \mu_j y_j \quad \text{and}\quad K^* y_j = \mu_j x_j
+\end{equation}
+The system $\{(\mu_j,x_j,y_j)\}_{j \in \mathbb{N}}$ is called singular system and for any $x \in X$ there holds singular value decomposition (Fourier)
+\begin{align}
+ & x = x_0 + \sum_{j \in \mathbb{N}} \langle x, x_j \rangle x_j\quad \text{with}\quad x_0 \in \mathcal{K}(K) \\
+ & Kx = \sum_{j \in \mathbb{N}} \mu_j \langle x, x_j \rangle y_j
+\end{align}
+\end{theorem}
+
+\begin{theorem}[Picard]
+Let $K: X \to Y$ be a compact linear operator with singular system $\{(\mu_j,x_j,y_j)\}_{j \in \mathbb{N}}$, then the equation
+\begin{gather}
+ Kx = y \,\,\text{is solvable}\\
+ \text{if and only if}\\
+ y \in \mathcal{K}(K^*)^\perp\quad\text{and} \quad \sum_{j \in \mathbb{N}}\frac{1}{\mu_j^2}|\langle y,y_j\rangle|^2< \infty
+\end{gather}
+In this case a possible solution is
+\begin{equation}
+ x = \sum_{j \in \mathbb{N}}\frac{1}{\mu_j}\langle y,y_j\rangle x_j
+\end{equation}
+\end{theorem}
+
