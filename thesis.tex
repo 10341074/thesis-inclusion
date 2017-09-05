@@ -93,6 +93,7 @@
 
 \usepackage[backend=biber, style=alphabetic]{biblatex}
 \addbibresource{sources.bib}
+\DeclareFieldFormat[article]{title}{\textit{#1}}
 
 \theoremstyle{definition}
 \newtheorem{definition}[subsection]{Definition}
