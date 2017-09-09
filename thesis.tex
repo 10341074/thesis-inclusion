@@ -1,6 +1,6 @@
 \documentclass[10pt, a4paper, twoside, openright]{book}
 % \documentclass{book}
-\usepackage[english, italian]{babel}
+\usepackage[english]{babel}
 % \usepackage[italian, english]{babel}
 \usepackage[utf8]{inputenc} % needed for bibtex
 \usepackage{mathrsfs}
@@ -66,7 +66,7 @@
 %\color{bookColor}
 
 \usepackage{hyperref}
-\hypersetup{pdftex,colorlinks=true,allcolors=blue}
+% \hypersetup{pdftex,colorlinks=true,allcolors=blue}
 
 % \usepackage[hidelinks]{hyperref}
 % \usepackage{xcolor}
@@ -163,10 +163,62 @@
 
 \title{Numerical Reconstruction of Inclusions in Electrical Conductors}
 \author{Giacomo Milan}
-% \date{3 Ottobre 2017} % oppure anno accademico
+\date{3 Ottobre 2017}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\maketitle
+\frontmatter
+\begin{titlepage}
+    \begin{center}
+        \Large
+        \vspace*{1cm}
+        \textsc{Politecnico di Milano}\\
+        Scuola di Ingegneria Industriale e dell'Informazione\\
+        \vspace{1cm}
+        \includegraphics[width=0.5\textwidth]{fig/logo_bw}
+        
+%       \vfill
+        \normalsize
+        \vspace{1cm}
+        Project of \\
+        \large
+        \textsc{Numerical Analysis for Partial Differential Equations}\\
+        \begin{flushright}
+        \normalsize
+         Prof.ssa Perotto
+        \end{flushright}
+%         \vspace{0.5cm}
+        \normalsize
+        Course of \\
+        \large
+        \textsc{Mathematical Engineering}
+        
+
+        \vspace{0.8cm}
+        \huge
+        \textsc{Numerical Reconstruction of Inclusions in Electrical Conductors}
+        
+%       \vspace{0.5cm}
+%       Thesis Subtitle
+        
+        \vspace{1.5cm}
+        \begin{flushright}
+        \normalsize
+        {Giacomo Milan, matr. 841530}         
+        \end{flushright}
+        \normalsize
+        \vfill
+        Anno accademico 2016-2017
+        
+    \end{center}
+\end{titlepage}
+
+% \maketitle
 \tableofcontents
 \listoffigures
 %\listoftables
@@ -246,6 +298,8 @@ esamineremo il \emph{reciprocity gap method}, già usato per il problema inverso
 scattering, che verrà confrontato con i precedenti metodi nel Capitolo \ref{ch:link}.
 Infine nel Capitolo \ref{ch:implementation} proporremo i risultati ottenuti 
 dall'implementazione numerica degli algoritmi proposti.
+
+\mainmatter
 \chapter{Introduction}
 In this thesis we will consider the inverse conductivity problem, or Electrical Impedance Tomography (EIT),
 that was proposed to the mathematical community by Calder\'on \cite{Ca} in 1980.
@@ -3670,12 +3724,19 @@ by noise.
 In conclusion, the combination of all the methods gives an good idea of the unknown 
 inclusion, and we could expect similar results even for non constant conductivities.
 
-%\vspace{5cm}
+% \chapter*{Bibliography}
 %\nocite{*}
-\printbibliography % biber
-% \bibliographystyle{plain} % bibtex
-% \bibliography{sources} % bibtex
+\printbibliography              % biber
+% \bibliographystyle{plain}     % bibtex
+% \bibliography{sources}        % bibtex
 \end{document}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{End Document}
 \colorbox{Orchid}{
 
