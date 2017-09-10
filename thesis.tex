@@ -1,7 +1,7 @@
 \documentclass[10pt, a4paper, twoside, openright]{book}
-% \documentclass{book}
-\usepackage[english]{babel}
-% \usepackage[italian, english]{babel}
+% \usepackage[english]{babel}
+\usepackage[italian, english]{babel}
+
 \usepackage[utf8]{inputenc} % needed for bibtex
 \usepackage{mathrsfs}
 \usepackage{amsthm}
@@ -20,7 +20,7 @@
 
 % \usepackage[sort, numbers]{natbib}
 % \setcitestyle{square}
-
+\usepackage{bbold}
 
 \usepackage{graphicx}
 
@@ -70,17 +70,17 @@
 
 % \usepackage[hidelinks]{hyperref}
 % \usepackage{xcolor}
-% \AtBeginDocument{
-% \hypersetup{
+\AtBeginDocument{
+\hypersetup{
 % %     colorlinks=false,
 % %     citebordercolor = {Green},
-% %     filebordercolor = {Red}
-% %     linkbordercolor = {Red}
+% %     filebordercolor = {Blue}
+    linkbordercolor = {Blue}
 % %     linkcolor={red!50!black},
 % %     citecolor={blue!50!black},
 % %     urlcolor={blue!80!black}
-% }
-% }
+}
+}
 
 
 \usepackage{hypcap}
@@ -155,12 +155,23 @@
 
 \usepackage{fancyhdr}
 \newcommand{\fncyblank}{\fancyhf{}}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% abstract e sommario
 \newenvironment{abstract} %
-{\cleardoublepage\fncyblank\null\vfill\begin{center} %
-\bfseries\abstractname\end{center}} %
+{\cleardoublepage
+\fncyblank\null\vfill\begin{center} %
+\bfseries\abstractname
+\end{center}} %
+{\vfill\null}
+\newenvironment{abstractone} %
+{\clearpage
+\fncyblank\null\vfill\begin{center} %
+\bfseries\abstractname
+\end{center}} %
 {\vfill\null}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{Numerical Reconstruction of Inclusions in Electrical Conductors}
 \author{Giacomo Milan}
 \date{3 Ottobre 2017}
@@ -218,11 +229,6 @@
     \end{center}
 \end{titlepage}
 
-% \maketitle
-\tableofcontents
-\listoffigures
-%\listoftables
-
 \begin{abstract}
  In this work we show some of the main methods 
  to approach the inverse inclusion problem, which consists in determining 
@@ -230,14 +236,20 @@
  Discontinuous conductivity requires a separate analysis from the issue 
  of the inverse impedance problem, which has been widely treated in literature. 
  Furthermore we conclude the exposition with some numerical simulations 
- of the algorithms presented.
+ of the algorithms proposed.
 \end{abstract}
+\selectlanguage{italian}
+\begin{abstractone}
+ In questo lavoro mostriamo i principali metodi per avvicinare il problema
+ inverso dell'inclusione, il quale consiste nella determinazione del 
+ supporto di un corpo di conduttività incognita, contenuto in una regione di fondo.
+ La discontinuità della conduttività richiede una analisi distinta dal problema
+ inverso dell'impedenza, largamente trattato in letteratura.
+ Inoltre concludiamo la presente esposizione con alcune simulazioni numeriche 
+ degli algoritmi proposti.
+\end{abstractone}
+\selectlanguage{english}
 
-%\selectlanguage{italian}
-% \begin{abstract}
-%  Italian Abstract
-% \end{abstract}
-% \selectlanguage{english}
 \chapter*{Introduzione}
 In questa tesi prenderemo in esame il \emph{problema inverso dell'impedenza}, 
 che descrive il comportamento di un campo elettromagnetico definito in un 
@@ -299,6 +311,17 @@ scattering, che verrà confrontato con i precedenti metodi nel Capitolo \ref{ch:
 Infine nel Capitolo \ref{ch:implementation} proporremo i risultati ottenuti 
 dall'implementazione numerica degli algoritmi proposti.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Ringraziamenti}
+Grazie
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% \maketitle
+\tableofcontents
+% \listoffigures
+%\listoftables
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mainmatter
 \chapter{Introduction}
 In this thesis we will consider the inverse conductivity problem, or Electrical Impedance Tomography (EIT),
@@ -2799,7 +2822,7 @@ of a bounded inverse operator of $K$.
   \item if the equation $Kx=y$ is not solvable for some $y$, then $x^{\alpha_n}\to \infty$ in $X$.
  \end{enumerate}
 \end{remark}
-In the last part of this chapter, we'll describe the steps followed in the code \cite{}, and we'll report some error estimates.
+In the last part of this chapter, we'll describe the steps followed in the code, and we'll report some error estimates.
 \section{Introduction to Inverse Problems}
 In this section, we sketch main notions of the inverse formulation of a given problem. All results 
 can be found in \cite{kirsch:book}.
@@ -3529,12 +3552,13 @@ The error analysis for the equation of the second kind is based on Theorem 10.9 
 % \end{equation}\begin{figure}
 Since in our case we use directly $f_n=f$, there holds the a priori error estimate
  \begin{equation}
-  \|\phi_n - \phi \|_{\infty} \leq C\{\|(A_n - A)\phi\|_{\infty}\}.
+  \|\phi_n - \phi \| \leq C\|(A_n - A)\phi\|.
  \end{equation}
 Let $-N_r=N_D - N_0$ be the relative Neumann--to--Dirichlet map. In the previous section, we described
 how we computed the approximation of $-{N_r}f$, which we denote by $-{N_{rn}}f$, that is the difference 
 of the two discretized maps $N_{0n}$ and $N_{Dn}$ valued on $f$
 \begin{equation}
+\label{eq:N0n-Ndn}
  {N_{0n}}f = S_n\phi_n = SP_n\phi_n\quad \textup{and} \quad{N_{Dn}}f = S_n\phi_{\Omega n} + S_n\phi_{D n},
 \end{equation}
 where $S_n$ is the quadrature rule of the single layer operator $S$, and 
@@ -3545,73 +3569,101 @@ The error estimate of the relative map is
 \begin{equation}
  \|{N_r}f - {N_{rn}}f\|\leq\|S\|\|\phi-\phi_n\| + \|S\phi_n - S_n\phi_n\| = err_{Nystr\textit{\"{o}}m} + err_{Num\,Int}.
 \end{equation}
-Convergence results of quadrature rules for the integration of a double or a single layer potential 
-contained in the previous sections, lead us to expect an exponential convergence both for the Nystr\"{o}m method and 
-for the numerical integration of $S$. In Figure \ref{fig:contourplots_direct} we can compare the implementation of the two 
+% Convergence results of quadrature rules for the integration of a double or a single layer potential 
+% contained in the previous sections, lead us to expect an exponential convergence both for the Nystr\"{o}m method and 
+% for the numerical integration of $S$. 
+In Figure \ref{fig:contourplots_direct} we can compare the implementation of the two 
 direct maps which discretize the Laplace problem and the inclusion problem.
-\iftoggle{fig}{
+
 \begin{center}
 \begin{figure}
 % \subfloat[][\emph{Computed solution for direct Laplace problem}.]
 {
-\includegraphics[width=.48\textwidth]{fig/contourplots_direct_0}
+\includegraphics[width=.5\textwidth]{fig/contourplots_direct_0}
 }
 % \subfloat[][\emph{Computed solution for direct problem with an elliptic inclusion}.]
 {
-\includegraphics[width=.48\textwidth]{fig/contourplots_direct_D}
+\includegraphics[width=.5\textwidth]{fig/contourplots_direct_D}
 }
 \caption{Numerical discretization of the direct Laplace problem and the inclusion problem respectively,
 with Neumann boundary data given by the harmonic function $(x-2)^2-y^2$.}
 \label{fig:contourplots_direct}
 \end{figure}
 \end{center}
-}
 
 \par
+% In Figures \ref{fig:convergence-N_0-smooth} and \ref{fig:convergence-N_0-Lipschitz}
 We tested the convergence order of $N_0$, for which we can easily compute the exact solution, 
 from the knowledge of the explicit expression of a harmonic function. 
-% In Figures \ref{fig:convergence-N_0-smooth} and \ref{fig:convergence-N_0-Lipschitz}
-In Figure \ref{fig:convergence-N_0-Lipschitz}
-with logarithmic scale for both axes, we used 
-the harmonic function $v(x,y)=x^3 - 3 xy^2$. We can observe the exponential convergence 
-to the exact solution $N_{0n}f\to v|_{\partial \Omega}$. The integration for the ellipse 
-is exact, while for a generic smooth curve we could expect a good, but not a optimal result.
+We started from an elliptic boundary $\partial\Omega$ and we imposed Neumann boundary data from 
+$v(x,y)=x^3 - 3 xy^2$.
+In Figure \ref{fig:convergence-ellipse-L2}, with logarithmic scale for both axes,
+we reported the convergence order of the error of the trace $\|N_{0n}f - v|_{\partial\Omega}\|$ in the $L^2(\partial\Omega)$ norm.
+We obtained the same behavior for the error in the $L^\infty(\partial\Omega)$ norm, 
+according with a power law $n^{-2}$, with the exponent estimated from the loglog plot, 
+in according with the convergence of the trapezoidal quadrature.
+This can be explained from the fact that the approximate density $\phi_n$ 
+in the trapezoidal integration \eqref{eq:N0n-Ndn} is not analytic.
+In Figure \ref{fig:convergence-ellipse-LinfOmega}, with logarithmic scale only for 
+the error axis, we measured a convergence order of the error in the norm $L^\infty(\Omega)$
+in according with an exponential law $e^{-\sigma n}$, by the fact that the integral kernel of $S$, valued in $\Omega$,
+is now smooth.
 \par
-Instead in \ref{fig:convergence-N_D-kite} we can observe the order of convergence of 
+In Figure \ref{fig:convergence-N_0-Lipschitz} we considered 
+different domains and we estimated the convergence order of the error
+in the $L^2(\partial\Omega)$ norm in according with a power law $n^\alpha$, 
+with $\alpha\approx-1.10$ for a kite shaped domain, and $\alpha\approx-0.85$ 
+for a drop shaped domain, containing a vertex.
+\par
+Furthermore, in Figure \ref{fig:convergence-N_D-kite} we can observe the order of convergence of 
 the $L^2(\partial \Omega)$ norm of $N_Df$, the solution of the direct inclusion problem (with a kite
 shaped inclusion), where we used, as exact values, the numerical solution computed with 
 a large number of quadrature nodes. This procedure called \emph{mesh over-refinement} is adopted whenever
-we have not an explicit expression. We want underline the fact that to compute a good
+we haven't an explicit expression. We want underline the fact that to compute a good
 approximation of $N_0f$ or $N_Df$ at a certain point on the boundary $p\in\partial\Omega$, it's fundamental
-to include it from the beginning, due to the singularity in the kernel of the single layer representing 
+to include it from the beginning, by the singularity contained in the kernel of the single layer 
+which represents
 the solution. Furthermore we validated the numerical solution of the map $N_D$
-computed by the Nystr\"{o}m method, with the solution computed by another method, the Finite Element
+computed by the Nystr\"{o}m method with the solution computed by another method, the Finite Element
 Method through the software FreeFem++ \cite{FreeFem}. We remark that in Figure \ref{fig:convergence-N_D-fem}, 
 the order of convergence seems to flatten because the Nystr\"{o}m method reaches convergence faster
 than FEM.
 
+\begin{center}
+\begin{figure}[]
+\subfloat[][\emph{Convergence order of $N_0$ in the $L^2(\partial \Omega)$ norm, 
+according with a power law $n^{-2}$}.]
+{
+\includegraphics[width=.50\textwidth]{fig/convergence_laplace_one_ellipse}
+\label{fig:convergence-ellipse-L2}
+}
+\subfloat[][\emph{Convergence order of $N_0$ in the $L^\infty(\Omega)$ norm,
+according with an exponential law $e^{-\sigma n}$}.]
+{
+\includegraphics[width=.50\textwidth]{fig/convergence_laplace_one_ellipse_inf}
+\label{fig:convergence-ellipse-LinfOmega}
+}
+% \caption{Loglog plot of the convergence order of $N_0$, in the case of a smooth boundary $\partial\Omega$, 
+% and in the Lipschitz regular case (a drop shaped domain with one vertex, and a triangle), compared
+% with the exact solution imposed $x^3- 3xy^2$.}
+\caption{Convergence order of $N_0$ for an elliptic boundary $\partial\Omega$.}
+\label{fig:convergence-N_0-ellipse-inf}
+\end{figure}
+\end{center}
 
 \begin{center}
 \begin{figure}[]
-% \subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ elliptic}.]
 {
-\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_ellipse}
+\includegraphics[width=.50\textwidth]{fig/convergence_laplace_one_kite}
 }
 % \subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
 {
-\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_kite}
+\includegraphics[width=.50\textwidth]{fig/convergence_laplace_one_drop}
 }
-\\
-{
-\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_drop}
-}
-% \subfloat[][\emph{Convergence order of $N_0$ with $\partial \Omega$ triangular}.]
-{
-\includegraphics[width=.48\textwidth]{fig/convergence_laplace_one_triangle}
-}
-\caption{Loglog plot of the convergence order of $N_0$, in the case of a smooth boundary $\partial\Omega$, 
-and in the Lipschitz regular case (a drop shaped domain with one vertex, and a triangle), compared
-with the exact solution imposed $x^3- 3xy^2$.}
+\caption{Loglog plot of the error of $N_0$ in the $L^2(\partial\Omega)$ norm, for the case of a smooth boundary $\partial\Omega$
+kite shaped, 
+and for a Lipschitz regular boundary, a drop shaped domain with one vertex, 
+with the imposed solution $x^3- 3xy^2$.}
 \label{fig:convergence-N_0-Lipschitz}
 \end{figure}
 \end{center}
@@ -3623,12 +3675,12 @@ with the exact solution imposed $x^3- 3xy^2$.}
 \subfloat[][\emph{Convergence order of $N_D$ with a kite shaped inclusion, and $n=500$ 
 quadrature nodes on the boundary $\partial\Omega$ for the exact solution (mesh over-refinement)}.]
 {
-\includegraphics[width=.48\textwidth]{fig/convergence_inclusion_onekite_bemfem_bem_bemerr}
+\includegraphics[width=.50\textwidth]{fig/convergence_inclusion_onekite_bemfem_bem_bemerr}
 }
 \subfloat[][\emph{Convergence order of $N_D$ for the same problem, validated with the solution 
 computed with the Finite Element Method}.]
 {
-\includegraphics[width=.48\textwidth]{fig/convergence_inclusion_onekite_bemfem_bem}
+\includegraphics[width=.50\textwidth]{fig/convergence_inclusion_onekite_bemfem_bem}
 \label{fig:convergence-N_D-fem}
 }
 \caption{Convergence order of $N_D$.}
@@ -3637,10 +3689,11 @@ computed with the Finite Element Method}.]
 \end{center}
 
 Since the map $-N_{rn}$ uses only the values of $f$ in the quadrature nodes $x_j$, we can easily 
-construct a map defined on the finite dimensional vector subspace in $\mathbb{R}^{2n}$ of 
-$\{f(x_j)\}$, which are the values on $2n$ quadrature nodes. This subspace has dimension $2n-1$, 
+construct a map defined on the finite dimensional vector subspace of $\mathbb{R}^{2n}$ spanned by 
+$\{f(x_j)\}$, the values on $2n$ quadrature nodes. This subspace has dimension $2n-1$, 
 since $f$ is subjected to the constrain of zero mean. Therefore we can compute $-N_{rn}b_k$ 
-only in terms of a finite basis $b_k$ of $\mathbb{R}^{2n}$.
+only for a finite basis $b_k$ of $\mathbb{R}^{2n}$, to construct the discrete map 
+$-N_{rn}:\mathbb{R}^{2n-1}\to \mathbb{R}^{2n-1}$.
 % Our intention is to construct an \emph{approximate map} $-{N_r^{(n)}}$ to generalize and speed up 
 % the computation for any $f$. Therefore, our aim is to express $-{N_r^{(n)}}$ in terms of 
 % a basis $\{b_k\}_{k\in\mathbb{N}}$ of a $n$-dimensional subspace $X_n\subset X=L^2_0(\partial\Omega)$.
@@ -3691,11 +3744,11 @@ compared with $\psi_{z}$.
 \begin{figure}[]
 % \subfloat[][\emph{Computed solution for direct Laplace problem}.]
 {
-\includegraphics[width=.48\textwidth]{fig/contourplots_rhs_0}
+\includegraphics[width=.50\textwidth]{fig/contourplots_rhs_0}
 }
 % \subfloat[][\emph{Computed solution for direct problem with an elliptic inclusion}.]
 {
-\includegraphics[width=.48\textwidth]{fig/contourplots_rhs_D}
+\includegraphics[width=.50\textwidth]{fig/contourplots_rhs_D}
 }
 \caption{Numerical test functions $\psi_{z0}$ and $\psi_z$ respectively, computed from
 the maps $N_0$ and $N_D$, used as right side in the linear equation.}
@@ -3705,24 +3758,347 @@ the maps $N_0$ and $N_D$, used as right side in the linear equation.}
 
 
 % \input{thesis_section_numres_old}
+\section{Numerical Results}
+This section is dedicated to the discussion of the numerical approximations 
+implemented in the Python code.
+We consider first a smooth inclusion, elliptic shaped. Then we compare the results obtained by 
+the two different methods
+\begin{enumerate}
+ \item the Tikhonov regularization of the Neumann--to--Dirichlet map, described by the linear
+ sampling method, corresponding to equation \eqref{eq:tikh-reg-lsm},
+ \item the factorization method, by the criterion described in section \ref{section:range-criterion}.
+\end{enumerate}
+The conductivity $k$ has been taken constant $k=2$, as its value doesn't 
+affect the outcome in a relevant way. The number of quadrature nodes 
+on $\partial D$ and on $\partial \Omega$ has been chosen high enough to obtain a good approximation 
+of the map $N_r$.
+In the sequel, we will use the abbreviations FM for the Factorization Method, LSM for the regularized 
+Linear Sampling Method.
+\par
+We can observe in Figures 
+\ref{fig:one_ellipse0}, \ref{fig:one_ellipse1}, and \ref{fig:one_ellipse2} the 
+reconstruction of the inclusion through the LSM, with different values of 
+the regularization parameter $\alpha$, and $m$ eigenvalues considered in the FM. We see that for small and sharp shapes, 
+we need to be more accurate with smaller values for $\alpha$. Furthermore in Figure \ref{fig:one_ellipse1}
+it's clear that the vicinity of the observation boundary doesn't affect the reconstruction in a relevant
+way, as in other methods does.
+\par
+In Table \ref{tab:ellipse-parameters} we can compare the approximate inclusion 
+computed through the FM with the exact shape.
+The main difference between two methods is that the LSM reconstructs well the position and the shape 
+of the inclusion. Moreover, the FM computes with a good accuracy also its size. 
 
-\input{thesis_section_numres_new}
+\input{notes_thesis/fig_one_ellipse}
+
+% \noindent
+Now we consider different geometries, like the kite shape (smoothly parametrized), 
+and the drop shape or any polygonal inclusion, for which must be 
+used a graded quadrature mesh 
+(we used the parametrization \eqref{eq:graded-parametrization-power}) which excludes the 
+values in the vertexes. 
+The results are reported in Figures \ref{fig:first_compare_kite}, \ref{fig:first_compare_drop} 
+and \ref{fig:first_compare_triangle}, which show a good approximation of the shapes and 
+of the position of the different inclusions. 
+
+% \input{notes_thesis/fig_one_shape}
+\begin{center}
+\begin{figure}%[tb]
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_lsm_kite0_alpha1e-10_no100nd80}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_kite0_m10_no100nd80}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_kite0_m40_no100nd80}
+}
+\caption{Comparison between two methods for a kite shaped inclusion, with $\alpha=\mathrm{1e}{-10}$ 
+in LSM, and $m=10$, $m=40$, in the FM.}
+\label{fig:first_compare_kite}
+\end{figure}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+\begin{figure}[]
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_lsm_drop0_alpha1e-10_no100nd80}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_drop0_m10_no100nd80}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_drop0_m40_no100nd80}
+}
+\caption{Comparison between two methods for a drop shaped inclusion, with $\alpha=\mathrm{1e}{-10}$ 
+in LSM, and $m=10$, $m=40$, in the FM.}
+\label{fig:first_compare_drop}
+\end{figure}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+\begin{figure}[]
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_lsm_triangle0_alpha1e-10_no100nd80}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_triangle0_m10_no100nd80}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_triangle0_m40_no100nd80}
+}
+\caption{Comparison between two methods for a triangle shaped inclusion, with $\alpha=\mathrm{1e}{-10}$ 
+in LSM, and $m=10$, $m=40$, in the FM.}
+\label{fig:first_compare_triangle}
+\end{figure}
+\end{center}
+% reciprocity comments
+We compare these two methods with the results obtained by the implementation
+of the Reciprocity Gap Method, referring to the discretization of equation 
+\eqref{eq:rg-approximate-eq}, as the same way we did for the Linear Sampling Method.
+In Figure \ref{fig:rg_ellipse} we reported the approximations of the inclusion
+computed for different choices of boundaries $\partial \Omega$, $\partial B$.
+The poor quality of the reconstruction, compared with thes LSM, is 
+due to the presence of two integration contours, instead of one, which origins
+symmetries between two sets of quadrature nodes.
+Furthermore, in this method with far boundaries, like circles with large radius,
+is much more strong the dependence from the angle $\theta$ of the unit vector 
+$\vec{d}=(\cos\theta, \sin\theta)$, in Definition \ref{def:lsm-psi}.
+\begin{center}
+\begin{figure}
+{
+\includegraphics[width=.50\textwidth]{fig/first_compare_rg_kite0_alpha1e-10_no120nd100nb120_radius4}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/first_compare_rg_kite0_alpha1e-10_no120nd100nb120_radius6}
+}
+\caption{Reconstruction of a kite shaped inclusion by the Reciprocity Gap Method, 
+with $\partial\Omega=\partial B(0; 3)$, and two different test functions' domains,
+$\partial B=\partial B(0;4)$, $\partial B=\partial B(0;6)$, respectively.}
+\label{fig:rg_ellipse}
+\end{figure}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% factorization comments
+% \begin{center}
+% \begin{figure}[]
+% {
+% \includegraphics[width=.5\textwidth]{fig/first_compare_fm_two_ellipse_m040_eig}
+% }
+% {
+% \includegraphics[width=.5\textwidth]{fig/first_compare_fm_three_ellipse_m030_eig}
+% }
+% \caption{.}
+% \label{fig:first_compare_fm_eig}
+% \end{figure}
+% \end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\par
+In the Factorization Method the eigenvalues $\lambda_j$ considered for the linear regression
+in equation \eqref{eq:straightline-eig} are only a small number of them, 
+representing the principal modes. 
+To avoid including eigenvalues too small in absolute value, 
+which would depend from numerical noise, a good criterion
+is to establish this number from their plot, such to truncate the plateau beyond the 
+optimal value. Other useful criteria can be found in \cite{hanke-bruhl:recent}.
+In Figures \ref{fig:first_compare_two_ellipse}, \ref{fig:first_compare_three_ellipse}, 
+we established $m=30$, and $m=40$ for two different geometries and we obtained
+a more accurate reconstruction.
+
+\begin{center}
+\begin{figure}[]
+{
+\includegraphics[width=.31\textwidth, height = 0.31\textwidth]{fig/first_compare_fm_two_ellipse_m040_eig}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_two_ellipse0_m030}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_two_ellipse0_m040}
+}
+\caption{Factorization Method for $m=30$, $m=40$, respectively. On the left, the linear regression of the
+eigenvalues of the map $N_r$, suggesting $m=40$ as the best choice.}
+\label{fig:first_compare_two_ellipse}
+\end{figure}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+\begin{figure}[]
+{
+\includegraphics[width=.31\textwidth, height = 0.31\textwidth]{fig/first_compare_fm_three_ellipse_m030_eig}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_three_ellipse0_m030}
+}
+{
+\includegraphics[width=.31\textwidth]{fig/first_compare_fm_three_ellipse0_m040}
+}
+\caption{Factorization Method for $m=30$, $m=40$, respectively. On the left, the linear regression of the
+eigenvalues of the map $N_r$, suggesting $m=30$ as the best choice.}
+\label{fig:first_compare_three_ellipse}
+\end{figure}
+\end{center}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\par
+Now we compare previous results with the approximations obtained, for the same geometries, by the 
+combination of the Tikhonov regularization with the Morozov discrepancy principle, which fixes the 
+error level $\delta$, and computes the norm of the regularized solutions for different values of 
+$\alpha(\delta)$. In our results we used the \emph{normalized discrepancy} $\Delta_N(\alpha)$ 
+\eqref{eq:def-disc-N}, to take in account small norm of the density solving the linear system.
+\par
+For connected inclusions, we cannot observe a significant improvement. 
+Instead, for a non connected domain, composed by two or three components, Figures \ref{fig:discrepancy_two_ellipse} 
+and \ref{fig:discrepancy_three_ellipse}
+show that after about 15 iterations on $\alpha$, contour plot fills better the unknown shape.
+For more fitted mesh with higher $n$ nodes, 
+some difficulties occurs, since the root $\alpha(\delta)$ of the discrepancy 
+function $\Delta_N(\alpha)$ is too close to the machine epsilon. 
+Furthermore, the Morozov discrepancy principle provide a criterion to establish 
+$\alpha$, for a fixed resolution $n$. Indeed in Figures \ref{fig:discrepancy_two_ellipse} 
+and \ref{fig:discrepancy_three_ellipse} we can see that the approximate reconstruction
+reaches a convergence after a certain number of iteration, suggesting that we have
+found the optimal function $\alpha$.
+
+\begin{center}
+\begin{figure}
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_it_alpha_0}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_it_alpha_14}
+}
+\\ 
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_it_alpha_19}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_alpha_it_alpha_19}
+}
+\caption{Discrepancy principle applied to LSM for a domain with two components.}
+\label{fig:discrepancy_two_ellipse}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}%[tb]
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_it_alpha_0}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_it_alpha_14}
+}
+\\
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_it_alpha_19}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_alpha_it_alpha_19}
+}
+\caption{Discrepancy principle applied to LSM for a domain with three components.}
+\label{fig:discrepancy_three_ellipse}
+\end{figure}
+\end{center}
+
+% \begin{center}
+% \begin{figure}%[tb]
+% \subfloat[][\emph{Plot of $\alpha$ computed by the Morozov principle after $15$ iterations}.]
+% {
+% \includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_alpha_it_alpha_15}
+% }
+% \subfloat[][\emph{Plot of $\alpha$ computed by the Morozov principle after $15$ iterations}.]
+% {
+% \includegraphics[width=.48\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_alpha_it_alpha_15}
+% }
+% \caption{Check on values of $\alpha$ computed by the Morozov discrepancy principle}
+% \label{fig:discrepancy_alpha}
+% \end{figure}
+% \end{center}
+
+The \emph{Inverse Crime} effect appears every time we solve the inverse problem with data computed 
+by the discretization of the direct map. It's well known in literature how this aspect leads to 
+better estimates than which we should expect. Indeed, in our case, the right term $\psi_{z0}$ 
+has been corrected by the direct Neumann--to--Dirichlet map (see \eqref{def:lsm-psi}). Therefore, it's advisable to 
+introduce some noise in the data.
+% , such that $\|y - y^\delta\|\propto\delta$ is more realistic.
+Since measured data are contained in the computation of the map $N_r$, we decided to add 
+some normal distributed noise $N_r^{\delta_N}$ proportional to the maximum of the modulus of 
+the relative map $N_r$, that is
+\begin{equation}
+ N_r + N_r^{\delta_N}, \quad N_r^{\delta_N}=\delta_N\|N_r\|_{\infty}
+ \cdot \mathcal{N}_{n^2}(0_n,\mathbb{1}_{n^2}),
+\end{equation}
+where the error level $\delta_N$ has been fixed before.
+In Figure \ref{fig:noise_lsm} we can see the reconstruction computed by the Linear 
+Sampling Method for different values of the error level $\delta_N$. 
+Instead in Figure \ref{fig:noise_fm} we implemented the Factorization Method 
+for different choices of the truncation parameter $m$, suggested by the plot of the eigenvalues
+$\lambda_j$, letting the error level $\delta_N$ be fixed.
+\par
+We can deduce that the FM is more sensible to noise, while the regularized LSM is more stable, 
+and it works for error level up to $\delta_N=0.001$.
+% while FM does not work for 
+% values of $\delta$ greater than $\mathrm{1e}{-05}$.
+
+% \begin{center}
+% \begin{figure}%[tb]
+% \subfloat[][\emph{Linear sampling method for $\alpha=\mathrm{1e}{-10}$ and $\delta=\mathrm{1e}{-05}$}.]
+% {
+% \includegraphics[width=.30\textwidth]{fig/noise_lsm_ellipse0_noiselevel1e-05}
+% }
+% \subfloat[][\emph{Linear sampling method for $\alpha=\mathrm{1e}{-10}$ and $\delta=\mathrm{1e}{-02}$}.]
+% {
+% \includegraphics[width=.30\textwidth]{fig/noise_lsm_ellipse0_noiselevel1e-02}
+% }
+% \subfloat[][\emph{Factorization method for $\delta=\mathrm{1e}{-02}$}.]
+% {
+% \includegraphics[width=.30\textwidth]{fig/noise_fm_ellipse0_noiselevel1e-05}
+% }
+% \caption{Stability of the methods with respect to normal noise of amplitude $\delta$ in the data.}
+% \label{fig:noise}
+% \end{figure}
+% \end{center}
+Finally we test the Morozov discrepancy principle in presence of noise and 
+we obtained quite good results in Figure 
+\ref{fig:discrepancy_noise_three_ellipse}.
+Indeed the reconstruction is affected by some error modes, but identifies much more
+clearly the components of the inclusion.
+
+\clearpage
+%\cleardoublepage
+% \FloatBarrier
+
+% \input{thesis_section_numres_new}
 
 \chapter*{Conclusions}
 \addcontentsline{toc}{chapter}{Conclusions}
-The reciprocity gap principle turns out to be equivalent to the linear sampling method.
-In both cases, the main difficulty which arises in the algorithm is the identification of an approximating
-sequence for a generic sampling point $z$ inside the unknown domain $D$. This fact reflects itself 
-on the moderately good, but not satisfying, results.
+From the theoretical perspective, the reciprocity gap principle turns out to be equivalent to the linear sampling method, 
+but the additional integration makes its discretization more difficult.
+In both cases, the main difficulty which arises in the algorithm is the 
+identification of an approximating
+sequence for a generic sampling point $z$ inside the unknown domain $D$. 
+This fact reflects itself 
+on the 
+% moderately good,
+satisfying,
+but not optimal results.
+\par
 The regularization helps the stability of the linear sampling implementation, and 
 the Morozov principle improves significantly the computed approximation, but at a high 
 computational effort, associated with difficulties of very small values.
+\par
 On the other end, the factorization method has the advantage of giving an approximation 
 without solving any linear system, but requires a high accuracy of data, lightly affected 
 by noise.
-
+For both the methods we identified a good criterion to establish the quality of the
+reconstruction.
+\par
 In conclusion, the combination of all the methods gives an good idea of the unknown 
-inclusion, and we could expect similar results even for non constant conductivities.
+inclusion, and we could expect similar results even for non constant conductivities
+or for the three dimensional framework.
 
 % \chapter*{Bibliography}
 %\nocite{*}
