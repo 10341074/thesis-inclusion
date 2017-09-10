@@ -187,40 +187,33 @@
 \begin{titlepage}
     \begin{center}
         \Large
-        \vspace*{1cm}
         \textsc{Politecnico di Milano}\\
         Scuola di Ingegneria Industriale e dell'Informazione\\
+        Corso di Laurea in Ingegneria Matematica\\
+        
         \vspace{1cm}
-        \includegraphics[width=0.5\textwidth]{fig/logo_bw}
+        \includegraphics[width=0.5\textwidth]{fig/logo}
         
 %       \vfill
-        \normalsize
-        \vspace{1cm}
-        Project of \\
-        \large
-        \textsc{Numerical Analysis for Partial Differential Equations}\\
-        \begin{flushright}
-        \normalsize
-         Prof.ssa Perotto
-        \end{flushright}
-%         \vspace{0.5cm}
-        \normalsize
-        Course of \\
-        \large
-        \textsc{Mathematical Engineering}
+%       \normalsize
+%       \large
         
 
-        \vspace{0.8cm}
+        \vspace{1cm}
         \huge
         \textsc{Numerical Reconstruction of Inclusions in Electrical Conductors}
         
-%       \vspace{0.5cm}
-%       Thesis Subtitle
-        
-        \vspace{1.5cm}
+        \vspace{3cm}
+        \begin{flushleft}
+        \large
+        Relatore: Prof. Michele Di Cristo         
+        \end{flushleft}
+        \vspace{1cm}
         \begin{flushright}
         \normalsize
-        {Giacomo Milan, matr. 841530}         
+        Tesi di Laurea di: \\
+        \large
+        {Giacomo Milan \\ Matr. 841530}         
         \end{flushright}
         \normalsize
         \vfill
@@ -313,13 +306,27 @@ dall'implementazione numerica degli algoritmi proposti.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{Ringraziamenti}
-Grazie
+{\parindent0pt
+Grazie papà e mamma, per esserci ed avermi sostenuto;
+
+grazie Irene, Stefano, Filippo;
+
+grazie a chi in questi anni mi ha visto poco e mi ha pensato tanto;
+
+grazie professor. Di Cristo, per aver creduto in me, per averlo fatto in modo sincero, ed avermi insegnato molto;
+
+grazie professor. Micheletti per i preziosi consigli;
+
+grazie ai professori che sono stati maestri per me;
+
+grazie a tutti voi, miei compagni di viaggio, siete stati tanti, diversi e unici.
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 % \maketitle
 \tableofcontents
-% \listoffigures
+\listoffigures
 %\listoftables
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \mainmatter
@@ -3903,20 +3910,71 @@ optimal value. Other useful criteria can be found in \cite{hanke-bruhl:recent}.
 In Figures \ref{fig:first_compare_two_ellipse}, \ref{fig:first_compare_three_ellipse}, 
 we established $m=30$, and $m=40$ for two different geometries and we obtained
 a more accurate reconstruction.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{center}
+% \begin{figure}[]
+% {
+% \includegraphics[width=.31\textwidth, height = 0.31\textwidth]{fig/first_compare_fm_two_ellipse_m040_eig}
+% }
+% {
+% \includegraphics[width=.31\textwidth]{fig/first_compare_fm_two_ellipse0_m030}
+% }
+% {
+% \includegraphics[width=.31\textwidth]{fig/first_compare_fm_two_ellipse0_m040}
+% }
+% \caption{Factorization Method for $m=30$, $m=40$, respectively. On the left, the linear regression of the
+% eigenvalues of the map $N_r$, suggesting $m=40$ as the best choice.}
+% \label{fig:first_compare_two_ellipse}
+% \end{figure}
+% \end{center}
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{center}
+% \begin{figure}[]
+% {
+% \includegraphics[width=.31\textwidth, height = 0.31\textwidth]{fig/first_compare_fm_three_ellipse_m030_eig}
+% }
+% {
+% \includegraphics[width=.31\textwidth]{fig/first_compare_fm_three_ellipse0_m030}
+% }
+% {
+% \includegraphics[width=.31\textwidth]{fig/first_compare_fm_three_ellipse0_m040}
+% }
+% \caption{Factorization Method for $m=30$, $m=40$, respectively. On the left, the linear regression of the
+% eigenvalues of the map $N_r$, suggesting $m=30$ as the best choice.}
+% \label{fig:first_compare_three_ellipse}
+% \end{figure}
+% \end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{center}
+\begin{figure}[]
+\subfloat[][\emph{ }]
+{
+\includegraphics[width=.50\textwidth, height = 0.50\textwidth]{fig/first_compare_fm_two_ellipse_m040_eig}
+\label{subfig:eig_two_ellipse}
+}
+\subfloat[][\emph{ }]
+{
+\includegraphics[width=.50\textwidth, height = 0.50\textwidth]{fig/first_compare_fm_three_ellipse_m030_eig}
+\label{subfig:eig_three_ellipse}
+}
+\caption{Plot of the eigenvalues $\log\lambda_j$ of the relative map $N_r$ for the 
+geometry of two ellipses in Figure \ref{fig:first_compare_two_ellipse}, and three ellipses in 
+Figure \ref{fig:first_compare_three_ellipse}, respectively, with levels $m=30$, $m=40$.
+}
+\label{fig:first_compare_twothre_eellipse_eig}
+\end{figure}
+\end{center}
 
 \begin{center}
 \begin{figure}[]
 {
-\includegraphics[width=.31\textwidth, height = 0.31\textwidth]{fig/first_compare_fm_two_ellipse_m040_eig}
+\includegraphics[width=.50\textwidth]{fig/first_compare_fm_two_ellipse0_m030}
 }
 {
-\includegraphics[width=.31\textwidth]{fig/first_compare_fm_two_ellipse0_m030}
+\includegraphics[width=.50\textwidth]{fig/first_compare_fm_two_ellipse0_m040}
 }
-{
-\includegraphics[width=.31\textwidth]{fig/first_compare_fm_two_ellipse0_m040}
-}
-\caption{Factorization Method for $m=30$, $m=40$, respectively. On the left, the linear regression of the
-eigenvalues of the map $N_r$, suggesting $m=40$ as the best choice.}
+\caption{Factorization Method for $m=30$, $m=40$, respectively. The linear regression of the
+eigenvalues $\log\lambda_j$ of the map $N_r$ in Figure \ref{subfig:eig_two_ellipse} suggests $m=40$ as the best choice.}
 \label{fig:first_compare_two_ellipse}
 \end{figure}
 \end{center}
@@ -3924,16 +3982,13 @@ eigenvalues of the map $N_r$, suggesting $m=40$ as the best choice.}
 \begin{center}
 \begin{figure}[]
 {
-\includegraphics[width=.31\textwidth, height = 0.31\textwidth]{fig/first_compare_fm_three_ellipse_m030_eig}
+\includegraphics[width=.50\textwidth]{fig/first_compare_fm_three_ellipse0_m030}
 }
 {
-\includegraphics[width=.31\textwidth]{fig/first_compare_fm_three_ellipse0_m030}
+\includegraphics[width=.50\textwidth]{fig/first_compare_fm_three_ellipse0_m040}
 }
-{
-\includegraphics[width=.31\textwidth]{fig/first_compare_fm_three_ellipse0_m040}
-}
-\caption{Factorization Method for $m=30$, $m=40$, respectively. On the left, the linear regression of the
-eigenvalues of the map $N_r$, suggesting $m=30$ as the best choice.}
+\caption{Factorization Method for $m=30$, $m=40$, respectively. The linear regression of the
+eigenvalues $\log\lambda_j$ of the map $N_r$ in Figure \ref{subfig:eig_three_ellipse} suggests  $m=30$ as the best choice.}
 \label{fig:first_compare_three_ellipse}
 \end{figure}
 \end{center}
@@ -4040,6 +4095,41 @@ $\lambda_j$, letting the error level $\delta_N$ be fixed.
 \par
 We can deduce that the FM is more sensible to noise, while the regularized LSM is more stable, 
 and it works for error level up to $\delta_N=0.001$.
+
+\begin{center}
+\begin{figure}
+{
+\includegraphics[width=.50\textwidth]{fig/noise_lsm_ellipse_noisel0e+00_noiselK1e-02.eps}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/noise_lsm_ellipse_noisel0e+00_noiselK1e-03.eps}
+}
+\caption{Discrepancy principle applied to LSM for a domain with two components.}
+\label{fig:noise_lsm}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}
+{
+\includegraphics[width=.50\textwidth, height=0.50\textwidth]{fig/noise_fm_ellipse_m012_eig_noiselK1e-03}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/noise_fm_ellipse_m010_noisel0e+00_noiselK1e-03}
+}
+\\ 
+{
+\includegraphics[width=.50\textwidth]{fig/noise_fm_ellipse_m012_noisel0e+00_noiselK1e-03}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/noise_fm_ellipse_m014_noisel0e+00_noiselK1e-03}
+}
+\caption{Discrepancy principle applied to LSM for a domain with two components.}
+\label{fig:noise_fm}
+\end{figure}
+\end{center}
+
+
 % while FM does not work for 
 % values of $\delta$ greater than $\mathrm{1e}{-05}$.
 
@@ -4066,6 +4156,25 @@ we obtained quite good results in Figure
 \ref{fig:discrepancy_noise_three_ellipse}.
 Indeed the reconstruction is affected by some error modes, but identifies much more
 clearly the components of the inclusion.
+\begin{center}
+\begin{figure}
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_noiseK1e-3_lsm_three_ellipse_delta1e-60_it_alpha_0}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_noiseK1e-3_lsm_three_ellipse_delta1e-60_it_alpha_14}
+}
+\\ 
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_noiseK1e-3_lsm_three_ellipse_delta1e-60_it_alpha_19}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/discrepancy_noiseK1e-3_lsm_three_ellipse_delta1e-60_alpha_it_alpha_19}
+}
+\caption{Discrepancy principle applied to LSM for a domain with two components.}
+\label{fig:discrepancy_noise_three_ellipse}
+\end{figure}
+\end{center}
 
 \clearpage
 %\cleardoublepage
