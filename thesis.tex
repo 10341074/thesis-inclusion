@@ -3,6 +3,7 @@
 \usepackage[italian, english]{babel}
 
 \usepackage[utf8]{inputenc} % needed for bibtex
+\usepackage{fontenc}
 \usepackage{mathrsfs}
 \usepackage{amsthm}
 \usepackage{amsmath}
@@ -20,7 +21,7 @@
 
 % \usepackage[sort, numbers]{natbib}
 % \setcitestyle{square}
-\usepackage{bbold}
+% \usepackage{bbold}
 
 \usepackage{graphicx}
 
@@ -188,6 +189,7 @@
     \begin{center}
         \Large
         \textsc{Politecnico di Milano}\\
+        \large
         Scuola di Ingegneria Industriale e dell'Informazione\\
         Corso di Laurea in Ingegneria Matematica\\
         
@@ -208,7 +210,7 @@
         \large
         Relatore: Prof. Michele Di Cristo         
         \end{flushleft}
-        \vspace{1cm}
+        \vspace{0.2cm}
         \begin{flushright}
         \normalsize
         Tesi di Laurea di: \\
@@ -243,17 +245,21 @@
 \end{abstractone}
 \selectlanguage{english}
 
-\chapter*{Introduzione}
+\selectlanguage{italian}
+\begin{abstractone}
+% \chapter*{Sommario}
 In questa tesi prenderemo in esame il \emph{problema inverso dell'impedenza}, 
 che descrive il comportamento di un campo elettromagnetico definito in un 
 ambiente con conduttività variabile.
 Il problema proposto per la prima volta alla comunità scientifica da 
 Calder\'on \cite{Ca}, è diventato un classico esempio di problema inverso, 
 noto come Electrical Impedance Tomography (EIT),
-in cui si chiede di stimare i parametri che compaiono nel modello matematico, 
-nel nostro caso la conduttività, avendo a disposizione la conoscenza completa 
-o parziale della mappa che descrive le grandezze misurabili (output) a partire dai 
-dati iniziali (input).
+in cui si chiede di stimare 
+la conduttività.        
+% i parametri che compaiono nel modello matematico, 
+% nel nostro caso la conduttività, avendo a disposizione la conoscenza completa 
+% o parziale della mappa che descrive le grandezze misurabili (output) a partire dai 
+% dati iniziali (input).
 Questo genere di problemi è di cruciale importanza nelle applicazioni, dove
 molto spesso lo scenziato non può accedere allo spazio in cui è definito il modello 
 matematico e deve accontentarsi di misurazioni all'esterno di esso. 
@@ -280,18 +286,19 @@ dell'inclusione}, in cui, nota la conduttività del materiale di fondo $a(x)$, s
 stimare il supporto di una regione incognita $D\subset \Omega$ di conduttività $a(x) + b(x)$, 
 con $b(x)$ incognita. La discontinuità della conduttività lungo la superficie $\partial D$ 
 richiede una analisi a parte del problema, 
-del quale ci occuperemo in tutti gli aspetti. Dato per consolidata la 
-\emph{buona posizione} del problema diretto, ovvero \emph{esistenza}, \emph{unicità} e \emph{dipedendenza 
-continua} della soluzione $u$ dai dati, prenderemo in esame per il problema inverso
-\begin{enumerate}
- \item l'\emph{unicità} della regione $D$ e della conduttività $a(x) + b(x)\chi_D$ incognite, data 
- la completa conoscenza dei dati di Cauchy $u|_{\partial \Omega}$, 
- $\partial_\nu u|_{\partial \Omega}$ al bordo;
- \item la \emph{dipendenza continua dai dati}, necessaria per avere una formulazione stabile, 
- che garantisca un controllo dell'errore della soluzione calcolata a partire da piccoli errori 
- nei dati;
- \item il \emph{metodo numerico} per ricostruire la regione incognita $D$.
-\end{enumerate}
+del quale ci occuperemo in tutti gli aspetti. 
+% Dato per consolidata la 
+% \emph{buona posizione} del problema diretto, ovvero \emph{esistenza}, \emph{unicità} e \emph{dipedendenza 
+% continua} della soluzione $u$ dai dati, prenderemo in esame per il problema inverso
+% \begin{enumerate}
+%  \item l'\emph{unicità} della regione $D$ e della conduttività $a(x) + b(x)\chi_D$ incognite, data 
+%  la completa conoscenza dei dati di Cauchy $u|_{\partial \Omega}$, 
+%  $\partial_\nu u|_{\partial \Omega}$ al bordo;
+%  \item la \emph{dipendenza continua dai dati}, necessaria per avere una formulazione stabile, 
+%  che garantisca un controllo dell'errore della soluzione calcolata a partire da piccoli errori 
+%  nei dati;
+%  \item il \emph{metodo numerico} per ricostruire la regione incognita $D$.
+% \end{enumerate}
 Il principale risultato di unicità per determinare $a(x)$ e $b(x)$ è stato dimostrato da Isakov in \cite{Is88}, 
 mentre Alessandrini e Di Cristo in \cite{Al-DC} hanno dimostrato un dipendenza di tipo logaritmico nella 
 stima di stabilità per il supporto $\partial D$.
@@ -303,19 +310,22 @@ esamineremo il \emph{reciprocity gap method}, già usato per il problema inverso
 scattering, che verrà confrontato con i precedenti metodi nel Capitolo \ref{ch:link}.
 Infine nel Capitolo \ref{ch:implementation} proporremo i risultati ottenuti 
 dall'implementazione numerica degli algoritmi proposti.
+\end{abstractone}
+\selectlanguage{english}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter*{Ringraziamenti}
 {\parindent0pt
-Grazie papà e mamma, per esserci ed avermi sostenuto;
+Grazie a mio padre e a mia madre, per esserci ed avermi sostenuto;
 
-grazie Irene, Stefano, Filippo;
+grazie a Irene, Stefano, Filippo;
 
 grazie a chi in questi anni mi ha visto poco e mi ha pensato tanto;
 
-grazie professor. Di Cristo, per aver creduto in me, per averlo fatto in modo sincero, ed avermi insegnato molto;
+grazie al professor. Di Cristo, per aver creduto in me, per averlo fatto in modo sincero, 
+ed avermi guidato in questa meravigliosa tempesta;
 
-grazie professor. Micheletti per i preziosi consigli;
+grazie al professor. Micheletti per i preziosi consigli;
 
 grazie ai professori che sono stati maestri per me;
 
@@ -3628,7 +3638,7 @@ shaped inclusion), where we used, as exact values, the numerical solution comput
 a large number of quadrature nodes. This procedure called \emph{mesh over-refinement} is adopted whenever
 we haven't an explicit expression. We want underline the fact that to compute a good
 approximation of $N_0f$ or $N_Df$ at a certain point on the boundary $p\in\partial\Omega$, it's fundamental
-to include it from the beginning, by the singularity contained in the kernel of the single layer 
+to include it from the beginning, to exactly integrate the singularity contained in the kernel of the single layer 
 which represents
 the solution. Furthermore we validated the numerical solution of the map $N_D$
 computed by the Nystr\"{o}m method with the solution computed by another method, the Finite Element
@@ -3736,14 +3746,14 @@ while its regularized correspondent, and its discretization, according to Tikhon
  &\alpha_n f^{\alpha_n} + N_r^TN_rf^{\alpha_n} = \psi_{0z}\label{eq:tikh-reg-lsm}, \\
  &\alpha_n f_n^{\alpha_n} + N_{rn}^TN_{rn}f_n^{\alpha_n} = \psi_{0zn}\label{eq:tikh-reg-lsm-discrete}.
 \end{align}
-In next section, we will compare the plots of the norm of the computed $f$, according to Propositions
+In the next section, we will compare the plots of the norm of the computed $f$, according to Propositions
 \ref{prop:lsm-constructive} and \ref{prop:lsm-counterpart}. To take in account the norm of right term 
 $\psi_{0z}$, we will plot the inverse of the ratio of the two norms, namely
 \begin{equation}
  r_n(z)\coloneqq\frac{\|\psi_{0zn}\|_{L^2(\partial \Omega)}}{\|f_n\|_{L^2(\partial \Omega)}},
 \end{equation}
 such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
-In figure \ref{fig:contourplots_rhs}, we can see the numerical discretization of the right hand side $\psi_{z0}$, 
+In Figure \ref{fig:contourplots_rhs}, we can see the numerical discretization of the right hand side $\psi_{z0}$, 
 compared with $\psi_{z}$.
 
 
@@ -3784,24 +3794,98 @@ Linear Sampling Method.
 \par
 We can observe in Figures 
 \ref{fig:one_ellipse0}, \ref{fig:one_ellipse1}, and \ref{fig:one_ellipse2} the 
-reconstruction of the inclusion through the LSM, with different values of 
+reconstruction of the inclusion through the LSM, with a uniform fixed value of 
 the regularization parameter $\alpha$, and $m$ eigenvalues considered in the FM. We see that for small and sharp shapes, 
 we need to be more accurate with smaller values for $\alpha$. Furthermore in Figure \ref{fig:one_ellipse1}
 it's clear that the vicinity of the observation boundary doesn't affect the reconstruction in a relevant
 way, as in other methods does.
 \par
-In Table \ref{tab:ellipse-parameters} we can compare the approximate inclusion 
-computed through the FM with the exact shape.
+In Table \ref{tab:ellipse-parameters} we can compare the approximate inclusions
+computed through the FM with the exact shapes.
 The main difference between two methods is that the LSM reconstructs well the position and the shape 
 of the inclusion. Moreover, the FM computes with a good accuracy also its size. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \input{notes_thesis/fig_one_ellipse}
+\begin{table}
+\caption{\emph{Elliptic inclusion's parameters computed with the FM, with $m=30$ eigenvalues}.}
+\label{tab:ellipse-parameters}
+\begin{center}
+\vspace*{-0.5cm}
+\begin{tabular}{ccccc}
+\toprule
+ & exact && exact &\\
+ fig & center & center & axes  & axes \\
+\midrule
+\ref{fig:one_ellipse0} & (0, 0) &  (-0.0668, 0.0004) & (2,1) & (1.9083, 0.6086) \\
+\ref{fig:one_ellipse1} & (1, 0) &  (1.0556, 0.0348) & (1.8, 1.2) & (1.8257, 1.0236) \\
+\ref{fig:one_ellipse2} & (-1, 0) &  (-1.0360, -0.0450) & (0.1, 1.2) & (0.2023, 1.2705) \\
+% -0.0668242916965 0.000355875514924 1.90826456156 0.608634939824
+% 1.05556916983 0.034813918014 1.82566291632 1.02363612082
+% -1.03601136802 -0.0449939008369 1.2705145551 0.202343494509
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
 
-\input{notes_thesis/fig_one_ellipse}
+\begin{center}
+\begin{figure}
+{
+\includegraphics[width=.50\textwidth]{fig/one_ellipse_lsm_ellipse0_alpha1e-10_no100nd80}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/one_ellipse_fm_ellipse0_m30_no100nd80}
+}
+\caption{Shape and size approximations for an elliptic inclusion, with $\alpha=\mathrm{1e}{-10}$ in LSM, 
+and $m=30$ in FM.}
+\label{fig:one_ellipse0}
+\end{figure}
+\end{center}
 
-% \noindent
+
+\begin{center}
+\begin{figure}
+{
+\includegraphics[width=.50\textwidth]{fig/one_ellipse_lsm_ellipse1_alpha1e-10_no100nd80}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/one_ellipse_fm_ellipse1_m30_no100nd80}
+}
+\caption{Shape and size approximations for an elliptic inclusion close to $\partial\Omega$, with $\alpha=\mathrm{1e}{-10}$ in LSM, 
+and $m=30$ in FM.}
+\label{fig:one_ellipse1}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}
+{
+\includegraphics[width=.50\textwidth]{fig/one_ellipse_lsm_ellipse2_alpha1e-06_no100nd80}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/one_ellipse_lsm_ellipse2_alpha1e-10_no100nd80}
+}
+\\
+{
+\includegraphics[width=.50\textwidth]{fig/one_ellipse_lsm_ellipse2_alpha1e-13_no100nd80}
+}
+{
+\includegraphics[width=.50\textwidth]{fig/one_ellipse_fm_ellipse2_m30_no100nd80}
+}
+\caption{Shape and size approximations for an elliptic sharp inclusion, with $\alpha=\mathrm{1e}{-6}$, 
+$\alpha=\mathrm{1e}{-10}$, $\alpha=\mathrm{1e}{-13}$ respectively, and $m=30$ in FM.}
+\label{fig:one_ellipse2}
+\end{figure}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent
 Now we consider different geometries, like the kite shape (smoothly parametrized), 
 and the drop shape or any polygonal inclusion, for which must be 
 used a graded quadrature mesh 
-(we used the parametrization \eqref{eq:graded-parametrization-power}) which excludes the 
+(we used the parametrization \eqref{eq:graded-parametrization-power}), which excludes the 
 values in the vertexes. 
 The results are reported in Figures \ref{fig:first_compare_kite}, \ref{fig:first_compare_drop} 
 and \ref{fig:first_compare_triangle}, which show a good approximation of the shapes and 
@@ -3863,13 +3947,13 @@ We compare these two methods with the results obtained by the implementation
 of the Reciprocity Gap Method, referring to the discretization of equation 
 \eqref{eq:rg-approximate-eq}, as the same way we did for the Linear Sampling Method.
 In Figure \ref{fig:rg_ellipse} we reported the approximations of the inclusion
-computed for different choices of boundaries $\partial \Omega$, $\partial B$.
-The poor quality of the reconstruction, compared with thes LSM, is 
+computed for different choices of boundaries $\partial \Omega$ and $\partial B$.
+The poor quality of the reconstruction, compared with the LSM, is 
 due to the presence of two integration contours, instead of one, which origins
 symmetries between two sets of quadrature nodes.
 Furthermore, in this method with far boundaries, like circles with large radius,
 is much more strong the dependence from the angle $\theta$ of the unit vector 
-$\vec{d}=(\cos\theta, \sin\theta)$, in Definition \ref{def:lsm-psi}.
+$\vec{d}=(\cos\theta, \sin\theta)$ in the right term $\Psi_z$ (see Definition \ref{def:lsm-psi}).
 \begin{center}
 \begin{figure}
 {
@@ -3901,15 +3985,15 @@ $\partial B=\partial B(0;4)$, $\partial B=\partial B(0;6)$, respectively.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \par
 In the Factorization Method the eigenvalues $\lambda_j$ considered for the linear regression
-in equation \eqref{eq:straightline-eig} are only a small number of them, 
+in equation \eqref{eq:straightline-eig} are only a small number, 
 representing the principal modes. 
 To avoid including eigenvalues too small in absolute value, 
 which would depend from numerical noise, a good criterion
 is to establish this number from their plot, such to truncate the plateau beyond the 
-optimal value. Other useful criteria can be found in \cite{hanke-bruhl:recent}.
-In Figures \ref{fig:first_compare_two_ellipse}, \ref{fig:first_compare_three_ellipse}, 
-we established $m=30$, and $m=40$ for two different geometries and we obtained
-a more accurate reconstruction.
+optimal value (other useful criteria can be found in \cite{hanke-bruhl:recent}).
+In Figure \ref{fig:first_compare_twothree_ellipse_eig} 
+we established $m=30$ and $m=40$ for two different geometries and we obtained
+a more accurate reconstruction in Figures \ref{fig:first_compare_two_ellipse}, \ref{fig:first_compare_three_ellipse}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \begin{center}
 % \begin{figure}[]
@@ -3961,7 +4045,7 @@ a more accurate reconstruction.
 geometry of two ellipses in Figure \ref{fig:first_compare_two_ellipse}, and three ellipses in 
 Figure \ref{fig:first_compare_three_ellipse}, respectively, with levels $m=30$, $m=40$.
 }
-\label{fig:first_compare_twothre_eellipse_eig}
+\label{fig:first_compare_twothree_ellipse_eig}
 \end{figure}
 \end{center}
 
@@ -3999,7 +4083,7 @@ eigenvalues $\log\lambda_j$ of the map $N_r$ in Figure \ref{subfig:eig_three_ell
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \par
-Now we compare previous results with the approximations obtained, for the same geometries, by the 
+Now we compare the previous results with the approximations obtained, for the same geometries, by the 
 combination of the Tikhonov regularization with the Morozov discrepancy principle, which fixes the 
 error level $\delta$, and computes the norm of the regularized solutions for different values of 
 $\alpha(\delta)$. In our results we used the \emph{normalized discrepancy} $\Delta_N(\alpha)$ 
@@ -4010,12 +4094,12 @@ Instead, for a non connected domain, composed by two or three components, Figure
 and \ref{fig:discrepancy_three_ellipse}
 show that after about 15 iterations on $\alpha$, contour plot fills better the unknown shape.
 For more fitted mesh with higher $n$ nodes, 
-some difficulties occurs, since the root $\alpha(\delta)$ of the discrepancy 
+some difficulties occur, since the root $\alpha(\delta)$ of the discrepancy 
 function $\Delta_N(\alpha)$ is too close to the machine epsilon. 
 Furthermore, the Morozov discrepancy principle provide a criterion to establish 
-$\alpha$, for a fixed resolution $n$. Indeed in Figures \ref{fig:discrepancy_two_ellipse} 
+$\alpha$, for a fixed accuracy $n$. Indeed in Figures \ref{fig:discrepancy_two_ellipse} 
 and \ref{fig:discrepancy_three_ellipse} we can see that the approximate reconstruction
-reaches a convergence after a certain number of iteration, suggesting that we have
+reaches a convergence after a certain number of iterations, suggesting that we have
 found the optimal function $\alpha$.
 
 \begin{center}
@@ -4033,7 +4117,11 @@ found the optimal function $\alpha$.
 {
 \includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_alpha_it_alpha_19}
 }
-\caption{Discrepancy principle applied to LSM for a domain with two components.}
+\caption{Discrepancy principle applied to LSM for a domain with two components, 
+with $\delta=\mathrm{1e}{-6}$. 
+The figures represent the reconstruction after $k=0$, $k=14$, $k=19$ iterations. In the
+last figure the plot of the parameter $\alpha$ after $19$ iterations, proving different values
+of the optimal $\alpha$.}
 \label{fig:discrepancy_two_ellipse}
 \end{figure}
 \end{center}
@@ -4053,7 +4141,11 @@ found the optimal function $\alpha$.
 {
 \includegraphics[width=.50\textwidth]{fig/discrepancy_lsm_three_ellipse_delta1e-60_alpha_it_alpha_19}
 }
-\caption{Discrepancy principle applied to LSM for a domain with three components.}
+\caption{Discrepancy principle applied to LSM for a domain with three components, 
+with $\delta=\mathrm{1e}{-6}$. 
+The figures represent the reconstruction after $k=0$, $k=14$, $k=19$ iterations. In the
+last figure the plot of the parameter $\alpha$ after $19$ iterations, proving different values
+of the optimal $\alpha$.}
 \label{fig:discrepancy_three_ellipse}
 \end{figure}
 \end{center}
@@ -4075,8 +4167,10 @@ found the optimal function $\alpha$.
 
 The \emph{Inverse Crime} effect appears every time we solve the inverse problem with data computed 
 by the discretization of the direct map. It's well known in literature how this aspect leads to 
-better estimates than which we should expect. Indeed, in our case, the right term $\psi_{z0}$ 
-has been corrected by the direct Neumann--to--Dirichlet map (see \eqref{def:lsm-psi}). Therefore, it's advisable to 
+better estimates than which we should expect. 
+% Indeed, in our case, the right term $\psi_{z0}$ 
+% has been corrected by the direct Neumann--to--Dirichlet map (see \eqref{def:lsm-psi}). 
+Therefore, it's advisable to 
 introduce some noise in the data.
 % , such that $\|y - y^\delta\|\propto\delta$ is more realistic.
 Since measured data are contained in the computation of the map $N_r$, we decided to add 
@@ -4084,17 +4178,17 @@ some normal distributed noise $N_r^{\delta_N}$ proportional to the maximum of th
 the relative map $N_r$, that is
 \begin{equation}
  N_r + N_r^{\delta_N}, \quad N_r^{\delta_N}=\delta_N\|N_r\|_{\infty}
- \cdot \mathcal{N}_{n^2}(0_n,\mathbb{1}_{n^2}),
+ \cdot \mathcal{N}_{n^2}(0_n,\mathbb{I}_{n^2}),
 \end{equation}
 where the error level $\delta_N$ has been fixed before.
 In Figure \ref{fig:noise_lsm} we can see the reconstruction computed by the Linear 
 Sampling Method for different values of the error level $\delta_N$. 
 Instead in Figure \ref{fig:noise_fm} we implemented the Factorization Method 
 for different choices of the truncation parameter $m$, suggested by the plot of the eigenvalues
-$\lambda_j$, letting the error level $\delta_N$ be fixed.
+$\log\lambda_j$, letting the error level $\delta_N$ be fixed.
 \par
 We can deduce that the FM is more sensible to noise, while the regularized LSM is more stable, 
-and it works for error level up to $\delta_N=0.001$.
+and it works for error level up to $\delta_N=\delta_N=\mathrm{1e}{-3}$.
 
 \begin{center}
 \begin{figure}
@@ -4104,7 +4198,8 @@ and it works for error level up to $\delta_N=0.001$.
 {
 \includegraphics[width=.50\textwidth]{fig/noise_lsm_ellipse_noisel0e+00_noiselK1e-03.eps}
 }
-\caption{Discrepancy principle applied to LSM for a domain with two components.}
+\caption{Linear Sampling Method applied to the relative map $N_r$ containing random noise 
+$N_r^{\delta_N}$, with $\delta_N=\mathrm{1e}{-2}$, $\delta_N=\mathrm{1e}{-3}$ respectively.}
 \label{fig:noise_lsm}
 \end{figure}
 \end{center}
@@ -4124,7 +4219,11 @@ and it works for error level up to $\delta_N=0.001$.
 {
 \includegraphics[width=.50\textwidth]{fig/noise_fm_ellipse_m014_noisel0e+00_noiselK1e-03}
 }
-\caption{Discrepancy principle applied to LSM for a domain with two components.}
+\caption{Factorization Method for different values of the truncation parameter $m=10$, $m=12$,
+$m=14$ for the eigenvalues of the relative map $N_r$ containing noise $N_r^{\delta_N}$ 
+with $\delta_N=\mathrm{1e}{-3}$. In the first figure the plot of $\log\lambda_j$ from
+the map $N_r$ with noise in \`{}o\'{}, without noise in \`{}x\'{}, respectively.
+.}
 \label{fig:noise_fm}
 \end{figure}
 \end{center}
@@ -4151,10 +4250,10 @@ and it works for error level up to $\delta_N=0.001$.
 % \label{fig:noise}
 % \end{figure}
 % \end{center}
-Finally we test the Morozov discrepancy principle in presence of noise and 
+Finally we tested the Morozov discrepancy principle in presence of noise and 
 we obtained quite good results in Figure 
 \ref{fig:discrepancy_noise_three_ellipse}.
-Indeed the reconstruction is affected by some error modes, but identifies much more
+Indeed the reconstruction is affected by some error modes, but identifies more
 clearly the components of the inclusion.
 \begin{center}
 \begin{figure}
@@ -4171,7 +4270,11 @@ clearly the components of the inclusion.
 {
 \includegraphics[width=.50\textwidth]{fig/discrepancy_noiseK1e-3_lsm_three_ellipse_delta1e-60_alpha_it_alpha_19}
 }
-\caption{Discrepancy principle applied to LSM for a domain with two components.}
+\caption{Discrepancy principle applied to LSM for a domain with three components and 
+ a relative map $N_r$ containing noise $N_r^{\delta_N}$, with $\delta_N=\mathrm{1e}{-3}$. 
+The figures represent the reconstruction after $k=0$, $k=14$, $k=19$ iterations. In the
+last figure the plot of the parameter $\alpha$ after $19$ iterations, proving different values
+of the optimal $\alpha$.}
 \label{fig:discrepancy_noise_three_ellipse}
 \end{figure}
 \end{center}
@@ -4184,7 +4287,8 @@ clearly the components of the inclusion.
 
 \chapter*{Conclusions}
 \addcontentsline{toc}{chapter}{Conclusions}
-From the theoretical perspective, the reciprocity gap principle turns out to be equivalent to the linear sampling method, 
+From the theoretical perspective, the Reciprocity Gap Method turns out to be equivalent to the 
+Linear Sampling Method, as the variational formulation of this one,
 but the additional integration makes its discretization more difficult.
 In both cases, the main difficulty which arises in the algorithm is the 
 identification of an approximating
@@ -4193,19 +4297,22 @@ This fact reflects itself
 on the 
 % moderately good,
 satisfying,
-but not optimal results.
+but not optimal numerical results.
 \par
-The regularization helps the stability of the linear sampling implementation, and 
+The regularization helps the stability of the Linear Sampling implementation, and 
 the Morozov principle improves significantly the computed approximation, but at a high 
-computational effort, associated with difficulties of very small values.
+computational effort, associated with difficulties of very small values,
+close to the machine epsilon.
 \par
-On the other end, the factorization method has the advantage of giving an approximation 
-without solving any linear system, but requires a high accuracy of data, lightly affected 
+On the other end, the Factorization Method has the advantage of providing an approximation 
+without solving any linear system, but it requires a high accuracy of data, lightly affected 
 by noise.
-For both the methods we identified a good criterion to establish the quality of the
-reconstruction.
 \par
-In conclusion, the combination of all the methods gives an good idea of the unknown 
+For both the methods we identified a good criterion to establish the quality of the
+reconstruction, the inspection of the eigenvalues $\lambda_j$ for the Factorization Method, 
+and the convergence of the iterations of the Morozov discrepancy principle.
+\par
+In conclusion, the combination of all these methods gives a good idea of the unknown 
 inclusion, and we could expect similar results even for non constant conductivities
 or for the three dimensional framework.
 
