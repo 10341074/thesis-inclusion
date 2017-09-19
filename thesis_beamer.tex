@@ -1,0 +1,670 @@
+\documentclass[10pt]{beamer}
+% \documentclass[handout]{beamer}
+\usetheme[secheader]{Boadilla}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \usepackage[english]{babel}
+\usepackage[italian, english]{babel}
+
+\usepackage[utf8]{inputenc} % needed for bibtex
+\usepackage{fontenc}
+\usepackage{mathrsfs}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+%\usepackage{nccmath} % mfrac
+%\mathbb needs amsfonts or amssymb
+\usepackage{amsfonts}
+\usepackage{bm} % bold symbols math
+
+% \usepackage[overload]{empheq} % left\{ for align % no crash kile ?
+\usepackage{cases}
+% \usepackage[usenames,dvipsnames]{xcolor} % before tikz, options for more colors
+\definecolor{light-gray}{gray}{0.95}
+\definecolor{dark-gray}{gray}{0.65}
+
+% \usepackage[sort, numbers]{natbib}
+% \setcitestyle{square}
+% \usepackage{bbold}
+
+\usepackage{graphicx}
+
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subfig}
+% \captionsetup[figure]{width=.85\textwidth}
+\captionsetup[subfigure]{margin=0.5cm}
+\usepackage{tikz}
+\usetikzlibrary{matrix}
+\usetikzlibrary{positioning}
+% set arrows as stealth fighter jets
+\tikzset{>=stealth}
+% bezier
+\usetikzlibrary{decorations.pathreplacing}
+\tikzset{%
+  show curve controls/.style={
+    postaction={
+      decoration={
+        show path construction,
+        curveto code={
+          \draw [blue] 
+            (\tikzinputsegmentfirst) -- (\tikzinputsegmentsupporta)
+            (\tikzinputsegmentlast) -- (\tikzinputsegmentsupportb);
+          \fill [red, opacity=0.5] 
+            (\tikzinputsegmentsupporta) circle [radius=.5ex]
+            (\tikzinputsegmentsupportb) circle [radius=.5ex];
+        }
+      },
+      decorate
+}}}
+\tikzstyle{mybox} = [draw=gray, fill=light-gray, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
+\tikzstyle{mytitle} =[fill=gray, text=white]
+
+% plots
+\usepackage{pgfplots}
+
+%\usepackage{color}
+
+\usepackage{xcolor}
+\definecolor{bookColor}{cmyk}{1 , 1  , 0   , 0}  % 0.90\% of black
+%\color{bookColor}
+
+\usepackage{hyperref}
+% \hypersetup{pdftex,colorlinks=true,allcolors=blue}
+
+% % \usepackage[hidelinks]{hyperref}
+% % \usepackage{xcolor}
+% \AtBeginDocument{
+% \hypersetup{
+% % %     colorlinks=false,
+% % %     citebordercolor = {Green},
+% % %     filebordercolor = {Blue}
+%     linkbordercolor = {Blue}
+% % %     linkcolor={red!50!black},
+% % %     citecolor={blue!50!black},
+% % %     urlcolor={blue!80!black}
+% }
+% }
+
+
+\usepackage{hypcap}
+\usepackage{etoolbox}
+
+\usepackage{csquotes}
+%\usepackage[autostyle, italian=guillemets]{csquotes}
+
+% \usepackage[chapter]{placeins} % floatbarrier
+
+\usepackage[backend=biber, style=alphabetic]{biblatex}
+\addbibresource{sources.bib}
+\DeclareFieldFormat[article]{title}{\textit{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{smartdiagram}
+\usesmartdiagramlibrary{additions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \theoremstyle{definition}
+% \newtheorem{definition}[subsection]{Definition}
+% \theoremstyle{plain}
+% \newtheorem{theorem}[subsection]{Theorem}
+% \theoremstyle{plain}
+% \newtheorem{corollary}[subsection]{Corollary}
+% \theoremstyle{plain}
+\newtheorem{proposition}[subsection]{Proposition}
+\theoremstyle{plain}
+\newtheorem{remark}[subsection]{Remark}
+\theoremstyle{plain}
+% \newtheorem{lemma}[subsection]{Lemma}
+% \theoremstyle{plain}
+% \newtheorem{example}[subsection]{Example}
+% 
+% \theoremstyle{plain}
+% \newtheorem{assumption}[subsection]{Assumption}
+% \theoremstyle{plain}
+% \newtheorem{problem}[subsection]{Problem}
+
+\DeclareMathOperator{\divergence}{div}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\real}{Re}
+\DeclareMathOperator{\imag}{Im}
+
+\renewcommand{\i}{\textup{i}}
+\let\phi\varphi
+\let\epsilon\varepsilon
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amssymb,tikz}
+
+\newcommand{\mysetminusD}{\hbox{\tikz{\draw[line width=0.6pt,line cap=round] (3pt,0) -- (0,6pt);}}}
+\newcommand{\mysetminusT}{\mysetminusD}
+\newcommand{\mysetminusS}{\hbox{\tikz{\draw[line width=0.45pt,line cap=round] (2pt,0) -- (0,4pt);}}}
+\newcommand{\mysetminusSS}{\hbox{\tikz{\draw[line width=0.4pt,line cap=round] (1.5pt,0) -- (0,3pt);}}}
+
+\newcommand{\mysetminus}{\mathbin{\mathchoice{\mysetminusD}{\mysetminusT}{\mysetminusS}{\mysetminusSS}}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\usepackage{environ}
+\NewEnviron{mybox}{%
+\begin{center}
+\colorbox{light-gray}{\color{black}\parbox{\textwidth}{%
+% \fcolorbox{gray}{light-gray}{
+\BODY
+}}
+\end{center}
+}
+
+\usepackage{fancyhdr}
+\newcommand{\fncyblank}{\fancyhf{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% abstract e sommario
+% \newenvironment{abstract} %
+% {\cleardoublepage
+% \fncyblank\null\vfill\begin{center} %
+% \bfseries\abstractname
+% \end{center}} %
+% {\vfill\null}
+% \newenvironment{abstractone} %
+% {\clearpage
+% \fncyblank\null\vfill\begin{center} %
+% \bfseries\abstractname
+% \end{center}} %
+% {\vfill\null}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Numerical Reconstruction of Inclusions in Electrical Conductors}
+\author{Giacomo Milan}
+\date{3 Ottobre 2017}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \maketitle
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{}
+ \begin{center}
+% \smartdiagram[descriptive diagram]{
+% {Set up,The set up operation consist of..},
+% }
+\smartdiagramset{
+additions={
+additional item border color=red,
+additional item width = 8cm,
+}}
+\smartdiagramadd[flow diagram:horizontal]{%
+PGF,Ti\textit{k}Z,Smartdiagram%
+}{%
+below of module1/Low Level, above of module1/High level%
+}
+\smartdiagramconnect{<->}{module1/module2}
+\end{center}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+%  \only<1>{GA}\only<2>{MOGA}\only<3>{pMOGA}
+\begin{frame}
+ \frametitle{Neumann--to--Dirichlet maps}
+  Let $v\in H^1_0(\Omega)$ be the unique solution of the {\color{blue}Laplace problem}
+ \begin{columns}[T]
+  \begin{column}{0.48\textwidth}
+    \hspace{0.5cm}
+    \begin{tikzpicture}
+    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
+%     \node at (-2.2,0.7){${\partial \Omega}$};
+    \node at (-1.2,0.1){$\Omega, 1$};
+    \end{tikzpicture} 
+  \end{column}
+  \begin{column}{0.48\textwidth}
+  \vspace{0.5cm}
+ \begin{equation}
+ \label{eq:NtoD-inclusion}
+  \left\{
+  \begin{aligned}
+  \divergence(\nabla v) &= 0, \quad\text{in}\,\Omega, \\
+            \partial_\nu v &= f, \quad\text{on}\,\partial \Omega,
+  \end{aligned}
+  \right.
+ \end{equation}
+  \end{column}
+ \end{columns}
+ \vspace{0.4cm}
+ and define
+   \begin{align}
+   &{N_0}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_0} f = v|_{\partial\Omega},
+   \end{align}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Neumann--to--Dirichlet maps}
+%   Let \only<1>{$v\in H^1_0(\Omega)$}\only<2>{$u\in H^1_0(\Omega)$} be the unique solution of the
+%   \only<1>{{\color{blue}Laplace problem}}\only<2>{{\color{blue} inclusion problem} with $D\subset \Omega$}
+  Let $u\in H^1_0(\Omega)$ be the unique solution of the
+  {\color{blue} inclusion problem} with $D\subset \Omega$
+ \begin{columns}[T]
+  \begin{column}{0.48\textwidth}
+    \hspace{0.5cm}
+    \begin{tikzpicture}
+    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
+    \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
+     .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
+     .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
+     .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
+     .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
+%     \node at (-2.2,0.7){${\partial \Omega}$};
+%     \node at (-0.6,0.7){${\partial D}$};
+    \node at (-1.2,0.1){$\Omega, 1$};
+    \node at (0.1,0.1){$D, k$};
+    \end{tikzpicture} 
+  \end{column}
+  \begin{column}{0.48\textwidth}
+  \vspace{0.5cm}
+ \begin{equation}
+ \label{eq:NtoD-inclusion}
+  \left\{
+  \begin{aligned}
+  \divergence(\gamma\nabla u) &= 0, \quad\text{in}\,\Omega, \\
+            \partial_\gamma u &= f, \quad\text{on}\,\partial \Omega,
+  \end{aligned}
+  \right.
+ \end{equation}
+  \end{column}
+ \end{columns}
+ \vspace{0.4cm}
+ with $\gamma(x) = 1\chi_{\Omega\backslash\overline{D}} + k\,\chi_D$, and define
+\begin{align}
+ &{N_D}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_D}f = u|_{\partial\Omega}.
+ \end{align}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Linear sampling method: the map}
+ In the inverse inclusion problem, a crucial role is played by the 
+{\color{blue} relative} Neumann--to--Dirichlet map
+% (see \cite{somersalo:preprint})
+\begin{equation}
+ {N_r} \coloneqq {N_0} - {N_D}.
+\end{equation}
+  \begin{proposition}
+  The operator ${N_0} - {N_D}:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$ 
+  is injective, with dense image, self-adjoint, compact and positive.
+ \end{proposition}
+%  This is proved in \cite{kirsch:book}, but we present the proof for injectivity contained in \cite{somersalo:preprint}, to highlight the link with ITP.
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Linear sampling method: the right term}
+  As right term we consider the potential generated by a dipole
+ \begin{equation}
+ \left\{
+ \begin{aligned}
+   -\Delta \psi(x,z) &= \nabla\delta_{z} \cdot \vec{d}, && \textup{ in }\Omega ,\\
+   \partial_\nu\psi(x,z) &= 0, &&\textup{ on }\partial \Omega,
+ \end{aligned}
+ \right.
+ \end{equation}
+ with unit vector $|\vec{d}\,|=1$.
+ \par
+ We use the notation
+ \begin{equation}
+ \vec{\Psi}(x,z)\coloneqq\nabla_x\Phi(x,z) 
+ \end{equation}
+ for the derivative of the fundamental solution.
+ \begin{definition}
+ \label{def:lsm-psi}
+ We denote
+ \begin{equation}
+ \psi_{0z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - N_0\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr),
+  \end{equation}
+%   and
+%   \begin{equation}
+%   \psi_{z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - M_D\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr),
+%   \end{equation}
+  with $m_z$ the mean of $\vec{\Psi_z}\cdot\vec{d}$ on $\partial \Omega$.
+ \end{definition}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \only<1>{
+ \frametitle{Single layer potential}}
+\begin{columns}[T]
+  \begin{column}{0.50\textwidth}
+  \includegraphics[width=1.1\textwidth]{fig/Spng}
+  \end{column}
+  \begin{column}{0.50\textwidth}
+  We define
+   \begin{equation*}
+    \mathcal{S}(\partial D,\psi)(x)\coloneqq \int_{\partial D} \Phi(x, y)\psi(y)\, dy,
+%   \quad x\in\mathbb{R}^m \backslash\partial D, 
+    \label{eq:definition-single-layer}
+   \end{equation*}
+  with a jump on $\partial\Omega$ in the first derivative
+  \begin{align*}
+%    \mathcal{S}^\pm(z) &\coloneqq\lim_{h\to 0^\pm}\mathcal{S}(z+h\nu(z)) = S\psi(z)=\int_{\partial D}\psi(y)\Phi(z,y)\,dy \quad z\in\partial D, \label{eq:single-pm-0}\\
+   \partial_\nu\mathcal{S}^\pm(z) =  K'\psi(z) \,\mp\,\dfrac{1}{2}\psi(z) \quad z\in\partial D.\label{eq:single-pm-1}
+  \end{align*}
+  \end{column}
+ \end{columns}
+ \end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Double layer potential}
+\begin{columns}[T]
+  \begin{column}{0.50\textwidth}
+  \vspace{-0.2cm}
+  \includegraphics[width=1.1\textwidth]{fig/Dpng}
+  \end{column}
+  \begin{column}{0.50\textwidth}
+   We define
+   \begin{equation*}
+    \mathcal{D}(\partial D,\psi)(x)\coloneqq \int_{\partial D} \partial_{\nu(y)}\Phi(x, y)\psi(y)\, dy,
+%   \quad x\in\mathbb{R}^m \backslash\partial D. 
+    \label{eq:definition-double-layer}
+   \end{equation*}
+   with a jump on $\partial\Omega$
+  \begin{align*}
+   \mathcal{D}^\pm(z) &= K\psi(z) \pm\dfrac{1}{2}\psi(z)\quad z\in\partial D. \label{eq:double-pm-0}
+%    \\
+%    \partial_\nu\mathcal{D}^+(z) &= \partial_\nu\mathcal{D}^-(z) \quad z\in\partial D. \label{eq:double-pm-1}
+  \end{align*}
+
+  \end{column}
+ \end{columns}
+ \end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Approximating sequence for $z\in D$}
+ We split the main result in two propositions.
+\begin{proposition}[Constructive Part]
+\label{prop:lsm-constructive}
+Fix $z \in D$. Then for any $\epsilon > 0$ there exists an approximating harmonic layer $\mathcal{S}(\partial B, \omega^\epsilon_z)$ with density $\omega^\epsilon_z\in L^2(\partial B)$  such that
+\begin{equation}
+ \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \epsilon,
+\end{equation}
+furthermore, when $z$ approaches the boundary $\partial D$, $\|\omega^\epsilon_z\|_{L^2(\partial B)}\to + \infty$.
+\end{proposition}
+\begin{remark}
+ For fixed $z\in D$, there exist a sequence 
+ $v^{\epsilon_n}_z\coloneqq\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$ 
+ such that it's approximating as above for $\epsilon_n \to 0$,
+%  that is
+% \begin{equation}
+%  \|({N_D} - {N_0})\partial_\nu v^{\epsilon_n}_z - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \epsilon_n, \quad \textup{ for }\epsilon_n\to 0,
+% \end{equation}
+ and it is converging to some function $v_z\in H^1(D)$
+\begin{equation}
+ \|v^{\epsilon_n}_z - v_z\|_{H^1(D)} \to 0.
+\end{equation}
+ Obviously, $\{v^{\epsilon_n}_z\}_{n\in\mathbb{N}}$ is bounded in the same norm $H^1(D)$.
+\end{remark}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Approximating sequence for $z\notin D$}
+ \begin{proposition}[Counterpart]
+\label{prop:lsm-counterpart}
+Fix $z \in \Omega\backslash\overline{D}$. Then for any $\delta>0$ and $\epsilon > 0$ there exists an harmonic layer $\mathcal{S}(\partial B, \omega^{\delta, \epsilon}_z)$ with density $\omega^{\delta, \epsilon}_z\in L^2(\partial B)$ such that
+\begin{equation}
+ \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^{\delta,\epsilon}_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \delta + \epsilon,
+\end{equation}
+and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\to 0$.
+\end{proposition}
+In the next section, we will compare the plots of the norm of the computed $f$, according to Propositions
+\ref{prop:lsm-constructive} and \ref{prop:lsm-counterpart}. To take in account the norm of right term 
+$\psi_{0z}$, we will plot the inverse of the ratio of the two norms, namely
+\begin{equation}
+ r_n(z)\coloneqq\frac{\|\psi_{0zn}\|_{L^2(\partial \Omega)}}{\|f_n\|_{L^2(\partial \Omega)}},
+\end{equation}
+such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
+
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Reciprocity gap method}
+ \begin{columns}[T]
+ \begin{column}{0.50\textwidth}
+%   \begin{tikzpicture}
+%   \draw [dashed] (2,2) ellipse (3cm and 2cm);
+%   \draw [dashed] (2,2) ellipse (1.5cm and 1cm);
+%   \draw (2,2) circle (0.5cm);
+%   %\draw (2,2) rectangle (1cm and 3cm);
+%   \node at (-0.5,2){$B$};
+%   \node at (1,2){$\Omega$};
+%   \node at (2,2){$D,k$};
+%  \end{tikzpicture}
+    \begin{tikzpicture}
+    \draw [draw=gray] (0,0.2) ellipse (3cm and 2cm);
+    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
+    \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
+     .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
+     .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
+     .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
+     .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
+%     \node at (-2.2,0.7){${\partial \Omega}$};
+%     \node at (-0.6,0.7){${\partial D}$};
+    \node at (-1.2,0.1){$\Omega, 1$};
+    \node at (0.1,0.1){$D, k$};
+    \end{tikzpicture} 
+
+ \end{column}
+ \begin{column}{0.50\textwidth}
+ \vspace{0.8cm}
+  \begin{itemize}
+   \item $\partial B$ sources boundary
+   \item $\partial \Omega$ observation boundary
+   \item data
+   \begin{equation*}
+    u\in\mathcal{U} \to u|_{\partial\Omega},\, \partial_\nu u|_{\partial\Omega}
+   \end{equation*}
+
+  \end{itemize}
+ \end{column}
+ \end{columns}
+%  In concrete applications, the function $u$ is not computed, though it's observed on the 
+% surface $\partial\Omega$ and the measures $u|_{\partial \Omega}$, 
+% $\partial_\nu u|_{\partial \Omega}$ are considered for the definition of the reciprocity gap operator. Dirichlet data $f$ are the values of the generic potential which we are able to generate from the exterior: it can be a plane wave in the scattering case, or the potential generated by a point source $\delta_{x_0}$. In the latter case we are referring to the fundamental solution, and by uniqueness, the same $u$ is equal to $u(x)=\Phi_D(x,x_0)$ for $x\in \Omega$.
+% In the sequel $B$ is the background medium which contains $\Omega\subset B$.
+\begin{definition}
+\label{def:setU}
+We will denote by $\mathcal{U}$ the set of functions
+\begin{equation}
+ \mathcal{U}\coloneqq\bigl\{\Phi_D(x, x_0): x_0\in \partial B\bigr\},
+\end{equation}
+where $\Phi_D$ is the fundamental solution, which solves the inclusion problem.
+\end{definition}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Reciprocity gap method: definitions}
+ \begin{definition}
+\label{def:setV}
+We denote
+% Let $u\in\mathcal{U}$, the set in Definition \ref{def:setU}. In our case $u(x,x_0)=\Phi_D(x,x_0)$, with $x_0 \in \partial B$, then
+\begin{itemize}
+ \item by $\mathcal{V}(\overline{B})$ the set of harmonic functions, continuously defined on $\overline{B}$,
+ \item by $\mathcal{V}_0(\overline{B})$ the subspace of vanishing mean functions, that is
+ \begin{equation}
+  \mathcal{V}_0(\overline{B})\coloneqq\Bigl\{v\in\mathcal{V}(\overline{B}):\int_{\partial B} v = 0\Bigr\},
+%   =\mathcal{V}(\overline{B})/\textup{span}\bigl(\{1\}\bigr),
+ \end{equation}
+\end{itemize}
+\end{definition}
+\begin{definition}
+We denote by $\textup{R} : \mathcal{V}(\overline{B})\to L^2(\partial B)$ the {\color{blue}reciprocity gap} operator defined by
+\begin{equation}
+ \textup{R}(v)(x_0)\coloneqq 
+%  \mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr)\coloneqq \int_{\partial \Omega}\bigl(u(y,x_0)v_\nu (y) - u_\nu(y,x_0)v(y)\bigr)dy.
+ \mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr)
+ \coloneqq \int_{\partial \Omega}\bigl(uv_\nu - u_\nu v \bigr)dy.
+\end{equation}
+\end{definition}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Reciprocity gap operator R}
+ \begin{proposition}
+ The operator $\textup{R} : \mathcal{V}_0(\overline{B})\to L^2(\partial B)$ 
+ is injective and its range has codimension one $\mathcal{R}(R)^\perp=\textup{span}(\{\alpha_c\})$, where $\alpha_c$ is the solution of 
+ \begin{equation}
+  \partial_\nu \mathcal{S}(\partial B;\alpha_c) = 0
+ \end{equation}
+ \end{proposition}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Reciprocity Gap Approximation Theorem}
+ Finally we can state the key theorem which provides a binary criterion to discriminate the inclusion from the background.
+\begin{theorem}[Reciprocity Gap Approximation Theorem]
+ \label{theo:approximation-rg} 
+ Let $D\subset\Omega\subset B$  be an inclusion satisfying Assumption \ref{assumption:connected}, let $\{(u|_{\partial \Omega},\partial_\nu u|_{\partial \Omega})\}$ 
+ be a set of measured data with $u\in\mathcal{U}$ as in Definition \ref{def:setU} and 
+ let consider the class $\mathcal{V}(\overline{B})$ of harmonic test functions 
+ in Definition \ref{def:setV}. Then
+%  At the right hand side, we consider the directional derivative along some unit vector $\vec{d}$ of the fundamental solution, defined above in \ref{def:fund-sol-deriv-Psi}. Then
+ \begin{enumerate}
+  \item if $z \in D$ then there exists a sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
+   \begin{equation}
+     \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U},\label{eq:rg-lim-constructive}
+   \end{equation}
+   where $\Psi_z$ as in Definition \ref{def:fund-sol-deriv-Psi}, and $v_n|_{\partial D}\to g$ in $L^2(\partial D)$ and consequently  it's bounded in the same norm $\|v_n\|_{L^2(\partial D)}$;
+  \item if $z \in \Omega \backslash D$ then any sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
+   \begin{equation}
+     \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U}\label{eq:rg-lim-counterpart}
+   \end{equation}
+   is unbounded $\|v_n\|_{L^2(\partial D)}\to\infty$ in $L^2(\partial D)$.
+ \end{enumerate}
+\end{theorem}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Link}
+ We have seen that the reciprocity gap method is formulated as an integral equation 
+of the form
+\begin{equation}
+ \mathcal{R}(u, v) = \mathcal{R}(u, \vec{\Psi}_z\cdot\vec{d})\quad \forall u \in \mathcal{U},
+\end{equation}
+whereas the linear sampling method deals with the following equation
+\begin{equation}
+\label{eq:eq-lsm-link}
+ ({N_D} - {N_0})f = \psi_{0z} \quad \text{ on }\partial \Omega.
+\end{equation}
+The number of players suggest to compute the duality of \eqref{eq:eq-lsm-link}, with a generic 
+${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)}$, by self-adjoint properties (denoting $u,v$ solutions of 
+\eqref{eq:NtoD-inclusion}), \eqref{eq:NtoD-laplace}, we have
+\begin{align}
+ \label{eq:link-duality-left}
+ \langle({N_D} - {N_0})f,g\rangle & =  \langle f,{N_D} g\rangle - \langle {N_0} f,g\rangle \\
+                                        & = \langle \partial_\nu v,u\rangle - \langle v,\partial_\nu u\rangle \\
+                                        & = \mathcal{R}(u,v).
+\end{align}
+\begin{proposition}
+ The \textit{reciprocity gap functional method} correspond to the weak formulation of the \textit{linear sampling method} with a modified right term. Consequently, provided the choice of $\psi_z$ as right side in \eqref{eq:eq-lsm-link}
+ instead of $\psi_{0z}$, the two methods are equivalent.
+\end{proposition}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Factorization method}
+ The aim is to factorize the relative Neumann--to--Dirichlet map ${N_0} - {N_D}$, in the form
+\begin{equation}
+ {N_r}\coloneqq{N_0} - {N_D} = A^*TA,
+\end{equation}
+where $A,T$ are operators suitably chosen and $A^*$ is the adjoint operator of A. 
+The choice of the operators is not unique, for instance
+\begin{tikzpicture}
+    % set up the nodes
+    \node (n11) at (0,0) {$L^2_0(\partial\Omega)$};
+    \node[right=of n11] (n12) {$L^2(D;\,\mathbb{R}^2)$};
+    \node[below=of n12] (n22) {$L^2(D;\,\mathbb{R}^2)$};
+    \node[below=of n11] (n21) {$L^2_0(\partial\Omega)$};
+    \node (n112) at ([xshift=0.1]n11) {$ $};
+    \node (n212) at ([xshift=0.1]n21) {$ $};
+    % draw arrows and text between them
+    \draw[->] (n11) to node [midway,right] {${N_r}$} (n21);
+    \draw[->] (n11) to node [midway,above] {$A$} (n12);
+    \draw[->] (n12) to node [midway,right] {$T$} (n22);
+    \draw[->] (n22) to node [midway,above] {$A^*$} (n21);
+%     \draw[->] (n21.south) [out=-60, in=-120]to node [midway,below] {$R_\alpha$} (n22.south);
+%     \draw[->] (n21.west) [out=170, in=-170]to node [midway,left] {$\tilde{R}_\alpha$} (n11.west);
+\end{tikzpicture}
+
+\begin{itemize}
+ \item $A:L^2_0(\partial \Omega) \to L^2(D;\,\mathbb{R}^2)$ defined as $Af = \nabla v|_D$
+ \item $TAf = (k-1) (\nabla v - \nabla w) = (k-1) \nabla u$ .
+\end{itemize}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Range method}
+We take advantage of the fact that from any compact, self-adjoint and positive operator 
+it is possible to compute the square root, starting from spectral decomposition.
+\begin{align}
+({N_0} - {N_D}) f &= \sum_{j\in \mathbb{N}}^\infty \lambda_j(f,\psi_j)_{L^2(\partial\Omega)} \psi_j ,\\
+({N_0} - {N_D})^{1/2} f &= \sum_{j\in \mathbb{N}}^\infty \sqrt{\lambda_j}(f,\psi_j)_{L^2(\partial\Omega)} \psi_j.
+\end{align}
+Furthermore, both the following factorizations hold
+\begin{equation}
+\label{eq:factorization-two}
+ {N_0} - {N_D}=({N_0} - {N_D})^{1/2}I({N_0} - {N_D})^{1/2} = A^*TA.
+\end{equation}
+ \begin{theorem}
+ The range of two operators is the same, that is
+ \begin{equation}
+  \mathcal{R}(A^*) = \mathcal{R}(({N_0} - {N_D})^{1/2}),
+ \end{equation}
+so an equivalent criterion can be stated as
+ \begin{equation}
+  z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(({N_0} - {N_D})^{1/2}).
+ \end{equation}
+\end{theorem}
+
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Factorization criterion}
+ a test to establish the convergence of the previous sum, with finitely many terms, after discretization. In most of geometries, the decay of singular values $\bigl\{\lambda_j\bigr\}_j$ is typically exponential, as it can be easily plotted. 
+Let's assume an exponential behavior for the components $(\psi_{0z},\psi_j )^2$, parametrized as
+\begin{align}
+ \lambda_j &\sim a_j (r_j) ^j,  & \log\lambda_j &\sim c_j + j\log r_j,\label{eq:straightline-eig}\\
+ (\psi_{0z}, \psi_j)^2 &\sim A_j(R_j)^j, & \log(\psi_{0z}, \psi_j)^2 &\sim C_j + j\log R_j\label{eq:straightline-data},
+\end{align}
+then the range criterion leads to comparing the slopes of the straight lines interpolating 
+eigenvalues \eqref{eq:straightline-eig} and computed data \eqref{eq:straightline-data}
+\begin{equation}
+ z\in D \,\Longleftrightarrow\, \dfrac{R_j}{r_j} < 1 \,\Longleftrightarrow\, \log R_j < \log r_j.
+\end{equation}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{}
+\end{frame}
+
+
+\end{document}
+
+ \begin{equation}
+  (({N_D} - {N_0})f,f) = ( Af,TAf) \geq c\|Af\|^2_{L^2(D;\,\mathbb{R}^2)} > 0 \quad \forall f\in L^2_0(\partial \Omega) \quad f\neq0.
+ \end{equation}
