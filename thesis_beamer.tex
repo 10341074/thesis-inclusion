@@ -1,7 +1,17 @@
-\documentclass[10pt]{beamer}
+\documentclass[10pt,xcolor={dvipsnames}]{beamer}
 % \documentclass[handout]{beamer}
 \usetheme[secheader]{Boadilla}
+\usecolortheme[named=purple]{structure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newenvironment{variableblock}[3]{%
+  \setbeamercolor{block body}{#2}
+  \setbeamercolor{block title}{#3}
+  \begin{block}{#1}}{\end{block}}
+\definecolor{cornflowerblue}{rgb}{0.39, 0.58, 0.93}
+\definecolor{lightcornflowerblue}{rgb}{0.6, 0.81, 0.93}
+\definecolor{palecornflowerblue}{rgb}{0.67, 0.8, 0.94}  
+\definecolor{paleaqua}{rgb}{0.74, 0.83, 0.9}
+\definecolor{bubbles}{rgb}{0.91, 1.0, 1.0}
 
 \usefonttheme{professionalfonts}
 % \usefonttheme{serif}
@@ -15,6 +25,7 @@
   mathescape,
   escapeinside={||},
 }
+\usepackage{nicefrac}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % \usepackage[english]{babel}
 \usepackage[italian, english]{babel}
@@ -263,10 +274,197 @@
 
 \end{frame}
 %%%%%%%%%%%%%%%%%
+\begin{frame}[t]
+ \frametitle{The Inverse Inclusion Problem}
+  \begin{columns}
+   \begin{column}{0.5\textwidth}
+   \begin{center}
+    \begin{tikzpicture}
+    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
+    \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
+     .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
+     .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
+     .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
+     .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
+%     \node at (-2.2,0.7){${\partial \Omega}$};
+%     \node at (-0.6,0.7){${\partial D}$};
+    \node at (-1.2,0.8){$\Omega, 1$};
+    \node at (0.1,0.1){$D, k$};
+    %%%%%%%%%
+    \onslide<2->{
+    \node (l0) at (-1.8,-1.8){$g\in H^{\nicefrac{1}{2}}(\partial\Omega)$};
+    \node (l1) at (-1.2,-1.0){ };
+    \draw[->] (l0) to [out=70,in=-150] node[above,midway]{ }(l1);}
+    \onslide<4->{
+    \node (r0) at (1.8,-1.8){$\partial_\nu u\in H^{\nicefrac{-1}{2}}(\partial \Omega)$};
+    \node (r1) at (1.2,-1.0){ };
+    \draw[->] (r1) to [out=-20,in=100] node[above,midway]{ }(r0);}
+    \end{tikzpicture}
+    \end{center}
+  \end{column}  
+  \begin{column}{0.5\textwidth}
+  % not delete line
+  
+  {\footnotesize
+   $\gamma$: conductivity}
+  \begin{flalign*}  
+  \gamma(x)=
+  \left\{
+  \begin{aligned}
+   &1,\quad x\in\Omega\backslash D, \\
+   &k, \quad x\in D.
+  \end{aligned}
+  \right.
+  &&
+  \end{flalign*}
+  \onslide<3->{
+  {\footnotesize
+   $u$: electric potential}
+  \begin{flalign*}  
+  \label{eq:NtoD-inclusion}
+  \left\{
+  \begin{aligned}
+  \divergence(\gamma\nabla u) &= 0, \quad\text{in}\,\Omega, \\
+            u &= g, \quad\text{on}\,\partial \Omega,
+  \end{aligned}
+  \right.
+  &&
+  \end{flalign*}}
+  \onslide<4->
+  {\footnotesize
+  $\partial_\nu u|_{\partial\Omega}$: current density measured on the boundary
+
+  }
+  \end{column}
+  \end{columns}
+  \onslide<5->{
+  \vspace{0.5cm}
+ Dirichlet--to--Neumann map
+\begin{align*}
+ \Lambda_D: H^{\nicefrac{1}{2}}(\partial\Omega)&\to H^{ \nicefrac{-1}{2}}(\partial\Omega)\\     
+ g&\mapsto \partial_\nu u|_{\partial\Omega}
+\end{align*}}
+\end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{Uniqueness of the solution}
+%  Dirichlet--to--Neumann map
+% \begin{align*}
+%  \Lambda_D: H^{\nicefrac{1}{2}}(\partial\Omega)&\to H^{ \nicefrac{-1}{2}}(\partial\Omega)\\     
+%  f&\mapsto \partial_\nu u|_{\partial\Omega}
+% \end{align*}
+\begin{block}{}
+{\color{blue}Inverse Problem}: recover information on the inclusion $D$ from the knowledge of the Dirchlet--to--Neumann
+map.
+\end{block}
+\begin{enumerate}
+ \item {\color{blue}Uniqueness}: Isakov, 1988;
+ \item {\color{blue}Stability}: Alessandrini, Di Cristo, 2005;
+ \item {\color{blue}Numerical Reconstruction}
+\end{enumerate}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}[t]
+ \frametitle{Neumann--to-Dirichlet maps}
+  \begin{columns}
+   \begin{column}{0.5\textwidth}
+   \begin{center}
+    \begin{tikzpicture}
+    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
+    \onslide<2->{
+    \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
+     .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
+     .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
+     .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
+     .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
+%     \node at (-2.2,0.7){${\partial \Omega}$};
+%     \node at (-0.6,0.7){${\partial D}$};
+    \node at (0.1,0.1){$D, k$};
+    }
+    \node at (-1.2,0.8){$\Omega, 1$};
+    %%%%%%%%%
+    \onslide<1->{
+    \node (l0) at (-1.8,-1.8){$f\in H^{\nicefrac{-1}{2}}(\partial\Omega)$};
+    \node (l1) at (-1.2,-1.0){ };
+    \draw[->] (l0) to [out=70,in=-150] node[above,midway]{ }(l1);}
+    \onslide<1->{
+    \node (r0) at (1.8,-1.8){$v,u\in H^{\nicefrac{1}{2}}(\partial \Omega)$};
+    \node (r1) at (1.2,-1.0){ };
+    \draw[->] (r1) to [out=-20,in=100] node[above,midway]{ }(r0);}
+    \end{tikzpicture}
+    \end{center}
+  \end{column}  
+  \begin{column}{0.5\textwidth}
+  % not delete line
+  \onslide<1->{
+  {\footnotesize
+   $v\in H^1_0(\Omega)$ solves {\color{blue} Laplace problem (0)}}
+  \begin{flalign*}  
+  \label{eq:NtoD-inclusion}
+  (0)
+  \left\{
+  \begin{aligned}
+  \divergence(\nabla v) &= 0, \quad\text{in}\,\Omega, \\
+            \partial_\nu v &= f, \quad\text{on}\,\partial \Omega,
+  \end{aligned}
+  \right.
+  &&
+  \end{flalign*}}
+  \onslide<2->{
+  {\footnotesize
+   $u\in H^1_0(\Omega)$ solves \textsc{\color{blue} inclusion problem ($D$)}}
+  \begin{flalign*}  
+  \label{eq:NtoD-inclusion}
+  (D)
+  \left\{
+  \begin{aligned}
+  \divergence(\gamma\nabla u) &= 0, \quad\text{in}\,\Omega, \\
+            \partial_\gamma u &= f, \quad\text{on}\,\partial \Omega,
+  \end{aligned}
+  \right.
+  &&
+  \end{flalign*}}
+  \end{column}
+  \end{columns}
+  \onslide<3->{
+  \vspace{0.2cm}
+  \begin{columns}
+   \begin{column}{0.5\textwidth}
+   \begin{flushright}
+   Neumann--to--Dirichlet maps\\
+   $N:  H^{\nicefrac{1}{2}}(\partial\Omega)\to H^{ \nicefrac{-1}{2}}(\partial\Omega)$    
+   \end{flushright}
+
+   \end{column}
+   \begin{column}{0.5\textwidth}
+   \vspace{0.6cm}
+  \[
+\begin{aligned}
+ N_0: %H^{\nicefrac{1}{2}}(\partial\Omega)&\to H^{ \nicefrac{-1}{2}}(\partial\Omega),\\
+ v&\mapsto \partial_\nu v|_{\partial\Omega}\\
+ N_D: %H^{\nicefrac{1}{2}}(\partial\Omega)&\to H^{ \nicefrac{-1}{2}}(\partial\Omega)\\     
+ u&\mapsto \partial_\nu u|_{\partial\Omega}
+\end{aligned}
+\]
+  \end{column}
+  \end{columns}
+}
+\end{frame}
+%%%%%%%%%%%%%%%%
 \begin{frame}[fragile]
- \frametitle{}
+ \frametitle{Contents}
+% \smartdiagramset{
+% set color list={blue!50!cyan,green!60!lime,orange!50!red},
+% priority arrow width=0.5cm,
+% priority arrow height advance=2.25cm
+% }
+%   \smartdiagram[priority descriptive diagram]{
+%       \only<2->{
+%       Develop a document structure},
+%       \only<3->{Write your document},
+%       Finetune the layout}
  \begin{tikzpicture}[
-    node distance = 7mm and 9mm,
+%     node distance = 7mm and 9mm,
    MN/.style args = {#1/#2}{
             draw=#1,% line color
             top color=#2!10,
@@ -281,21 +479,42 @@
             },
         ds/.style = {drop shadow}
                     ]
-                    %---
-\linespread{0.9}
-% bottom
-\node (n1) [MN=blue/blue]                   {Linear sampling method};
-% middle
+\node [
+  fill=dark-gray,
+  draw=dark-gray, 
+  single arrow,  single arrow head indent=1ex,
+  rotate=-90, 
+  font=\sffamily,
+  minimum width=1ex,
+  minimum height=6cm,
+] at (0,4){ };
+                    
+%---
+% {\rotatebox{0}{Pfeil mit Text}};
+% \linespread{0.9}
+%%%%%%%%%%%%%%
+{\footnotesize
+\node (n1) [MN=blue/blue]  at (2,5){Linear sampling method};
 \node (n2) [MN=blue/blue,right=of n1]    {Reciprocity gap method};
 \node (n3) [MN=blue/blue,right=of n2]    {Factorization};
-% \node (n3) [MN=blue/blue,below=of n1]    {Factorizationskkkkkkkkkkkkkkkkkskksksksksksk};
-% lines
-% \draw[line=red]     (n6) edge (n3)
-%                     (n1) edge (n2)  (n5) to (n4);
-% \draw[line=cyan]    (n2) edge (n3);
-% \draw[line=blue]    (n3) edge (n4);
-\only<2->
+}
+\draw[fill,blue] (-0.5ex,5.2) rectangle (0.5ex,5);
+%%%%%%%%%%%%%%
+\onslide<3->{
+{\footnotesize
+\node (n4) [MN=red/red, minimum width=6cm]  at (4,3){regul};
+\node (n5) [MN=red/red]  at (10,3)  {Range};
+}
+\draw[fill,red] (-0.5ex,3.2) rectangle (0.5ex,3);
+}
+\onslide<4->{
+{\footnotesize
+\node (n6) [MN=green/green, minimum width=10cm]  at (6,1){num};
+}
+}
+\onslide<2->{
 \draw[line width=2mm, draw=blue, {Triangle[length=2.8mm,width=4mm,fill=blue]}-{Triangle[length=2.8mm,width=4mm,fill=blue]}]   (n1) edge (n2);
+}
 \end{tikzpicture}                       
 %  \begin{center}
 % % \smartdiagram[descriptive diagram]{
@@ -315,60 +534,16 @@
 % \smartdiagramconnect{<->}{module1/module2}
 % \end{center}
 \end{frame}
+
 %%%%%%%%%%%%%%%%%
 \begin{frame}[noframenumbering]
 \begin{center}
 \Large
- 1. Linear sampling method
-\end{center}
-\end{frame}
-%%%%%%%%%%%%%%%%%
-%  \only<1>{GA}\only<2>{MOGA}\only<3>{pMOGA}
-\begin{frame}
- \frametitle{Neumann--to--Dirichlet maps}
-  Let $v\in H^1_0(\Omega)$ be the unique solution of the {\color{blue}Laplace problem}
- \begin{columns}[T]
-  \begin{column}{0.5\textwidth}
+ {\color{purple}1. Linear sampling method}
+\vspace{1cm}
+\pause
+\normalsize
     \begin{center}
-    \begin{tikzpicture}
-    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
-%     \node at (-2.2,0.7){${\partial \Omega}$};
-    \node at (-1.2,0.1){$\Omega, 1$};
-    \end{tikzpicture}
-    \end{center}
-  \end{column}
-  \hspace{-2cm}
-  \begin{column}{0.5\textwidth}
-  \vspace{0.6cm}
-  \begin{center}
- \begin{equation}
- \label{eq:NtoD-inclusion}
-  \left\{
-  \begin{aligned}
-  \divergence(\nabla v) &= 0, \quad\text{in}\,\Omega, \\
-            \partial_\nu v &= f, \quad\text{on}\,\partial \Omega,
-  \end{aligned}
-  \right.
- \end{equation}
- \end{center}
- \end{column}
- \end{columns}
- \vspace{0.6cm}
- and define
-   \begin{align}
-   &{N_0}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_0} f = v|_{\partial\Omega},
-   \end{align}
-\end{frame}
-%%%%%%%%%%%%%%%%%
-\begin{frame}
- \frametitle{Neumann--to--Dirichlet maps}
-%   Let \only<1>{$v\in H^1_0(\Omega)$}\only<2>{$u\in H^1_0(\Omega)$} be the unique solution of the
-%   \only<1>{{\color{blue}Laplace problem}}\only<2>{{\color{blue} inclusion problem} with $D\subset \Omega$}
-  Let $u\in H^1_0(\Omega)$ be the unique solution of the
-  {\color{blue} inclusion problem} with $D\subset \Omega$
- \begin{columns}[T]
-  \begin{column}{0.5\textwidth}
-  \begin{center}
     \begin{tikzpicture}
     \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
     \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
@@ -378,35 +553,137 @@
      .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
 %     \node at (-2.2,0.7){${\partial \Omega}$};
 %     \node at (-0.6,0.7){${\partial D}$};
-    \node at (-1.2,0.1){$\Omega, 1$};
     \node at (0.1,0.1){$D, k$};
-    \end{tikzpicture} 
+    \node at (-1.2,0.8){$\Omega, 1$};
+    \onslide<3->{
+    \draw [draw=purple, thick] (0,0.2) ellipse (2cm and 1.5cm);}
+    \end{tikzpicture}
     \end{center}
-  \end{column}
- \hspace{-2cm}
- \begin{column}{0.5\textwidth}
- \vspace{0.6cm}
- \begin{center}
- \begin{equation}
- \label{eq:NtoD-inclusion}
-  \left\{
-  \begin{aligned}
-  \divergence(\gamma\nabla u) &= 0, \quad\text{in}\,\Omega, \\
-            \partial_\gamma u &= f, \quad\text{on}\,\partial \Omega,
-  \end{aligned}
-  \right.
- \end{equation}
- \end{center}
-  \end{column}
- \end{columns}
- \vspace{0.6cm}
- with $\gamma(x) = 1\chi_{\Omega\backslash\overline{D}} + k\,\chi_D$, and define
-\begin{align}
- &{N_D}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_D}f = u|_{\partial\Omega}.
- \end{align}
+
+\end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%
+%  \only<1>{GA}\only<2>{MOGA}\only<3>{pMOGA}
+% \begin{frame}[<0>, noframenumbering]
+%  \frametitle{Neumann--to--Dirichlet maps}
+%   Let $v\in H^1_0(\Omega)$ be the unique solution of the {\color{blue}Laplace problem}
+%  \begin{columns}[T]
+%   \begin{column}{0.5\textwidth}
+%     \begin{center}
+%     \begin{tikzpicture}
+%     \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
+% %     \node at (-2.2,0.7){${\partial \Omega}$};
+%     \node at (-1.2,0.1){$\Omega, 1$};
+%     \end{tikzpicture}
+%     \end{center}
+%   \end{column}
+%   \hspace{-2cm}
+%   \begin{column}{0.5\textwidth}
+%   \vspace{0.6cm}
+%   \begin{center}
+%  \begin{equation}
+%  \label{eq:NtoD-inclusion}
+%   \left\{
+%   \begin{aligned}
+%   \divergence(\nabla v) &= 0, \quad\text{in}\,\Omega, \\
+%             \partial_\nu v &= f, \quad\text{on}\,\partial \Omega,
+%   \end{aligned}
+%   \right.
+%  \end{equation}
+%  \end{center}
+%  \end{column}
+%  \end{columns}
+%  \vspace{0.6cm}
+%  and define
+%    \begin{align}
+%    &{N_0}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_0} f = v|_{\partial\Omega},
+%    \end{align}
+% \end{frame}
+% %%%%%%%%%%%%%%%%%
+% \begin{frame}[<0>,noframenumbering]
+%  \frametitle{Neumann--to--Dirichlet maps}
+% %   Let \only<1>{$v\in H^1_0(\Omega)$}\only<2>{$u\in H^1_0(\Omega)$} be the unique solution of the
+% %   \only<1>{{\color{blue}Laplace problem}}\only<2>{{\color{blue} inclusion problem} with $D\subset \Omega$}
+%   Let $u\in H^1_0(\Omega)$ be the unique solution of the
+%   {\color{blue} inclusion problem} with $D\subset \Omega$
+%  \begin{columns}[T]
+%   \begin{column}{0.5\textwidth}
+%   \begin{center}
+%     \begin{tikzpicture}
+%     \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
+%     \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
+%      .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
+%      .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
+%      .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
+%      .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
+% %     \node at (-2.2,0.7){${\partial \Omega}$};
+% %     \node at (-0.6,0.7){${\partial D}$};
+%     \node at (-1.2,0.1){$\Omega, 1$};
+%     \node at (0.1,0.1){$D, k$};
+%     \end{tikzpicture} 
+%     \end{center}
+%   \end{column}
+%  \hspace{-2cm}
+%  \begin{column}{0.5\textwidth}
+%  \vspace{0.6cm}
+%  \begin{center}
+%  \begin{equation}
+%  \label{eq:NtoD-inclusion}
+%   \left\{
+%   \begin{aligned}
+%   \divergence(\gamma\nabla u) &= 0, \quad\text{in}\,\Omega, \\
+%             \partial_\gamma u &= f, \quad\text{on}\,\partial \Omega,
+%   \end{aligned}
+%   \right.
+%  \end{equation}
+%  \end{center}
+%   \end{column}
+%  \end{columns}
+%  \vspace{0.6cm}
+%  with $\gamma(x) = 1\chi_{\Omega\backslash\overline{D}} + k\,\chi_D$, and define
+% \begin{align}
+%  &{N_D}: H^{-1/2}_0(\partial \Omega) \to H^{1/2}_0(\partial\Omega) && {N_D}f = u|_{\partial\Omega}.
+%  \end{align}
+% \end{frame}
+%%%%%%%%%%%%%%%%
 \begin{frame}
+  \frametitle{Linear sampling method}
+  \begin{equation}
+  N_r f = \psi_{0z} \quad \text{ on }\partial \Omega.
+  \end{equation}
+% \begin{variableblock}
+% {${N_r} \coloneqq {N_0} - {N_D}$}{bg=bubbles,fg=black}
+% {bg=palecornflowerblue,fg=black}
+\begin{block}
+ {Let {\color{blue} $z$} the {\color{blue}sampling point}.}
+\end{block}
+
+\begin{block}{
+Let {\color{blue}${N_r} \coloneqq {N_0} - {N_D}$} denote the 
+{\color{blue} relative map}.}
+\footnotesize
+$N_r:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$ 
+  is injective, with dense image, self-adjoint, compact and positive. 
+  Intermediate results are entailed by the Interior Transmission Problem.
+%  \end{variableblock}
+\end{block}
+\begin{block}{
+  Let $\psi_{0z} \coloneqq \vec{\Psi}(x,z)\cdot\vec{d} - m_z - N_0\bigl(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}\bigr)$
+  the right term.}
+  \footnotesize
+ \begin{itemize}
+  \item[$\blacktriangleright$] $ \vec{\Psi}(x,z)\coloneqq\nabla_x\Phi(x,z)$ is the gradient of the fundamental solution;\\
+  \item[$\blacktriangleright$] $|\vec{d}|=1$ is a generic unit vector;
+  \item[$\blacktriangleright$] $-\Delta \psi_{0z}(x,z) = \nabla\delta_{z} \cdot \vec{d}$ in $\Omega$: potential generated by a dipole;\\
+  \item[$\blacktriangleright$] $m_z$ is the mean such that $\langle\psi_{0z},1\rangle_{L^2(\partial\Omega)}=0$;
+  \item[$\blacktriangleright$] $\partial_\nu\psi_{0z}(x,z) = 0$ on $\partial \Omega$: homogeneous Neumann conditions.\\
+  
+
+\end{itemize}
+\end{block}
+\end{frame}
+%%%%%%%%%%%%%%%%%
+\begin{frame}<0>[noframenumbering]
  \frametitle{Linear sampling method: the map}
 %  In the inverse inclusion problem, a crucial role is played by the 
 We denote by ${N_r}:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$
@@ -430,7 +707,7 @@ There holds the strict implication
 %  This is proved in \cite{kirsch:book}, but we present the proof for injectivity contained in \cite{somersalo:preprint}, to highlight the link with ITP.
 \end{frame}
 %%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}<0>[noframenumbering]
  \frametitle{Linear sampling method: the right term}
   As right term we consider the potential generated by a dipole
  \begin{equation}
@@ -462,7 +739,7 @@ There holds the strict implication
  \end{definition}
 \end{frame}
 %%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}<0>[noframenumbering]
  \only<1>{
  \frametitle{Single layer potential}}
 \begin{columns}[T]
@@ -493,7 +770,7 @@ There holds the strict implication
 
  \end{frame}
 %%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}<0>[noframenumbering]
  \frametitle{Double layer potential}
 \begin{columns}[T]
   \begin{column}{0.50\textwidth}
@@ -587,8 +864,30 @@ such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
 \begin{frame}[noframenumbering]
 \begin{center}
 \Large
- 2. Reciprocity gap method
+{\color{purple}2. Reciprocity gap method}
 \end{center}
+\vspace{1cm}
+\pause
+\normalsize
+    \begin{center}
+    \begin{tikzpicture}
+    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (1.8cm and 1.35cm);
+    \draw [] (0,0.2) ellipse (2.5cm and 1.875cm);
+    \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
+     .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
+     .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
+     .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
+     .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
+%     \node at (-2.2,0.7){${\partial \Omega}$};
+%     \node at (-0.6,0.7){${\partial D}$};
+    \node at (0.1,0.1){$D, k$};
+    \node at (-1,0.8){$\Omega, 1$};
+    \node at (-1.85, 1.1){$B$};    
+    \onslide<3->{
+    \draw [draw=purple, thick] (0,0.2) ellipse (2.5cm and 1.875cm);}
+    \end{tikzpicture}
+    \end{center}
+
 \end{frame}
 %%%%%%%%%%%%%%%%
 \begin{frame}
@@ -606,8 +905,8 @@ such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
 %  \end{tikzpicture}
     \begin{center}
     \begin{tikzpicture}
-    \draw [draw=gray] (0,0.2) ellipse (2.5cm and 1.8cm);
-    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (1.8cm and 1.2cm);
+    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (1.8cm and 1.35cm);
+    \draw [] (0,0.2) ellipse (2.5cm and 1.875cm);
     \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
      .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
      .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
@@ -615,10 +914,10 @@ such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
      .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
 %     \node at (-2.2,0.7){${\partial \Omega}$};
 %     \node at (-0.6,0.7){${\partial D}$};
-    \node at (-2.1, 0.1){$B$};
-    \node at (-1.2, 0.1){$\Omega, 1$};
-    \node at (0.1, 0.1){$D, k$};
-    \end{tikzpicture} 
+    \node at (0.1,0.1){$D, k$};
+    \node at (-1,0.8){$\Omega, 1$};
+    \node at (-1.85, 1.1){$B$};    
+    \end{tikzpicture}
     \end{center}
  \end{column}
  \begin{column}{0.50\textwidth}
@@ -1151,55 +1450,55 @@ then we compare the slopes of the straight lines
 \end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%
-\begin{frame}[fragile]
- \frametitle{Algorithm}
-  \begin{columns}[T]
-    \begin{column}{0.5\textwidth}
-    \footnotesize
-     \begin{lstlisting}
-      fix $n$, $\delta$
-      COMPUTE direct relative map $N_{rn}$
-      |\textbf{for} z \textbf{in} samplingSet|
-        fix $\alpha_n$
-        |\textbf{for} k \textbf{in} numberIterationsAlpha|
-          SOLVE $(\alpha^{(k)}_nI + N_{rn}^TN_{rn})f_n=N_{rn}^T\psi_{0z}$
-          UPDATE $\alpha^{(k)}_n$
-          
-        COMPUTE $r(z) = \|\psi_{0z}\| / \|f_n\|$
-        
-      plot $r(z)$
-      
-     \end{lstlisting}
-
-     
-
-    \end{column}
-  \begin{column}{0.5\textwidth}
-  \begin{center}
-    \begin{tikzpicture}
-%      \foreach \i in {\xMin,...,\xMax} {
-%         \draw [very thin,gray] (\i,\yMin) -- (\i,\yMax)  node [below] at (\i,\yMin) {$\i$};
-%     }
-%     \foreach \i in {\yMin,...,\yMax} {
-%         \draw [very thin,gray] (\xMin,\i) -- (\xMax,\i) node [left] at (\xMin,\i) {$\i$};
-%     }
-
-    \draw [fill=light-gray, draw=gray] (0,0) ellipse (2cm and 1.5cm);
-    \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
-     .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
-     .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
-     .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
-     .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
-%     \node at (-2.2,0.7){${\partial \Omega}$};
-%     \node at (-0.6,0.7){${\partial D}$};
-    \node at (-1.2,0.1){$\Omega, 1$};
-    \node at (0.1,0.1){$D, k$};
-\draw [step=0.5,blue, thin] (-2.2,-1.8) grid (2.2,1.8);
-\end{tikzpicture}
-\end{center}
-\end{column}
-\end{columns}
-\end{frame}
+% \begin{frame}[fragile]
+%  \frametitle{Algorithm}
+%   \begin{columns}[T]
+%     \begin{column}{0.5\textwidth}
+%     \footnotesize
+%      \begin{lstlisting}
+%       fix $n$, $\delta$
+%       COMPUTE direct relative map $N_{rn}$
+%       |\textbf{for} z \textbf{in} samplingSet|
+%         fix $\alpha_n$
+%         |\textbf{for} k \textbf{in} numberIterationsAlpha|
+%           SOLVE $(\alpha^{(k)}_nI + N_{rn}^TN_{rn})f_n=N_{rn}^T\psi_{0z}$
+%           UPDATE $\alpha^{(k)}_n$
+%           
+%         COMPUTE $r(z) = \|\psi_{0z}\| / \|f_n\|$
+%         
+%       plot $r(z)$
+%       
+%      \end{lstlisting}
+% 
+%      
+% 
+%     \end{column}
+%   \begin{column}{0.5\textwidth}
+%   \begin{center}
+%     \begin{tikzpicture}
+% %      \foreach \i in {\xMin,...,\xMax} {
+% %         \draw [very thin,gray] (\i,\yMin) -- (\i,\yMax)  node [below] at (\i,\yMin) {$\i$};
+% %     }
+% %     \foreach \i in {\yMin,...,\yMax} {
+% %         \draw [very thin,gray] (\xMin,\i) -- (\xMax,\i) node [left] at (\xMin,\i) {$\i$};
+% %     }
+% 
+%     \draw [fill=light-gray, draw=gray] (0,0) ellipse (2cm and 1.5cm);
+%     \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
+%      .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
+%      .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
+%      .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
+%      .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
+% %     \node at (-2.2,0.7){${\partial \Omega}$};
+% %     \node at (-0.6,0.7){${\partial D}$};
+%     \node at (-1.2,0.1){$\Omega, 1$};
+%     \node at (0.1,0.1){$D, k$};
+% \draw [step=0.5,blue, thin] (-2.2,-1.8) grid (2.2,1.8);
+% \end{tikzpicture}
+% \end{center}
+% \end{column}
+% \end{columns}
+% \end{frame}
 %%%%%%%%%%%%%%%%%%%
 \begin{frame}
  \frametitle{}
@@ -1248,26 +1547,26 @@ eigenvalues $\log\lambda_j$ of the map $N_r$ in Figure \ref{subfig:eig_two_ellip
 % Factorization Method for $m=30$, $m=40$, respectively. The linear regression of the
 % eigenvalues $\log\lambda_j$ of the map $N_r$ in Figure \ref{subfig:eig_three_ellipse} suggests  $m=30$ as the best choice.
 % \end{frame}
-%%%%%%%%%%%%%%%%%%%
-\begin{frame}
- \frametitle{}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%
-\begin{frame}
- \frametitle{}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%
-\begin{frame}
- \frametitle{}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%
-\begin{frame}
- \frametitle{}
-\end{frame}
-%%%%%%%%%%%%%%%%%%%
-\begin{frame}
- \frametitle{}
-\end{frame}
+% %%%%%%%%%%%%%%%%%%%
+% \begin{frame}
+%  \frametitle{}
+% \end{frame}
+% %%%%%%%%%%%%%%%%%%%
+% \begin{frame}
+%  \frametitle{}
+% \end{frame}
+% %%%%%%%%%%%%%%%%%%%
+% \begin{frame}
+%  \frametitle{}
+% \end{frame}
+% %%%%%%%%%%%%%%%%%%%
+% \begin{frame}
+%  \frametitle{}
+% \end{frame}
+% %%%%%%%%%%%%%%%%%%%
+% \begin{frame}
+%  \frametitle{}
+% \end{frame}
 \end{document}
  \begin{equation}
   (({N_D} - {N_0})f,f) = ( Af,TAf) \geq c\|Af\|^2_{L^2(D;\,\mathbb{R}^2)} > 0 \quad \forall f\in L^2_0(\partial \Omega) \quad f\neq0.
