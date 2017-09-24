@@ -95,6 +95,9 @@
     rectangle, rounded corners, inner sep=10pt, inner ysep=20pt]
 \tikzstyle{mytitle} =[fill=gray, text=white]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\tikzoverlay{%
+   \tikz[remember picture, overlay]\node[every overlay node]
+}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -365,9 +368,15 @@
 map.
 \end{block}
 \begin{enumerate}
+\onslide<2->{
  \item {\color{blue}Uniqueness}: Isakov, 1988;
- \item {\color{blue}Stability}: Alessandrini, Di Cristo, 2005;
+}
+\onslide<3->{
+\item {\color{blue}Stability}: Alessandrini, Di Cristo, 2005;
+}
+\onslide<4->{
  \item {\color{blue}Numerical Reconstruction}
+}
 \end{enumerate}
 \end{frame}
 %%%%%%%%%%%%%%%%%
@@ -509,7 +518,7 @@ map.
 %%%%%%%%%%%%%%
 \onslide<3->{
 {\footnotesize
-\node (n4) [MN=red/red, minimum width=6cm]  at (4,3){regul};
+\node (n4) [MN=red/red, minimum width=6cm]  at (4,3){reg};
 \node (n5) [MN=red/red]  at (10,3)  {Range};
 }
 \draw[fill,red] (-0.5ex,3.2) rectangle (0.5ex,3);
@@ -814,29 +823,41 @@ There holds the strict implication
 \begin{frame}
  \frametitle{Approximating sequences for fixed $z$}
 \begin{proposition}[Constructive Part]
+\footnotesize
 \label{prop:lsm-constructive}
 Let $\epsilon > 0$, there exists an {\color{blue}approximating harmonic function} $\mathcal{S}(\partial B, \omega^\epsilon_z)$, with density $\omega^\epsilon_z\in L^2(\partial B)$  such that
 \begin{equation}
  \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) - \psi_{0z}\|_{H^{\nicefrac{1}{2}}(\partial\Omega)} < \epsilon,
 \end{equation}
-\begin{itemize}
- \item  Fix $z \in D$. 
-  There exist a sequence 
+\begin{enumerate}
+ \item if {\color{blue}$z \in D$}  
+  then there exist a sequence 
  $v^{\epsilon_n}_z\coloneqq\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$ 
  and some
  $ v_z\in H^1(D)$, such that
   \begin{equation}
  \|v^{\epsilon_n}_z - v_z\|_{H^1(D)} \to 0\quad\textup{ for }\epsilon_n \to 0.
   \end{equation}
-  furthermore, when $z$ approaches the boundary $\partial D$, $\|\omega^\epsilon_z\|_{L^2(\partial B)}\to + \infty$.
- \item Fix $z \in \Omega\backslash\overline{D}$. Then for any $\delta>0$ and $\epsilon > 0$ there exists an harmonic layer $\mathcal{S}(\partial B, \omega^{\delta, \epsilon}_z)$ with density $\omega^{\delta, \epsilon}_z\in L^2(\partial B)$ such that
+  Furthermore, when $z$ approaches the boundary $\partial D$, $\|\omega^\epsilon_z\|_{L^2(\partial B)}\to + \infty$.
+%  \item if {\color{blue}$z \in \Omega\backslash\overline{D}$} then for any $\delta>0$ and $\epsilon > 0$ there exists an harmonic layer $\mathcal{S}(\partial B, \omega^{\delta, \epsilon}_z)$ with density $\omega^{\delta, \epsilon}_z\in L^2(\partial B)$ such that
+% \begin{equation}
+%  \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^{\delta,\epsilon}_z) - \psi_{0z}\|_{H^{\nicefrac{1}{2}}(\partial\Omega)} < \delta + \epsilon,
+% \end{equation}
+% and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\to 0$.
+ \item if {\color{blue}$z \in \Omega\backslash\overline{D}$} then for any 
+ sequence $\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$
 \begin{equation}
- \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^{\delta,\epsilon}_z) - \psi_{0z}\|_{H^{\nicefrac{1}{2}}(\partial\Omega)} < \delta + \epsilon,
+\|\omega^{\epsilon_n}_z\|_{L^2(\partial B)}\to + \infty\quad\textup{ for }\epsilon_n \to 0.
 \end{equation}
-and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\to 0$.
-
-\end{itemize}
+\end{enumerate}
 \end{proposition}
+\footnotesize
+We will plot the inverse of the ratio of the two norms
+\begin{equation}
+ r_n(z)\coloneqq\frac{\|\psi_{0zn}\|_{L^2(\partial \Omega)}}{\|f_n\|_{L^2(\partial \Omega)}},
+\end{equation}
+such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
+
 % \begin{remark}
 %  There exist a sequence 
 %  $v^{\epsilon_n}_z\coloneqq\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$ 
@@ -864,7 +885,7 @@ and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\t
 
 \end{frame}
 %%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}<0>[noframenumbering]
  \frametitle{Approximating sequence for $z\notin D$}
  \begin{proposition}[Counterpart]
 \label{prop:lsm-counterpart}
@@ -948,7 +969,7 @@ such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
  \vspace{0.8cm}
   \begin{itemize}
    \item $\partial B$ sources boundary
-   \item $\partial \Omega$ observation boundary
+   \item $\partial \Omega$ observations boundary
    \item data
    \begin{equation*}
     u\in\mathcal{U} \to u|_{\partial\Omega},\, \partial_\nu u|_{\partial\Omega}
@@ -970,9 +991,10 @@ such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
 % \end{equation}
 % where $\Phi_D$ is the fundamental solution, which solves the inclusion problem.
 % \end{definition}
-\vspace{0.8cm}
-We denote by (where $\Phi_D$ is the fundamental solution of the inclusion problem)
+\vspace{0.2cm}
+We denote by
 \begin{itemize}
+ \item $\Phi_D$ the fundamental solution of the inclusion problem,
  \item $\mathcal{U}$ the set of functions
 $
  \mathcal{U}\coloneqq\bigl\{\Phi_D(x, x_0): x_0\in \partial B\bigr\},
@@ -1067,7 +1089,8 @@ its range has codimension one: $\mathcal{R}(R)^\perp=\textup{span}(\{\alpha_c\})
 %%%%%%%%%%%%%%%%%
 \begin{frame}
  \frametitle{Reciprocity Gap Approximation Theorem}
- Finally we can state the key theorem which provides a binary criterion to discriminate the inclusion from the background.
+ {\footnotesize
+ We state the key theorem which provides a binary criterion to discriminate the inclusion from the background.}
 \begin{theorem}[Reciprocity Gap Approximation Theorem]
  \label{theo:approximation-rg} 
 %  Let $D\subset\Omega\subset B$  be an inclusion satisfying Assumption \ref{assumption:connected}, let $\{(u|_{\partial \Omega},\partial_\nu u|_{\partial \Omega})\}$ 
@@ -1077,16 +1100,17 @@ its range has codimension one: $\mathcal{R}(R)^\perp=\textup{span}(\{\alpha_c\})
 There holds the alternative
  \begin{enumerate}
   \item if $z \in D$ then there exists a sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
-   \begin{equation}
-     \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U},\label{eq:rg-lim-constructive}
-   \end{equation}
+   \begin{align}
+     \lim_{n\to\infty}\mathcal{R}(u,v_n) &= \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U},\label{eq:rg-lim-constructive}\\
+     v_n|_{\partial D}&\to g \textup{ in } L^2(\partial D)
+   \end{align}
 %    where $\Psi_z$ as in Definition \ref{def:fund-sol-deriv-Psi},
-   $v_n|_{\partial D}\to g$ in $L^2(\partial D)$ and consequently  it's bounded in the norm $\|v_n\|_{L^2(\partial D)}$;
+   and it's bounded in $\|v_n\|_{L^2(\partial D)}$;
   \item if $z \in \Omega \backslash D$ then any sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
    \begin{equation}
      \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U}\label{eq:rg-lim-counterpart}
    \end{equation}
-   is unbounded $\|v_n\|_{L^2(\partial D)}\to\infty$ in $L^2(\partial D)$.
+   is unbounded $\|v_n\|_{L^2(\partial D)}\to\infty$.
  \end{enumerate}
 \end{theorem}
 \end{frame}
@@ -1136,270 +1160,112 @@ ${g \in \bigl(H^{\nicefrac{1}{2}}_0(\partial \Omega)\bigr)^* = H^{\nicefrac{-1}{
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
- \frametitle{Regularization of ill-posed equations}
+\frametitle{Regularization of ill-posed linear equations}
 {\footnotesize
 The approximate equation for the linear sampling method is}
+\vspace{-0.1cm}
 \begin{equation}
-\only<1>{N_r f = \psi_{0z}}\only<2->{Kx = y, \quad\textup{ with }K\in\mathcal{K}(L^2(\partial\Omega)),}
+\only<1>{N_r f = \psi_{0z}}\only<2->{Kx = y, \quad K\in\mathcal{K}(L^2(\partial\Omega)),}
 \end{equation}
-\vspace{-0.6cm}
+\vspace{-0.4cm}
 {\footnotesize
 \begin{itemize}
- \item[$\blacktriangleright$] let $y^\delta$ be the perturbed data such that $\|y^\delta - y\|\leq \delta$
- \item[$\blacktriangleright$] let $x^{\alpha,\delta}\coloneqq R_{\alpha(\delta)} y^\delta$ be the regularized solution
+ \onslide<3->{
+ \item[$\blacktriangleright$] let $y^\delta$ be the perturbed data such that 
+ {\small $\|y^\delta - y\|\leq \delta$}}
+ \onslide<4->{
+ \item[$\blacktriangleright$] let $x^{\alpha,\delta}\coloneqq R_{\alpha(\delta)} y^\delta$ be the regularized solution}
 \end{itemize}
 }
+\onslide<5->{
+\vspace{-0.1cm}
 \begin{block}
-{
-\footnotesize
-The estimate for the regularization is 
-% \vspace{-0.5cm}
-% \begin{equation}
-% \normalsize
-% \hspace{5cm}
-% \|x^{\alpha, \delta} - x\|\leq \|R_\alpha\| \|y^\delta - y\| + \|R_\alpha Kx - x\|.
-% \end{equation}
-}
-\vspace{-0.5cm}
-\begin{align}
+{\footnotesize
+The estimate for the regularization is}
+\vspace{-0.1cm}
+\begin{equation}
 \label{eq:fundamental-error-estimate}
- \|x^{\alpha, \delta} - x\| 
+\|x^{\alpha, \delta} - x\| 
 %  &\leq \|R_\alpha y^\delta - R_\alpha y\| + \|R_\alpha y - x\| \\
-&\leq \|R_\alpha Kx - x\| + \|R_\alpha\| \|y^\delta - y\|.
-\end{align}
-\begin{columns}[t]
- \begin{column}{0.5\textwidth}
-  accuracy: $\|R_\alpha Kx -x\|\to0$, $\alpha\to0$,
- \end{column}
- \begin{column}{0.5\textwidth}
-  stability: $\|R_\alpha\|\to\infty$, $\alpha\to0$,
- \end{column}
-\end{columns}
-a compromise for the choice of the parameter $\alpha$
+\leq \|R_\alpha Kx - x\| + \|R_\alpha\| \|y^\delta - y\|.
+\end{equation}
+\vspace{-0.5cm}
+\parallelcontent
+{{\color{blue}Accuracy}: $\|R_\alpha Kx -x\|\to0$, $\alpha\to0$.}
+{{\color{blue}Stability}: $\|R_\alpha\|\to\infty$, $\alpha\to0$.}
+{\footnotesize
+We accept a compromise for the choice of the parameter $\alpha$.}
 % \emph{We have to accept a compromise for the choice of the parameter $\alpha$, betweenand we have to elaborate a 
 % strategy $\alpha(\delta)$ which guarantees convergence of the error $\|x^{\alpha,\delta} - x\|$.
 % }
 \end{block}
-
-% The above estimate represents the decomposition of the approximation error, for a fixed error 
-% level $\delta$ in the data $\|y^\delta - y\|\leq \delta$. By the ill-posed nature of the problem, the norm 
-% $\|R_\alpha\|$ diverges as $\alpha\to 0$, while the regularization implies a converging regularized 
-% solution $x^{\alpha} = R_\alpha y$ to $x=K^{-1}y$, equivalent to $\|R_\alpha Kx -x\|\to 0$, as $\alpha\to0$.
-% Hence, 
-%  \begin{definition}
-%  An {\color{blue}regularization strategy} $R_\alpha : Y \to X$, for $\alpha> 0$, is a family of linear and bounded operators such that
-%  \begin{equation}
-%   \lim_{\alpha\to 0}R_\alpha Kx = x\quad \forall x \in X.
-%  \end{equation}
-%  An {\color{blue}admissible} regularization strategy $\alpha(\delta)$ is a function such that for $\delta \to 0$
-%  \begin{equation}
-%  \left\{
-%  \begin{aligned}
-%   &\alpha(\delta) \to 0, \\
-%   &\forall x \in X: \,\sup\bigl\{\bigl\|R_{\alpha(\delta)} y^\delta - x\bigr\|:y^\delta \in Y, \|Kx - y^\delta\|\leq\delta\bigr\} \to 0.
-%  \end{aligned}
-%  \right.
-%  \end{equation}
-% \end{definition}
-\only<2->{
-\vspace{-0.8cm}
-\begin{columns}[t]
- \begin{column}{0.5\textwidth}
- \begin{block}{Tikhonov regularization}
- \footnotesize
- \emph{
-% We can interpret it as
-%  the minimization of $J_\alpha$, as 
-%  \begin{itemize}
-the minimization of the residual $\|Kx^{\alpha} - y\|$,
-penalized by 
-% the norm of the solution 
-$\|x^\alpha\|$.
-%  \end{itemize}
 }
- \begin{equation}
-  \textup{min}\|Kx - y\|^2 + \alpha\|x\|^2\quad x\in X
- \end{equation}
-vanishing of the first derivative
-\begin{align}
- &\alpha x^{\alpha} + K^TKx^{\alpha} = K^Ty.
-%  &\alpha_n f_n^{\alpha_n} + N_{rn}^TN_{rn}f_n^{\alpha_n} = \psi_{0zn}\label{eq:tikh-reg-lsm-discrete}.
-\end{align}
-\end{block}
- \end{column}
- \begin{column}{0.5\textwidth}
- \begin{block}{Discrepancy principle of Morozov}
- \footnotesize
- We denote by $\Delta(\alpha)$ the \emph{discrepancy} function
-%  and its variants. The mostly used 
-%  are the classical and the normalized discrepancy:
- \begin{align}
-  \Delta(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta, \label{eq:def-disc}\\
-  \Delta_N(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta\|x^{\alpha,\delta}\|.\label{eq:def-disc-N}
- \end{align}
-%  \begin{align}
-%   \Delta(\alpha)&\coloneqq\|N_rf^{\alpha,\delta} - \psi_{0z}^\delta\| - \delta, \label{eq:def-disc}\\
-%   \Delta_N(\alpha)&\coloneqq\|N_rf^{\alpha,\delta} - \psi_{0z}^\delta\| - \delta\|f^{\alpha,\delta}\|.\label{eq:def-disc-N}
-%  \end{align}
-Therefore the determination of $\alpha(\delta)$ is equivalent to the computation 
-of the unique zero of the function $\Delta_N(\alpha)$.
- \end{block}
- \end{column}
-\end{columns}
-}
-\only<1>{
-\begin{proposition}
-\label{prop:strategy-disc}
-%  By previous Proposition \ref{prop:properties-disc}, let $\delta$ be fixed, then there 
-%  exists unique zero $\alpha^*(\delta)$ of the discrepancy function, 
-%  such that $\Delta\bigl(\alpha^*\bigr)=0$. The same is still true for $\Delta_N(\alpha)$ 
-%  (see \cite{kirsch:shape-1998}).
- Let $\delta$ be fixed, then there exists a unique 
- couple $(\alpha(\delta), x^{\alpha(\delta)})$ such that
- \begin{equation}
-  \left\{
-  \begin{split}
-   & \alpha(\delta) x^{\alpha(\delta)} + K^TKx^{\alpha(\delta)} = K^Ty^\delta, \\
-   & \Delta(\alpha(\delta))=0, \quad\textup{ or }\quad \Delta_N(\alpha(\delta))=0.
-  \end{split}
-  \right.
- \end{equation}
-\end{proposition}
-}
-\end{frame}
-\begin{frame}
- \frametitle{Regularization of ill-posed equations}
-{\footnotesize
-The approximate equation for the linear sampling method is}
-\begin{equation}
-\only<1>{N_r f = \psi_{0z}}\only<2->{Kx = y, \quad\textup{ with }K\in\mathcal{K}(L^2(\partial\Omega)),}
-\end{equation}
-\vspace{-0.6cm}
-{\footnotesize
-\begin{itemize}
- \item[$\blacktriangleright$] let $y^\delta$ be the perturbed data such that $\|y^\delta - y\|\leq \delta$
- \item[$\blacktriangleright$] let $x^{\alpha,\delta}\coloneqq R_{\alpha(\delta)} y^\delta$ be the regularized solution
-\end{itemize}
-}
-\begin{block}
-{
-\footnotesize
-The estimate for the regularization is 
-% \vspace{-0.5cm}
-% \begin{equation}
-% \normalsize
-% \hspace{5cm}
-% \|x^{\alpha, \delta} - x\|\leq \|R_\alpha\| \|y^\delta - y\| + \|R_\alpha Kx - x\|.
-% \end{equation}
-}
-\vspace{-0.5cm}
-\begin{align}
-\label{eq:fundamental-error-estimate}
- \|x^{\alpha, \delta} - x\| 
-%  &\leq \|R_\alpha y^\delta - R_\alpha y\| + \|R_\alpha y - x\| \\
-&\leq \|R_\alpha Kx - x\| + \|R_\alpha\| \|y^\delta - y\|.
-\end{align}
-\begin{columns}[t]
- \begin{column}{0.5\textwidth}
-  accuracy: $\|R_\alpha Kx -x\|\to0$, $\alpha\to0$,
- \end{column}
- \begin{column}{0.5\textwidth}
-  stability: $\|R_\alpha\|\to\infty$, $\alpha\to0$,
- \end{column}
-\end{columns}
-a compromise for the choice of the parameter $\alpha$
-% \emph{We have to accept a compromise for the choice of the parameter $\alpha$, betweenand we have to elaborate a 
-% strategy $\alpha(\delta)$ which guarantees convergence of the error $\|x^{\alpha,\delta} - x\|$.
-% }
-\end{block}
-
-% The above estimate represents the decomposition of the approximation error, for a fixed error 
-% level $\delta$ in the data $\|y^\delta - y\|\leq \delta$. By the ill-posed nature of the problem, the norm 
-% $\|R_\alpha\|$ diverges as $\alpha\to 0$, while the regularization implies a converging regularized 
-% solution $x^{\alpha} = R_\alpha y$ to $x=K^{-1}y$, equivalent to $\|R_\alpha Kx -x\|\to 0$, as $\alpha\to0$.
-% Hence, 
-%  \begin{definition}
-%  An {\color{blue}regularization strategy} $R_\alpha : Y \to X$, for $\alpha> 0$, is a family of linear and bounded operators such that
-%  \begin{equation}
-%   \lim_{\alpha\to 0}R_\alpha Kx = x\quad \forall x \in X.
-%  \end{equation}
-%  An {\color{blue}admissible} regularization strategy $\alpha(\delta)$ is a function such that for $\delta \to 0$
-%  \begin{equation}
-%  \left\{
-%  \begin{aligned}
-%   &\alpha(\delta) \to 0, \\
-%   &\forall x \in X: \,\sup\bigl\{\bigl\|R_{\alpha(\delta)} y^\delta - x\bigr\|:y^\delta \in Y, \|Kx - y^\delta\|\leq\delta\bigr\} \to 0.
-%  \end{aligned}
-%  \right.
-%  \end{equation}
-% \end{definition}
-\only<2->{
-\vspace{-0.8cm}
+\onslide<6->{
+\vspace{-0.2cm}
  \begin{block}{
  \parallelcontent
- {Tikhonov regularization}{Discrepancy principle of Morozov}}
+ {Tikhonov regularization}{\onslide<9->{Discrepancy principle of Morozov}}}
  \parallelcontent
  {
+ \onslide<7->{
  \footnotesize
- \emph{
-% We can interpret it as
-%  the minimization of $J_\alpha$, as 
-%  \begin{itemize}
-the minimization of the residual $\|Kx^{\alpha} - y\|$,
-penalized by 
-% the norm of the solution 
-$\|x^\alpha\|$.
-%  \end{itemize}
-}
+ \emph{The {\color{blue}minimization} of the norm $\|x^\alpha\|$ under the constraint
+ of bounded residual $\|Kx^{\alpha} - y\|$,}
  \begin{equation}
-  \textup{min}\|Kx - y\|^2 + \alpha\|x\|^2\quad x\in X
+  \min\limits_{x\in X}\,\big\{\|Kx - y\|^2 + \alpha\|x\|^2\big\},
  \end{equation}
-vanishing of the first derivative
-\begin{align}
- &\alpha x^{\alpha} + K^TKx^{\alpha} = K^Ty.
-%  &\alpha_n f_n^{\alpha_n} + N_{rn}^TN_{rn}f_n^{\alpha_n} = \psi_{0zn}\label{eq:tikh-reg-lsm-discrete}.
-\end{align}
+substituting $y$ with $y^\delta$ yields to}
 }
 {
+\onslide<10->{
  \footnotesize
- We denote by $\Delta(\alpha)$ the \emph{discrepancy} function
+ Let $\Delta(\alpha)$ denote the {\color{blue}discrepancy} function
 %  and its variants. The mostly used 
 %  are the classical and the normalized discrepancy:
  \begin{align}
   \Delta(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta, \label{eq:def-disc}\\
-  \Delta_N(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta\|x^{\alpha,\delta}\|.\label{eq:def-disc-N}
+  \Delta_N(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta\|x^{\alpha,\delta}\|,\label{eq:def-disc-N}
  \end{align}
 %  \begin{align}
 %   \Delta(\alpha)&\coloneqq\|N_rf^{\alpha,\delta} - \psi_{0z}^\delta\| - \delta, \label{eq:def-disc}\\
 %   \Delta_N(\alpha)&\coloneqq\|N_rf^{\alpha,\delta} - \psi_{0z}^\delta\| - \delta\|f^{\alpha,\delta}\|.\label{eq:def-disc-N}
 %  \end{align}
-Therefore the determination of $\alpha(\delta)$ is equivalent to the computation 
-of the unique zero of the function $\Delta_N(\alpha)$.
+$\alpha(\delta)$ is the unique zero of $\Delta_N(\alpha)$
+}}
+% \vspace{-0.25cm}
+% \parallelcontent
+% {
+\begin{equation}
+\onslide<8->{
+ \alpha(\delta) x^{\alpha(\delta)} + K^TKx^{\alpha(\delta)} = K^Ty^\delta;
+% \end{equation}
+% }
+% {
 }
+\quad\quad
+\onslide<11->{
+% \vspace{0.05cm}
+% \begin{equation}
+\Delta_N(\alpha(\delta))=0;}
+\onslide<12>{
+\quad
+{\color{purple}
+(\alpha(\delta), x^{\alpha(\delta)})}
+}
+\end{equation}% }% }
+\vspace*{-0.6cm}
 \end{block}
-}
-\only<1>{
-\begin{proposition}
-\label{prop:strategy-disc}
-%  By previous Proposition \ref{prop:properties-disc}, let $\delta$ be fixed, then there 
-%  exists unique zero $\alpha^*(\delta)$ of the discrepancy function, 
-%  such that $\Delta\bigl(\alpha^*\bigr)=0$. The same is still true for $\Delta_N(\alpha)$ 
-%  (see \cite{kirsch:shape-1998}).
- Let $\delta$ be fixed, then there exists a unique 
- couple $(\alpha(\delta), x^{\alpha(\delta)})$ such that
- \begin{equation}
-  \left\{
-  \begin{split}
-   & \alpha(\delta) x^{\alpha(\delta)} + K^TKx^{\alpha(\delta)} = K^Ty^\delta, \\
-   & \Delta(\alpha(\delta))=0, \quad\textup{ or }\quad \Delta_N(\alpha(\delta))=0.
-  \end{split}
-  \right.
- \end{equation}
-\end{proposition}
+\onslide<12->{
+\tikz[remember picture, overlay]{
+\draw[purple,very thick] (0,0.6) rectangle (12.2,1.1);}}
+% \begin{center}
+% \vspace{-2cm}
+%  \begin{tikz}
+%   \draw[thick, purple] (0,0) rectangle (01,1);
+%  \end{tikz}
+% \end{center}
 }
 \end{frame}
-
-%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%
 % \begin{frame}
@@ -1448,7 +1314,7 @@ of the unique zero of the function $\Delta_N(\alpha)$.
 % \end{frame}
 
 %%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}<0>[noframenumbering]
  \frametitle{Tikhonov regularization}
 % where $N_r:L^2(\partial\Omega)\to L^2(\partial\Omega)$ is a compact operator.
 % \par
@@ -1483,7 +1349,7 @@ In terms of the discretized relative map $N_{rn}$, we solve
 
 \end{frame}
 %%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}<0>[noframenumbering]
  \frametitle{Discrepancy Principle of Morozov}
  \begin{definition}
  We denote by $\Delta(\alpha)$ the \emph{discrepancy} function
@@ -1857,6 +1723,7 @@ eigenvalues $\log\lambda_j$ of the map $N_r$ in Figure \ref{subfig:eig_two_ellip
 % \begin{frame}
 %  \frametitle{}
 % \end{frame}
+
 \end{document}
  \begin{equation}
   (({N_D} - {N_0})f,f) = ( Af,TAf) \geq c\|Af\|^2_{L^2(D;\,\mathbb{R}^2)} > 0 \quad \forall f\in L^2_0(\partial \Omega) \quad f\neq0.
