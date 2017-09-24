@@ -1,5 +1,5 @@
 \documentclass[10pt,xcolor={dvipsnames}]{beamer}
-% \documentclass[handout]{beamer}
+% \documentclass[10pt,handout]{beamer}
 \usetheme[secheader]{Boadilla}
 \usecolortheme[named=purple]{structure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -26,6 +26,13 @@
   escapeinside={||},
 }
 \usepackage{nicefrac}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\parallelcontent[2]{
+  \begin{columns}[t]
+    \column{0.48\textwidth} #1
+    \column{0.48\textwidth} #2
+  \end{columns}
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 % \usepackage[english]{babel}
 \usepackage[italian, english]{babel}
@@ -648,6 +655,8 @@ map.
 %%%%%%%%%%%%%%%%
 \begin{frame}
   \frametitle{Linear sampling method}
+  {\footnotesize
+  The aim is to solve the linear equation}
   \begin{equation}
   N_r f = \psi_{0z} \quad \text{ on }\partial \Omega.
   \end{equation}
@@ -662,7 +671,7 @@ map.
 Let {\color{blue}${N_r} \coloneqq {N_0} - {N_D}$} denote the 
 {\color{blue} relative map}.}
 \footnotesize
-$N_r:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$ 
+$N_r:H_0^{\nicefrac{-1}{2}}(\partial \Omega)\to H_0^{\nicefrac{1}{2}}(\partial \Omega)$ 
   is injective, with dense image, self-adjoint, compact and positive. 
   Intermediate results are entailed by the Interior Transmission Problem.
 %  \end{variableblock}
@@ -686,14 +695,14 @@ $N_r:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$
 \begin{frame}<0>[noframenumbering]
  \frametitle{Linear sampling method: the map}
 %  In the inverse inclusion problem, a crucial role is played by the 
-We denote by ${N_r}:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$
+We denote by ${N_r}:H_0^{\nicefrac{-1}{2}}(\partial \Omega)\to H_0^{\nicefrac{1}{2}}(\partial \Omega)$
 the {\color{blue} relative} Neumann--to--Dirichlet map
 % (see \cite{somersalo:preprint})
 \begin{equation}
  {N_r} \coloneqq {N_0} - {N_D}.
 \end{equation}
   \begin{proposition}
-  The operator ${N_0} - {N_D}:H_0^{\,-1/2}(\partial \Omega)\to H_0^{1/2}(\partial \Omega)$ 
+  The operator ${N_0} - {N_D}:H_0^{nicefrac{-1}{2}}(\partial \Omega)\to H_0^{\nicefrac{1}{2}}(\partial \Omega)$ 
   is injective, with dense image, self-adjoint, compact and positive.
  \end{proposition}
  \begin{proposition}
@@ -803,26 +812,41 @@ There holds the strict implication
  \end{frame}
 %%%%%%%%%%%%%%%%%
 \begin{frame}
- \frametitle{Approximating sequence for $z\in D$}
- We split the main result in two propositions.
+ \frametitle{Approximating sequences for fixed $z$}
 \begin{proposition}[Constructive Part]
 \label{prop:lsm-constructive}
-Fix $z \in D$. Then for any $\epsilon > 0$ there exists an approximating harmonic layer $\mathcal{S}(\partial B, \omega^\epsilon_z)$ with density $\omega^\epsilon_z\in L^2(\partial B)$  such that
+Let $\epsilon > 0$, there exists an {\color{blue}approximating harmonic function} $\mathcal{S}(\partial B, \omega^\epsilon_z)$, with density $\omega^\epsilon_z\in L^2(\partial B)$  such that
 \begin{equation}
- \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \epsilon,
+ \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) - \psi_{0z}\|_{H^{\nicefrac{1}{2}}(\partial\Omega)} < \epsilon,
 \end{equation}
-furthermore, when $z$ approaches the boundary $\partial D$, $\|\omega^\epsilon_z\|_{L^2(\partial B)}\to + \infty$.
-\end{proposition}
-\begin{remark}
- There exist a sequence 
+\begin{itemize}
+ \item  Fix $z \in D$. 
+  There exist a sequence 
  $v^{\epsilon_n}_z\coloneqq\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$ 
  and some
  $ v_z\in H^1(D)$, such that
-\begin{equation}
+  \begin{equation}
  \|v^{\epsilon_n}_z - v_z\|_{H^1(D)} \to 0\quad\textup{ for }\epsilon_n \to 0.
+  \end{equation}
+  furthermore, when $z$ approaches the boundary $\partial D$, $\|\omega^\epsilon_z\|_{L^2(\partial B)}\to + \infty$.
+ \item Fix $z \in \Omega\backslash\overline{D}$. Then for any $\delta>0$ and $\epsilon > 0$ there exists an harmonic layer $\mathcal{S}(\partial B, \omega^{\delta, \epsilon}_z)$ with density $\omega^{\delta, \epsilon}_z\in L^2(\partial B)$ such that
+\begin{equation}
+ \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^{\delta,\epsilon}_z) - \psi_{0z}\|_{H^{\nicefrac{1}{2}}(\partial\Omega)} < \delta + \epsilon,
 \end{equation}
-%  Obviously, $\{v^{\epsilon_n}_z\}_{n\in\mathbb{N}}$ is bounded in the same norm $H^1(D)$.
-\end{remark}
+and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\to 0$.
+
+\end{itemize}
+\end{proposition}
+% \begin{remark}
+%  There exist a sequence 
+%  $v^{\epsilon_n}_z\coloneqq\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$ 
+%  and some
+%  $ v_z\in H^1(D)$, such that
+% \begin{equation}
+%  \|v^{\epsilon_n}_z - v_z\|_{H^1(D)} \to 0\quad\textup{ for }\epsilon_n \to 0.
+% \end{equation}
+% %  Obviously, $\{v^{\epsilon_n}_z\}_{n\in\mathbb{N}}$ is bounded in the same norm $H^1(D)$.
+% \end{remark}
 % \begin{remark}
 %  For fixed $z\in D$, there exist a sequence 
 %  $v^{\epsilon_n}_z\coloneqq\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$ 
@@ -846,7 +870,7 @@ furthermore, when $z$ approaches the boundary $\partial D$, $\|\omega^\epsilon_z
 \label{prop:lsm-counterpart}
 Fix $z \in \Omega\backslash\overline{D}$. Then for any $\delta>0$ and $\epsilon > 0$ there exists an harmonic layer $\mathcal{S}(\partial B, \omega^{\delta, \epsilon}_z)$ with density $\omega^{\delta, \epsilon}_z\in L^2(\partial B)$ such that
 \begin{equation}
- \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^{\delta,\epsilon}_z) - \psi_{0z}\|_{H^{1/2}(\partial\Omega)} < \delta + \epsilon,
+ \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^{\delta,\epsilon}_z) - \psi_{0z}\|_{H^{\nicefrac{1}{2}}(\partial\Omega)} < \delta + \epsilon,
 \end{equation}
 and $\|\omega^{\delta, \epsilon}_z\|_{L^2(\partial B)}\to + \infty$ as $\delta\to 0$.
 \end{proposition}
@@ -989,30 +1013,55 @@ $
 %%%%%%%%%%%%%%%%%
 \begin{frame}
  \frametitle{Reciprocity gap method: the operator R}
+\begin{block}{Definition: the operator R}
+ \footnotesize
+% \onslide<2->
+{
  We denote by $\textup{R} : \mathcal{V}(\overline{B})\to L^2(\partial B)$ the {\color{blue}reciprocity gap operator}
- defined by
+ defined by}
 \begin{equation}
- \textup{R}(v)(x_0)\coloneqq 
+%  \onslide<2->
+ {
+ \textup{R}v(x_0)\coloneqq }
 %  \mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr)\coloneqq \int_{\partial \Omega}\bigl(u(y,x_0)v_\nu (y) - u_\nu(y,x_0)v(y)\bigr)dy.
- \mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr)
- \coloneqq \int_{\partial \Omega}\bigl(uv_\nu - u_\nu v \bigr)dy.
+ \mathcal{R}_{\partial\Omega}\bigl(u_{x_0},v\bigr)
+%  \mathcal{R}_{\partial\Omega}\bigl(u(\cdot,x_0),v(\cdot)\bigr)
+ \coloneqq \int_{\partial \Omega}\bigl(u\,\partial_\nu v - \partial_\nu u \,v \bigr)dy,\quad u_{x_0}\in\mathcal{U}.
+\end{equation}
+\end{block}
+% \pause
+{\footnotesize
+  The aim is to solve the linear equation in $v$}
+\begin{equation}
+ \textup{R}v(x_0) = 
+ \mathcal{R}_{\partial\Omega}\bigl(u_{x_0},v\bigr) = 
+ \mathcal{R}_{\partial\Omega}\bigl(u_{x_0},s_z\bigr),\quad \forall u_{x_0}\in\mathcal{U}, 
+ \quad (x_0\in\partial B)
 \end{equation}
 
- \begin{proposition}
- The operator $\textup{R} : \mathcal{V}_0(\overline{B})\to L^2(\partial B)$
- \begin{itemize}
-  \item[-] is injective,
-  \item[-] its range has codimension one: $\mathcal{R}(R)^\perp=\textup{span}(\{\alpha_c\})$,
- \end{itemize}
+ \begin{block}{The map R}
+  \footnotesize
+ The operator $\textup{R} : \mathcal{V}_0(\overline{B})\to L^2(\partial B)$ is injective,
+its range has codimension one: $\mathcal{R}(R)^\perp=\textup{span}(\{\alpha_c\})$,
  where $\alpha_c$ is the solution of 
  $
   \partial_\nu \mathcal{S}^-(\partial B,\alpha_c) = 0,\textup{ on }\partial B.
  $
- \end{proposition}
- The choice $\Psi_z=\nabla_x\Phi(x,z)\cdot \vec{d}$ in the right term guarantees that
+ \end{block}
+ \begin{block}{The {\color{blue}sampling function} $s_z = \nabla_x\Phi(x,z)\cdot \vec{d}$}
+ \footnotesize
+ The choice $\nabla_x\Phi(x,z)\cdot \vec{d}$ in the right term has meaning
  \begin{equation*}
-  \mathcal{R}(u,\Psi_z) \perp \textup{span}(\{\alpha_c\})
+  \textup{flux}_{\partial\Omega}(\nabla v) = \textup{flux}_{\partial\Omega}(
+  \nabla s_z)=0 .
  \end{equation*}
+%  and guarantees that
+%  \begin{equation*}
+%   \mathcal{R}(u,\Psi_z) \perp \textup{span}(\{\alpha_c\})
+%  \end{equation*}  
+ \end{block}
+
+
 
 \end{frame}
 %%%%%%%%%%%%%%%%%
@@ -1069,7 +1118,7 @@ There holds the alternative
 %  ({N_D} - {N_0})f = \psi_{0z} \quad \text{ on }\partial \Omega.
 % \end{equation}
 We compute the duality of \eqref{eq:eq-lsm-link}, with a generic 
-${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)}$, by self-adjoint properties
+${g \in \bigl(H^{\nicefrac{1}{2}}_0(\partial \Omega)\bigr)^* = H^{\nicefrac{-1}{2}}_0(\partial \Omega)}$, by self-adjoint properties
 % (denoting $u,v$ solutions of 
 % \eqref{eq:NtoD-inclusion}), \eqref{eq:NtoD-laplace}, we have
 \begin{align*}
@@ -1088,31 +1137,55 @@ ${g \in \bigl(H^{1/2}_0(\partial \Omega)\bigr)^* = H^{\,-1/2}_0(\partial \Omega)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
  \frametitle{Regularization of ill-posed equations}
-The approximate equation for the linear sampling method is
+{\footnotesize
+The approximate equation for the linear sampling method is}
 \begin{equation}
-(Kx = y)\quad N_r f = \psi_{0z}, \quad\textup{ where }N_r\in\mathcal{K}(L^2(\partial\Omega)).
+\only<1>{N_r f = \psi_{0z}}\only<2->{Kx = y, \quad\textup{ with }K\in\mathcal{K}(L^2(\partial\Omega)),}
 \end{equation}
-Let $x^{\alpha,\delta}\coloneqq R_{\alpha(\delta)} y^\delta$ the regularized solution for perturbed data $y^\delta$, $\|y^\delta - y\|\leq \delta$. 
-Then
-% \par
-% The fundamental error estimate for any regularized solution is
-\begin{align*}
+\vspace{-0.6cm}
+{\footnotesize
+\begin{itemize}
+ \item[$\blacktriangleright$] let $y^\delta$ be the perturbed data such that $\|y^\delta - y\|\leq \delta$
+ \item[$\blacktriangleright$] let $x^{\alpha,\delta}\coloneqq R_{\alpha(\delta)} y^\delta$ be the regularized solution
+\end{itemize}
+}
+\begin{block}
+{
+\footnotesize
+The estimate for the regularization is 
+% \vspace{-0.5cm}
+% \begin{equation}
+% \normalsize
+% \hspace{5cm}
+% \|x^{\alpha, \delta} - x\|\leq \|R_\alpha\| \|y^\delta - y\| + \|R_\alpha Kx - x\|.
+% \end{equation}
+}
+\vspace{-0.5cm}
+\begin{align}
 \label{eq:fundamental-error-estimate}
- \|x^{\alpha, \delta} - x\| &\leq \|R_\alpha y^\delta - R_\alpha y\| + \|R_\alpha y - x\| \\
-                            &\leq \|R_\alpha\| \|y^\delta - y\| + \|R_\alpha Kx - x\|.
-\end{align*}
+ \|x^{\alpha, \delta} - x\| 
+%  &\leq \|R_\alpha y^\delta - R_\alpha y\| + \|R_\alpha y - x\| \\
+&\leq \|R_\alpha Kx - x\| + \|R_\alpha\| \|y^\delta - y\|.
+\end{align}
+\begin{columns}[t]
+ \begin{column}{0.5\textwidth}
+  accuracy: $\|R_\alpha Kx -x\|\to0$, $\alpha\to0$,
+ \end{column}
+ \begin{column}{0.5\textwidth}
+  stability: $\|R_\alpha\|\to\infty$, $\alpha\to0$,
+ \end{column}
+\end{columns}
+a compromise for the choice of the parameter $\alpha$
+% \emph{We have to accept a compromise for the choice of the parameter $\alpha$, betweenand we have to elaborate a 
+% strategy $\alpha(\delta)$ which guarantees convergence of the error $\|x^{\alpha,\delta} - x\|$.
+% }
+\end{block}
+
 % The above estimate represents the decomposition of the approximation error, for a fixed error 
 % level $\delta$ in the data $\|y^\delta - y\|\leq \delta$. By the ill-posed nature of the problem, the norm 
 % $\|R_\alpha\|$ diverges as $\alpha\to 0$, while the regularization implies a converging regularized 
 % solution $x^{\alpha} = R_\alpha y$ to $x=K^{-1}y$, equivalent to $\|R_\alpha Kx -x\|\to 0$, as $\alpha\to0$.
 % Hence, 
-\emph{We have to accept a compromise for the choice of the parameter $\alpha$, between
-\begin{enumerate}
- \item the accuracy $\|R_\alpha Kx -x\|\to0$ for $\alpha\to0$,
- \item the stability $\|R_\alpha\|\to\infty$ for $\alpha\to0$,
- \end{enumerate}
-and we have to elaborate a 
-strategy $\alpha(\delta)$ which guarantees convergence of the error $\|x^{\alpha,\delta} - x\|$.}
 %  \begin{definition}
 %  An {\color{blue}regularization strategy} $R_\alpha : Y \to X$, for $\alpha> 0$, is a family of linear and bounded operators such that
 %  \begin{equation}
@@ -1128,7 +1201,205 @@ strategy $\alpha(\delta)$ which guarantees convergence of the error $\|x^{\alpha
 %  \right.
 %  \end{equation}
 % \end{definition}
+\only<2->{
+\vspace{-0.8cm}
+\begin{columns}[t]
+ \begin{column}{0.5\textwidth}
+ \begin{block}{Tikhonov regularization}
+ \footnotesize
+ \emph{
+% We can interpret it as
+%  the minimization of $J_\alpha$, as 
+%  \begin{itemize}
+the minimization of the residual $\|Kx^{\alpha} - y\|$,
+penalized by 
+% the norm of the solution 
+$\|x^\alpha\|$.
+%  \end{itemize}
+}
+ \begin{equation}
+  \textup{min}\|Kx - y\|^2 + \alpha\|x\|^2\quad x\in X
+ \end{equation}
+vanishing of the first derivative
+\begin{align}
+ &\alpha x^{\alpha} + K^TKx^{\alpha} = K^Ty.
+%  &\alpha_n f_n^{\alpha_n} + N_{rn}^TN_{rn}f_n^{\alpha_n} = \psi_{0zn}\label{eq:tikh-reg-lsm-discrete}.
+\end{align}
+\end{block}
+ \end{column}
+ \begin{column}{0.5\textwidth}
+ \begin{block}{Discrepancy principle of Morozov}
+ \footnotesize
+ We denote by $\Delta(\alpha)$ the \emph{discrepancy} function
+%  and its variants. The mostly used 
+%  are the classical and the normalized discrepancy:
+ \begin{align}
+  \Delta(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta, \label{eq:def-disc}\\
+  \Delta_N(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta\|x^{\alpha,\delta}\|.\label{eq:def-disc-N}
+ \end{align}
+%  \begin{align}
+%   \Delta(\alpha)&\coloneqq\|N_rf^{\alpha,\delta} - \psi_{0z}^\delta\| - \delta, \label{eq:def-disc}\\
+%   \Delta_N(\alpha)&\coloneqq\|N_rf^{\alpha,\delta} - \psi_{0z}^\delta\| - \delta\|f^{\alpha,\delta}\|.\label{eq:def-disc-N}
+%  \end{align}
+Therefore the determination of $\alpha(\delta)$ is equivalent to the computation 
+of the unique zero of the function $\Delta_N(\alpha)$.
+ \end{block}
+ \end{column}
+\end{columns}
+}
+\only<1>{
+\begin{proposition}
+\label{prop:strategy-disc}
+%  By previous Proposition \ref{prop:properties-disc}, let $\delta$ be fixed, then there 
+%  exists unique zero $\alpha^*(\delta)$ of the discrepancy function, 
+%  such that $\Delta\bigl(\alpha^*\bigr)=0$. The same is still true for $\Delta_N(\alpha)$ 
+%  (see \cite{kirsch:shape-1998}).
+ Let $\delta$ be fixed, then there exists a unique 
+ couple $(\alpha(\delta), x^{\alpha(\delta)})$ such that
+ \begin{equation}
+  \left\{
+  \begin{split}
+   & \alpha(\delta) x^{\alpha(\delta)} + K^TKx^{\alpha(\delta)} = K^Ty^\delta, \\
+   & \Delta(\alpha(\delta))=0, \quad\textup{ or }\quad \Delta_N(\alpha(\delta))=0.
+  \end{split}
+  \right.
+ \end{equation}
+\end{proposition}
+}
 \end{frame}
+\begin{frame}
+ \frametitle{Regularization of ill-posed equations}
+{\footnotesize
+The approximate equation for the linear sampling method is}
+\begin{equation}
+\only<1>{N_r f = \psi_{0z}}\only<2->{Kx = y, \quad\textup{ with }K\in\mathcal{K}(L^2(\partial\Omega)),}
+\end{equation}
+\vspace{-0.6cm}
+{\footnotesize
+\begin{itemize}
+ \item[$\blacktriangleright$] let $y^\delta$ be the perturbed data such that $\|y^\delta - y\|\leq \delta$
+ \item[$\blacktriangleright$] let $x^{\alpha,\delta}\coloneqq R_{\alpha(\delta)} y^\delta$ be the regularized solution
+\end{itemize}
+}
+\begin{block}
+{
+\footnotesize
+The estimate for the regularization is 
+% \vspace{-0.5cm}
+% \begin{equation}
+% \normalsize
+% \hspace{5cm}
+% \|x^{\alpha, \delta} - x\|\leq \|R_\alpha\| \|y^\delta - y\| + \|R_\alpha Kx - x\|.
+% \end{equation}
+}
+\vspace{-0.5cm}
+\begin{align}
+\label{eq:fundamental-error-estimate}
+ \|x^{\alpha, \delta} - x\| 
+%  &\leq \|R_\alpha y^\delta - R_\alpha y\| + \|R_\alpha y - x\| \\
+&\leq \|R_\alpha Kx - x\| + \|R_\alpha\| \|y^\delta - y\|.
+\end{align}
+\begin{columns}[t]
+ \begin{column}{0.5\textwidth}
+  accuracy: $\|R_\alpha Kx -x\|\to0$, $\alpha\to0$,
+ \end{column}
+ \begin{column}{0.5\textwidth}
+  stability: $\|R_\alpha\|\to\infty$, $\alpha\to0$,
+ \end{column}
+\end{columns}
+a compromise for the choice of the parameter $\alpha$
+% \emph{We have to accept a compromise for the choice of the parameter $\alpha$, betweenand we have to elaborate a 
+% strategy $\alpha(\delta)$ which guarantees convergence of the error $\|x^{\alpha,\delta} - x\|$.
+% }
+\end{block}
+
+% The above estimate represents the decomposition of the approximation error, for a fixed error 
+% level $\delta$ in the data $\|y^\delta - y\|\leq \delta$. By the ill-posed nature of the problem, the norm 
+% $\|R_\alpha\|$ diverges as $\alpha\to 0$, while the regularization implies a converging regularized 
+% solution $x^{\alpha} = R_\alpha y$ to $x=K^{-1}y$, equivalent to $\|R_\alpha Kx -x\|\to 0$, as $\alpha\to0$.
+% Hence, 
+%  \begin{definition}
+%  An {\color{blue}regularization strategy} $R_\alpha : Y \to X$, for $\alpha> 0$, is a family of linear and bounded operators such that
+%  \begin{equation}
+%   \lim_{\alpha\to 0}R_\alpha Kx = x\quad \forall x \in X.
+%  \end{equation}
+%  An {\color{blue}admissible} regularization strategy $\alpha(\delta)$ is a function such that for $\delta \to 0$
+%  \begin{equation}
+%  \left\{
+%  \begin{aligned}
+%   &\alpha(\delta) \to 0, \\
+%   &\forall x \in X: \,\sup\bigl\{\bigl\|R_{\alpha(\delta)} y^\delta - x\bigr\|:y^\delta \in Y, \|Kx - y^\delta\|\leq\delta\bigr\} \to 0.
+%  \end{aligned}
+%  \right.
+%  \end{equation}
+% \end{definition}
+\only<2->{
+\vspace{-0.8cm}
+ \begin{block}{
+ \parallelcontent
+ {Tikhonov regularization}{Discrepancy principle of Morozov}}
+ \parallelcontent
+ {
+ \footnotesize
+ \emph{
+% We can interpret it as
+%  the minimization of $J_\alpha$, as 
+%  \begin{itemize}
+the minimization of the residual $\|Kx^{\alpha} - y\|$,
+penalized by 
+% the norm of the solution 
+$\|x^\alpha\|$.
+%  \end{itemize}
+}
+ \begin{equation}
+  \textup{min}\|Kx - y\|^2 + \alpha\|x\|^2\quad x\in X
+ \end{equation}
+vanishing of the first derivative
+\begin{align}
+ &\alpha x^{\alpha} + K^TKx^{\alpha} = K^Ty.
+%  &\alpha_n f_n^{\alpha_n} + N_{rn}^TN_{rn}f_n^{\alpha_n} = \psi_{0zn}\label{eq:tikh-reg-lsm-discrete}.
+\end{align}
+}
+{
+ \footnotesize
+ We denote by $\Delta(\alpha)$ the \emph{discrepancy} function
+%  and its variants. The mostly used 
+%  are the classical and the normalized discrepancy:
+ \begin{align}
+  \Delta(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta, \label{eq:def-disc}\\
+  \Delta_N(\alpha)&\coloneqq\|Kx^{\alpha,\delta} - y^\delta\| - \delta\|x^{\alpha,\delta}\|.\label{eq:def-disc-N}
+ \end{align}
+%  \begin{align}
+%   \Delta(\alpha)&\coloneqq\|N_rf^{\alpha,\delta} - \psi_{0z}^\delta\| - \delta, \label{eq:def-disc}\\
+%   \Delta_N(\alpha)&\coloneqq\|N_rf^{\alpha,\delta} - \psi_{0z}^\delta\| - \delta\|f^{\alpha,\delta}\|.\label{eq:def-disc-N}
+%  \end{align}
+Therefore the determination of $\alpha(\delta)$ is equivalent to the computation 
+of the unique zero of the function $\Delta_N(\alpha)$.
+}
+\end{block}
+}
+\only<1>{
+\begin{proposition}
+\label{prop:strategy-disc}
+%  By previous Proposition \ref{prop:properties-disc}, let $\delta$ be fixed, then there 
+%  exists unique zero $\alpha^*(\delta)$ of the discrepancy function, 
+%  such that $\Delta\bigl(\alpha^*\bigr)=0$. The same is still true for $\Delta_N(\alpha)$ 
+%  (see \cite{kirsch:shape-1998}).
+ Let $\delta$ be fixed, then there exists a unique 
+ couple $(\alpha(\delta), x^{\alpha(\delta)})$ such that
+ \begin{equation}
+  \left\{
+  \begin{split}
+   & \alpha(\delta) x^{\alpha(\delta)} + K^TKx^{\alpha(\delta)} = K^Ty^\delta, \\
+   & \Delta(\alpha(\delta))=0, \quad\textup{ or }\quad \Delta_N(\alpha(\delta))=0.
+  \end{split}
+  \right.
+ \end{equation}
+\end{proposition}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%
 % \begin{frame}
@@ -1319,34 +1590,37 @@ $$
 \begin{frame}[noframenumbering]
  \begin{center}
  \Large
- 3. Factorization method 
+ {\color{purple} 3. Factorization method}
  \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%
 \begin{frame}
  \frametitle{Factorization method}
- The aim is to factorize the relative Neumann--to--Dirichlet map ${N_0} - {N_D}$, in the form
+{ \small
+ The aim is to factorize the relative Neumann--to--Dirichlet map ${N_0} - {N_D}$, in the form}
 \begin{equation}
- {N_r}\coloneqq{N_0} - {N_D} = A^*TA,
+ {N_r}\coloneqq{N_0} - {N_D} = A^*TA.
 \end{equation}
-where
-% $A,T$ are operators suitably chosen and 
-$A^*$ is the adjoint operator of A. 
+{\small
 The choice of the operators is not unique, for instance
+}
 \begin{columns}[T]
 \begin{column}{0.5\textwidth}
 \vspace{0.8cm}
 \begin{itemize}
- \item 
+ \item[$\blacktriangleright$]
 %  $A:L^2_0(\partial \Omega) \to L^2(D;\,\mathbb{R}^2)$ defined as 
  $A\,f = \nabla v|_D,$
- \item 
+ \item[$\blacktriangleright$]
 %  $T:L^2(D;\,\mathbb{R}^2)\to L^2(D;\,\mathbb{R}^2)$ as 
  $TA\,f = 
 %  (k-1) (\nabla v - \nabla w) =
  (k-1) \nabla u|_D.$
+ \item[$\blacktriangleright$]
+ $A^*$ is the adjoint operator of A. 
 \end{itemize}\end{column}
 \begin{column}{0.5\textwidth}
+\begin{center}
 \begin{tikzpicture}
     % set up the nodes
     \node (n11) at (0,0) {$L^2_0(\partial\Omega)$};
@@ -1363,6 +1637,7 @@ The choice of the operators is not unique, for instance
 %     \draw[->] (n21.south) [out=-60, in=-120]to node [midway,below] {$R_\alpha$} (n22.south);
 %     \draw[->] (n21.west) [out=170, in=-170]to node [midway,left] {$\tilde{R}_\alpha$} (n11.west);
 \end{tikzpicture}
+\end{center}
 \end{column}
 \end{columns}
 
@@ -1370,46 +1645,61 @@ The choice of the operators is not unique, for instance
 %%%%%%%%%%%%%%%%%
 \begin{frame}
  \frametitle{Range characterization}
-\begin{theorem}
- There holds the equivalence 
+\begin{columns}[T]
+\begin{column}{0.5\textwidth}
+\begin{block}{Theorem: range characterization}
+ {\footnotesize
+ There holds these criteria of range equivalence
+ \begin{enumerate}
+  \item the following theorem
+  {\normalsize
  \begin{equation}
-  z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(A^*).
- \end{equation}
-\end{theorem}
-Both the following factorizations hold
-\begin{align*}
-\label{eq:factorization-two}
- {N_0} - {N_D}&=({N_0} - {N_D})^{1/2}\,I\,({N_0} - {N_D})^{1/2}\\
- &= A^*TA.
-\end{align*}
-\vspace{-0.8cm}
- \begin{theorem}
- The range of two operators is the same, that is
+   z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(A^*).
+ \end{equation}}
+ \item equivalently
+  {\normalsize
  \begin{equation}
-  \mathcal{R}(A^*) = \mathcal{R}(({N_0} - {N_D})^{1/2}).
- \end{equation}
-Therefore an equivalent criterion can be stated as
- \begin{equation}
-  z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(({N_0} - {N_D})^{1/2}).
- \end{equation}
-\end{theorem}
-\end{frame}
-%%%%%%%%%%%%%%%%%
-\begin{frame}
- \frametitle{Range criterion}
-We compute the square root of a
-compact, self-adjoint and positive operator 
-from its spectral decomposition
-\begin{align}
-({N_0} - {N_D}) f &= \sum_{j\in \mathbb{N}}^\infty \lambda_j(f,\psi_j)_{L^2(\partial\Omega)} \psi_j ,\\
-({N_0} - {N_D})^{1/2} f &= \sum_{j\in \mathbb{N}}^\infty \sqrt{\lambda_j}(f,\psi_j)_{L^2(\partial\Omega)} \psi_j.
-\end{align}
-We deduce, by Picard's theorem,
+  z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(N_r^{\nicefrac{1}{2}}).
+ \end{equation}}
+ \item equivalently, by Picard's theorem,
+\end{enumerate}
+\small{
 \begin{equation}
-   \psi_{0z} \in \mathcal{R}(({N_0} - {N_D})^{1/2})
+   \psi_{0z} \in \mathcal{R}(N_r^{\nicefrac{1}{2}})
    \,\Longleftrightarrow \,
    \sum_{j\in \mathbb{N}}^\infty \frac{(\psi_{0z},\psi_j)^2}{\lambda_j}<\infty. 
 \end{equation}
+}
+}
+\end{block}
+\end{column}
+\begin{column}{0.47\textwidth}
+{\footnotesize
+Both the following factorizations hold}
+\begin{align}
+\label{eq:factorization-two}
+ {N_0} - {N_D}=N_r&=N_r^{\nicefrac{1}{2}}\,I\,N_r^{\nicefrac{1}{2}}\\
+ &= A^*TA.
+\end{align}
+\vspace{-1cm}
+ \begin{block}
+ {\small Theorem}
+ {\footnotesize
+ The range of two operators is the same}
+ \begin{equation}
+  \mathcal{R}(A^*) = \mathcal{R}(({N_0} - {N_D})^{\nicefrac{1}{2}}).
+ \end{equation}
+ \end{block}
+{\footnotesize
+The spectral decomposition of compact, self-adjoint, and positive operators yields to}
+{\small
+\begin{align}
+N_r f &= \sum_{j\in \mathbb{N}}^\infty \lambda_j(f,\psi_j)_{L^2(\partial\Omega)} \psi_j ,\\
+N_r^{\nicefrac{1}{2}} f &= \sum_{j\in \mathbb{N}}^\infty \sqrt{\lambda_j}(f,\psi_j)_{L^2(\partial\Omega)} \psi_j.
+\end{align}}
+
+\end{column}
+\end{columns}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%
 \begin{frame}
