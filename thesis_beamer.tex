@@ -108,6 +108,8 @@
 \newcommand*{\yMin}{0}%
 \newcommand*{\yMax}{6}%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\Fontvi{\fontsize{6}{2}\selectfont}
+\newcommand\smallscriptsize{\fontsize{6}{2}\selectfont}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -379,6 +381,91 @@ map.
 }
 \end{enumerate}
 \end{frame}
+%%%%%%%%%%%%%%%%
+\begin{frame}[fragile]
+ \frametitle{Contents}
+% \smartdiagramset{
+% set color list={blue!50!cyan,green!60!lime,orange!50!red},
+% priority arrow width=0.5cm,
+% priority arrow height advance=2.25cm
+% }
+%   \smartdiagram[priority descriptive diagram]{
+%       \only<2->{
+%       Develop a document structure},
+%       \only<3->{Write your document},
+%       Finetune the layout}
+ \begin{tikzpicture}[
+%     node distance = 7mm and 9mm,
+   MN/.style args = {#1/#2}{
+            draw=#1,% line color
+            top color=#2!10,
+            bottom color=#2!80,
+            rounded corners, thick,
+            text width=27mm, minimum height=13mm, inner sep=1mm, 
+            align=flush center},
+      line/.style = {line width=2mm,
+            draw=#1,%line color
+            -{Triangle[length=2.8mm,width=4mm,fill=#1]},
+            shorten >=1mm, shorten <=1mm
+            },
+        ds/.style = {drop shadow}
+                    ]
+\node [
+  fill=dark-gray,
+  draw=dark-gray, 
+  single arrow,  single arrow head indent=1ex,
+  rotate=-90, 
+  font=\sffamily,
+  minimum width=1ex,
+  minimum height=6cm,
+] at (0,4){ };
+                    
+%---
+% {\rotatebox{0}{Pfeil mit Text}};
+% \linespread{0.9}
+%%%%%%%%%%%%%%
+{\footnotesize
+\node (n1) [MN=blue/blue]  at (2,5){Linear sampling method};
+\node (n2) [MN=blue/blue,right=of n1]    {Reciprocity gap method};
+\node (n3) [MN=blue/blue,right=of n2]    {Factorization};
+}
+\draw[fill,blue] (-0.5ex,5.2) rectangle (0.5ex,5);
+%%%%%%%%%%%%%%
+\onslide<3->{
+{\footnotesize
+\node (n4) [MN=blue/blue, minimum width=6cm]  at (4,3){reg};
+\node (n5) [MN=blue/blue]  at (10,3)  {Range};
+}
+\draw[fill,red] (-0.5ex,3.2) rectangle (0.5ex,3);
+}
+\onslide<4->{
+{\footnotesize
+\node (n6) [MN=blue/blue, minimum width=10cm]  at (6,1){num};
+}
+}
+\onslide<2->{
+\draw[line width=2mm, draw=blue, {Triangle[length=2.8mm,width=4mm,fill=blue]}-{Triangle[length=2.8mm,width=4mm,fill=blue]}]   (n1) edge (n2);
+}
+\end{tikzpicture}                       
+%  \begin{center}
+% % \smartdiagram[descriptive diagram]{
+% % {Set up,The set up operation consist of..},
+% % }
+% \smartdiagramset{
+% additions={
+% additional item border color=red,
+% additional item width = 8cm,
+% back arrow disabled = true,
+% }}
+% \smartdiagramadd[flow diagram:horizontal]{%
+% Linear sampling method, Reciprocity gap method%
+% }{%
+% % below of module1/Low Level, above of module1/High level%
+% }
+% \smartdiagramconnect{<->}{module1/module2}
+% \end{center}
+\end{frame}
+
 %%%%%%%%%%%%%%%%%
 \begin{frame}[t]
  \frametitle{Neumann--to-Dirichlet maps}
@@ -466,116 +553,30 @@ map.
   \end{columns}
 }
 \end{frame}
-%%%%%%%%%%%%%%%%
-\begin{frame}[fragile]
- \frametitle{Contents}
-% \smartdiagramset{
-% set color list={blue!50!cyan,green!60!lime,orange!50!red},
-% priority arrow width=0.5cm,
-% priority arrow height advance=2.25cm
-% }
-%   \smartdiagram[priority descriptive diagram]{
-%       \only<2->{
-%       Develop a document structure},
-%       \only<3->{Write your document},
-%       Finetune the layout}
- \begin{tikzpicture}[
-%     node distance = 7mm and 9mm,
-   MN/.style args = {#1/#2}{
-            draw=#1,% line color
-            top color=#2!10,
-            bottom color=#2!80,
-            rounded corners, thick,
-            text width=27mm, minimum height=13mm, inner sep=1mm, 
-            align=flush center},
-      line/.style = {line width=2mm,
-            draw=#1,%line color
-            -{Triangle[length=2.8mm,width=4mm,fill=#1]},
-            shorten >=1mm, shorten <=1mm
-            },
-        ds/.style = {drop shadow}
-                    ]
-\node [
-  fill=dark-gray,
-  draw=dark-gray, 
-  single arrow,  single arrow head indent=1ex,
-  rotate=-90, 
-  font=\sffamily,
-  minimum width=1ex,
-  minimum height=6cm,
-] at (0,4){ };
-                    
-%---
-% {\rotatebox{0}{Pfeil mit Text}};
-% \linespread{0.9}
-%%%%%%%%%%%%%%
-{\footnotesize
-\node (n1) [MN=blue/blue]  at (2,5){Linear sampling method};
-\node (n2) [MN=blue/blue,right=of n1]    {Reciprocity gap method};
-\node (n3) [MN=blue/blue,right=of n2]    {Factorization};
-}
-\draw[fill,blue] (-0.5ex,5.2) rectangle (0.5ex,5);
-%%%%%%%%%%%%%%
-\onslide<3->{
-{\footnotesize
-\node (n4) [MN=red/red, minimum width=6cm]  at (4,3){reg};
-\node (n5) [MN=red/red]  at (10,3)  {Range};
-}
-\draw[fill,red] (-0.5ex,3.2) rectangle (0.5ex,3);
-}
-\onslide<4->{
-{\footnotesize
-\node (n6) [MN=green/green, minimum width=10cm]  at (6,1){num};
-}
-}
-\onslide<2->{
-\draw[line width=2mm, draw=blue, {Triangle[length=2.8mm,width=4mm,fill=blue]}-{Triangle[length=2.8mm,width=4mm,fill=blue]}]   (n1) edge (n2);
-}
-\end{tikzpicture}                       
-%  \begin{center}
-% % \smartdiagram[descriptive diagram]{
-% % {Set up,The set up operation consist of..},
-% % }
-% \smartdiagramset{
-% additions={
-% additional item border color=red,
-% additional item width = 8cm,
-% back arrow disabled = true,
-% }}
-% \smartdiagramadd[flow diagram:horizontal]{%
-% Linear sampling method, Reciprocity gap method%
-% }{%
-% % below of module1/Low Level, above of module1/High level%
-% }
-% \smartdiagramconnect{<->}{module1/module2}
-% \end{center}
-\end{frame}
-
 %%%%%%%%%%%%%%%%%
 \begin{frame}[noframenumbering]
 \begin{center}
 \Large
  {\color{purple}1. Linear sampling method}
-\vspace{1cm}
-\pause
-\normalsize
-    \begin{center}
-    \begin{tikzpicture}
-    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
-    \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
-     .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
-     .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
-     .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
-     .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
-%     \node at (-2.2,0.7){${\partial \Omega}$};
-%     \node at (-0.6,0.7){${\partial D}$};
-    \node at (0.1,0.1){$D, k$};
-    \node at (-1.2,0.8){$\Omega, 1$};
-    \onslide<3->{
-    \draw [draw=purple, thick] (0,0.2) ellipse (2cm and 1.5cm);}
-    \end{tikzpicture}
-    \end{center}
-
+% \vspace{1cm}
+% \pause
+% \normalsize
+%     \begin{center}
+%     \begin{tikzpicture}
+%     \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (2cm and 1.5cm);
+%     \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
+%      .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
+%      .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
+%      .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
+%      .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
+% %     \node at (-2.2,0.7){${\partial \Omega}$};
+% %     \node at (-0.6,0.7){${\partial D}$};
+%     \node at (0.1,0.1){$D, k$};
+%     \node at (-1.2,0.8){$\Omega, 1$};
+%     \onslide<3->{
+%     \draw [draw=purple, thick] (0,0.2) ellipse (2cm and 1.5cm);}
+%     \end{tikzpicture}
+%     \end{center}
 \end{center}
 \end{frame}
 %%%%%%%%%%%%%%%%%
@@ -829,6 +830,7 @@ Let $\epsilon > 0$, there exists an {\color{blue}approximating harmonic function
 \begin{equation}
  \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^\epsilon_z) - \psi_{0z}\|_{H^{\nicefrac{1}{2}}(\partial\Omega)} < \epsilon,
 \end{equation}
+\vspace{-0.4cm}
 \begin{enumerate}
  \item if {\color{blue}$z \in D$}  
   then there exist a sequence 
@@ -836,9 +838,14 @@ Let $\epsilon > 0$, there exists an {\color{blue}approximating harmonic function
  and some
  $ v_z\in H^1(D)$, such that
   \begin{equation}
- \|v^{\epsilon_n}_z - v_z\|_{H^1(D)} \to 0\quad\textup{ for }\epsilon_n \to 0.
+ \|v^{\epsilon_n}_z - v_z\|_{H^1(D)} \to 0\quad\textup{ for }\epsilon_n \to 0,
   \end{equation}
-  Furthermore, when $z$ approaches the boundary $\partial D$, $\|\omega^\epsilon_z\|_{L^2(\partial B)}\to + \infty$.
+  \vspace{-0.6cm}
+  \begin{itemize}
+   \item[$\blacktriangleright$] and $f_n = \partial_\nu\mathcal{S}(\partial B,\omega_z^{\epsilon_n})$
+   is bounded for $\psi_{0z}\in\mathcal{R}(N_D - N_0),$
+  \end{itemize}
+  furthermore, when $z$ approaches the boundary $\partial D$, $\|\omega^\epsilon_z\|_{L^2(\partial B)}\to + \infty$;
 %  \item if {\color{blue}$z \in \Omega\backslash\overline{D}$} then for any $\delta>0$ and $\epsilon > 0$ there exists an harmonic layer $\mathcal{S}(\partial B, \omega^{\delta, \epsilon}_z)$ with density $\omega^{\delta, \epsilon}_z\in L^2(\partial B)$ such that
 % \begin{equation}
 %  \|({N_D} - {N_0})\partial_\nu\mathcal{S}(\partial B, \omega^{\delta,\epsilon}_z) - \psi_{0z}\|_{H^{\nicefrac{1}{2}}(\partial\Omega)} < \delta + \epsilon,
@@ -847,8 +854,12 @@ Let $\epsilon > 0$, there exists an {\color{blue}approximating harmonic function
  \item if {\color{blue}$z \in \Omega\backslash\overline{D}$} then for any 
  sequence $\mathcal{S}(\partial B, \omega^{\epsilon_n}_z)$
 \begin{equation}
-\|\omega^{\epsilon_n}_z\|_{L^2(\partial B)}\to + \infty\quad\textup{ for }\epsilon_n \to 0.
+\|\omega^{\epsilon_n}_z\|_{L^2(\partial B)}\to + \infty\quad\textup{ for }\epsilon_n \to 0,
 \end{equation}
+  \vspace{-0.6cm}
+  \begin{itemize}
+   \item[$\blacktriangleright$] and $f_n = \partial_\nu\mathcal{S}(\partial B,\omega_z^{\epsilon_n})\to + \infty$.
+  \end{itemize} 
 \end{enumerate}
 \end{proposition}
 \footnotesize
@@ -911,27 +922,27 @@ such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
 \Large
 {\color{purple}2. Reciprocity gap method}
 \end{center}
-\vspace{1cm}
-\pause
-\normalsize
-    \begin{center}
-    \begin{tikzpicture}
-    \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (1.8cm and 1.35cm);
-    \draw [] (0,0.2) ellipse (2.5cm and 1.875cm);
-    \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
-     .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
-     .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
-     .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
-     .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
-%     \node at (-2.2,0.7){${\partial \Omega}$};
-%     \node at (-0.6,0.7){${\partial D}$};
-    \node at (0.1,0.1){$D, k$};
-    \node at (-1,0.8){$\Omega, 1$};
-    \node at (-1.85, 1.1){$B$};    
-    \onslide<3->{
-    \draw [draw=purple, thick] (0,0.2) ellipse (2.5cm and 1.875cm);}
-    \end{tikzpicture}
-    \end{center}
+% \vspace{1cm}
+% \pause
+% \normalsize
+%     \begin{center}
+%     \begin{tikzpicture}
+%     \draw [fill=light-gray, draw=gray] (0,0.2) ellipse (1.8cm and 1.35cm);
+%     \draw [] (0,0.2) ellipse (2.5cm and 1.875cm);
+%     \filldraw [fill=dark-gray, draw=gray] (0, -0.1) 
+%      .. controls ++(165:-0.2) and ++(90:-0.5) .. ( 1, 0.1)
+%      .. controls ++(90:0.5) and ++(1:0.5) .. (0.2, 0.5)
+%      .. controls ++(1:-0.5) and ++(60:0.7) .. (-0.6, 0.2)
+%      .. controls ++(60:-0.7) and ++(165:0.2) .. ( 0, -0.1);
+% %     \node at (-2.2,0.7){${\partial \Omega}$};
+% %     \node at (-0.6,0.7){${\partial D}$};
+%     \node at (0.1,0.1){$D, k$};
+%     \node at (-1,0.8){$\Omega, 1$};
+%     \node at (-1.85, 1.1){$B$};    
+%     \onslide<3->{
+%     \draw [draw=purple, thick] (0,0.2) ellipse (2.5cm and 1.875cm);}
+%     \end{tikzpicture}
+%     \end{center}
 
 \end{frame}
 %%%%%%%%%%%%%%%%
@@ -961,7 +972,8 @@ such that $\|r_n(z)\|\to 0$ as $\|f_n\|\to \infty$.
 %     \node at (-0.6,0.7){${\partial D}$};
     \node at (0.1,0.1){$D, k$};
     \node at (-1,0.8){$\Omega, 1$};
-    \node at (-1.85, 1.1){$B$};    
+    \node at (-1.85, 1.1){$B$};
+     \draw [draw=purple, thick] (0,0.2) ellipse (2.5cm and 1.875cm);
     \end{tikzpicture}
     \end{center}
  \end{column}
@@ -1061,7 +1073,7 @@ $
  \quad (x_0\in\partial B)
 \end{equation}
 
- \begin{block}{The map R}
+ \begin{block}{The {\color{blue}map} R}
   \footnotesize
  The operator $\textup{R} : \mathcal{V}_0(\overline{B})\to L^2(\partial B)$ is injective,
 its range has codimension one: $\mathcal{R}(R)^\perp=\textup{span}(\{\alpha_c\})$,
@@ -1089,46 +1101,68 @@ its range has codimension one: $\mathcal{R}(R)^\perp=\textup{span}(\{\alpha_c\})
 %%%%%%%%%%%%%%%%%
 \begin{frame}
  \frametitle{Reciprocity Gap Approximation Theorem}
- {\footnotesize
+ \vspace{-0.1cm}
+ {\smallscriptsize
  We state the key theorem which provides a binary criterion to discriminate the inclusion from the background.}
 \begin{theorem}[Reciprocity Gap Approximation Theorem]
- \label{theo:approximation-rg} 
+ \label{theo:approximation-rg}
+ \footnotesize
 %  Let $D\subset\Omega\subset B$  be an inclusion satisfying Assumption \ref{assumption:connected}, let $\{(u|_{\partial \Omega},\partial_\nu u|_{\partial \Omega})\}$ 
 %  be a set of measured data with $u\in\mathcal{U}$ as in Definition \ref{def:setU} and 
 %  let consider the class $\mathcal{V}(\overline{B})$ of harmonic test functions 
 %  in Definition \ref{def:setV}. Then
 There holds the alternative
  \begin{enumerate}
-  \item if $z \in D$ then there exists a sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
+  \item if {\color{blue}$z \in D$} then there exists a sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
    \begin{align}
      \lim_{n\to\infty}\mathcal{R}(u,v_n) &= \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U},\label{eq:rg-lim-constructive}\\
-     v_n|_{\partial D}&\to g \textup{ in } L^2(\partial D)
+     v_n|_{\partial D}&\to g \textup{ in } L^2(\partial D),
    \end{align}
 %    where $\Psi_z$ as in Definition \ref{def:fund-sol-deriv-Psi},
    and it's bounded in $\|v_n\|_{L^2(\partial D)}$;
-  \item if $z \in \Omega \backslash D$ then any sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
+  \item if {\color{blue}$z \in \Omega \backslash D$} then any sequence $\{v_n\} \subset \mathcal{V}(\overline{B})$ such that
    \begin{equation}
-     \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U}\label{eq:rg-lim-counterpart}
+     \lim_{n\to\infty}\mathcal{R}(u,v_n) = \mathcal{R}(u,\Psi_z)\quad\forall u\in\mathcal{U}\label{eq:rg-lim-counterpart},
    \end{equation}
    is unbounded $\|v_n\|_{L^2(\partial D)}\to\infty$.
  \end{enumerate}
 \end{theorem}
+\begin{proposition}
+\footnotesize
+ The RGM corresponds to the {\color{blue}weak formulation} of the LSM,
+ provided the change of $\psi_{0z}$ in $\psi_z$.
+%  as right side in \eqref{eq:eq-lsm-link}
+%  instead of $\psi_{0z}$, the two methods are equivalent.
+\begin{equation}
+\langle({N_D} - {N_0})\partial_\nu v, {\color{purple}\partial_\nu u}\rangle = \langle\psi_{z},{\color{purple}\partial_\nu u}\rangle
+{\color{purple}
+\quad \Rightarrow
+\quad   \mathcal{R}(u, v) = \mathcal{R}(u, \vec{\Psi}_z\cdot\vec{d})
+\quad \forall u \in \mathcal{U},}
+\end{equation}
+
+\end{proposition}
 \end{frame}
+
 %%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}<0>[noframenumbering]
  \frametitle{Link between RGM and LSM}
- We have seen the two methods
+ {
+ \footnotesize
+ The formulations of the two methods are}
  \begin{enumerate}
   \item the LSM
   \vspace{-0.1cm}
   \begin{equation}
   \label{eq:eq-lsm-link}
-  ({N_D} - {N_0})f = \psi_{0z} \quad \text{ on }\partial \Omega.
+  \hspace{-3.3cm}
+  ({N_D} - {N_0})f = \psi_{0z} \quad \text{ on }\partial \Omega,
   \end{equation}
   \item the RGM
   \vspace{-0.1cm}
   \begin{equation}
-   \mathcal{R}(u, v) = \mathcal{R}(u, \vec{\Psi}_z\cdot\vec{d})\quad \forall u \in \mathcal{U}
+   \mathcal{R}(u, v) = \mathcal{R}(u, \vec{\Psi}_z\cdot\vec{d})\quad \forall u \in \mathcal{U}, 
+    \text{ on }\partial B,
   \end{equation}
  \end{enumerate}
 % 
@@ -1141,18 +1175,32 @@ There holds the alternative
 % \label{eq:eq-lsm-link}
 %  ({N_D} - {N_0})f = \psi_{0z} \quad \text{ on }\partial \Omega.
 % \end{equation}
+{\footnotesize
 We compute the duality of \eqref{eq:eq-lsm-link}, with a generic 
-${g \in \bigl(H^{\nicefrac{1}{2}}_0(\partial \Omega)\bigr)^* = H^{\nicefrac{-1}{2}}_0(\partial \Omega)}$, by self-adjoint properties
+${g \in \bigl(H^{\nicefrac{1}{2}}_0(\partial \Omega)\bigr)^* = H^{\nicefrac{-1}{2}}_0(\partial \Omega)}$, by self-adjoint properties, 
+denoting $f=\partial_\nu v$, $g=\partial_\nu u$,}
 % (denoting $u,v$ solutions of 
 % \eqref{eq:NtoD-inclusion}), \eqref{eq:NtoD-laplace}, we have
+{\small
+% \begin{itemize}
+%  \item[$\blacktriangleright$] { }
+% \vspace{-0.2cm}
 \begin{align*}
  \label{eq:link-duality-left}
- \langle({N_D} - {N_0})f,g\rangle & =  \langle f,{N_D} g\rangle - \langle {N_0} f,g\rangle \\
-                                        & = \langle \partial_\nu v,u\rangle - \langle v,\partial_\nu u\rangle
-                                        = \mathcal{R}(u,v).
+ &{\color{purple}\blacktriangleright }&\quad\langle({N_D} - {N_0})f,g\rangle & =  \langle f,{N_D} g\rangle - \langle {N_0} f,g\rangle \\
+                                        &&& = \langle \partial_\nu v,u\rangle - \langle v,\partial_\nu u\rangle
+                                        = \mathcal{R}(u,v).\\
+% \end{align*}
+%  \item[$\blacktriangleright$]
+% \begin{align*}
+&{\color{purple}\blacktriangleright }&\quad\langle {\color{purple}\psi_z} , g \rangle  & = \langle \vec{\Psi}(x,z)\cdot\vec{d} - m_z - {\color{purple}N_D}(\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d}) , g \rangle\\ 
+                             &&& = \langle \vec{\Psi}(x,z)\cdot\vec{d},\partial_\nu u\rangle - 0 - \langle\partial_\nu \vec{\Psi}(x,z) \cdot \vec{d},u\rangle.                                        
 \end{align*}
+% \end{itemize}
+}
+\vspace{-0.8cm}
 \begin{proposition}
- The RGM corresponds to the weak formulation of the LSM,
+ The RGM corresponds to the {\color{blue}weak formulation} of the LSM,
  provided the change of $\psi_{0z}$ in $\psi_z$.
 %  as right side in \eqref{eq:eq-lsm-link}
 %  instead of $\psi_{0z}$, the two methods are equivalent.
@@ -1385,7 +1433,7 @@ of the unique zero of the function $\Delta_N(\alpha)$.
 \end{proposition}
 \end{frame}
 %%%%%%%%%%%%%%%%%%
-\begin{frame}
+\begin{frame}<0>[noframenumbering]
  \frametitle{Validation}
 Let $\tilde{R}_\alpha$ be a regularization, then there holds the same for $R_\alpha\coloneqq TA\tilde{R}_\alpha$
 \begin{columns}[T]
@@ -1471,23 +1519,25 @@ $$
 The choice of the operators is not unique, for instance
 }
 \begin{columns}[T]
-\begin{column}{0.5\textwidth}
+\begin{column}{0.44\textwidth}
 \vspace{0.8cm}
 \begin{itemize}
+\small
  \item[$\blacktriangleright$]
 %  $A:L^2_0(\partial \Omega) \to L^2(D;\,\mathbb{R}^2)$ defined as 
- $A\,f = \nabla v|_D,$
+ $A\,f = \nabla v|_D$,
  \item[$\blacktriangleright$]
 %  $T:L^2(D;\,\mathbb{R}^2)\to L^2(D;\,\mathbb{R}^2)$ as 
  $TA\,f = 
 %  (k-1) (\nabla v - \nabla w) =
- (k-1) \nabla u|_D.$
+ (k-1) \nabla u|_D$,
+ \item[$\blacktriangleright$] $T$ is self-adjoint and coercive,
  \item[$\blacktriangleright$]
  $A^*$ is the adjoint operator of A. 
 \end{itemize}\end{column}
-\begin{column}{0.5\textwidth}
+\begin{column}{0.6\textwidth}
 \begin{center}
-\begin{tikzpicture}
+\begin{tikzpicture}[scale=1,every node/.style={scale=1.2}]
     % set up the nodes
     \node (n11) at (0,0) {$L^2_0(\partial\Omega)$};
     \node[right=of n11] (n12) {$L^2(D;\,\mathbb{R}^2)$};
@@ -1520,12 +1570,12 @@ The choice of the operators is not unique, for instance
   \item the following theorem
   {\normalsize
  \begin{equation}
-   z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(A^*).
+   z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(A^*),
  \end{equation}}
  \item equivalently
   {\normalsize
  \begin{equation}
-  z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(N_r^{\nicefrac{1}{2}}).
+  z \in D \,\Longleftrightarrow \,\psi_{0z} \in \mathcal{R}(N_r^{\nicefrac{1}{2}}),
  \end{equation}}
  \item equivalently, by Picard's theorem,
 \end{enumerate}
@@ -1540,22 +1590,25 @@ The choice of the operators is not unique, for instance
 \end{block}
 \end{column}
 \begin{column}{0.47\textwidth}
-{\footnotesize
-Both the following factorizations hold}
-\begin{align}
-\label{eq:factorization-two}
- {N_0} - {N_D}=N_r&=N_r^{\nicefrac{1}{2}}\,I\,N_r^{\nicefrac{1}{2}}\\
- &= A^*TA.
-\end{align}
-\vspace{-1cm}
+% \vspace{-1cm}
  \begin{block}
  {\small Theorem}
  {\footnotesize
  The range of two operators is the same}
  \begin{equation}
-  \mathcal{R}(A^*) = \mathcal{R}(({N_0} - {N_D})^{\nicefrac{1}{2}}).
+  \mathcal{R}(A^*) = \mathcal{R}(N_r^{\nicefrac{1}{2}}).
  \end{equation}
- \end{block}
+ \end{block}{\footnotesize
+Both the following factorizations hold}
+\vspace{-0.2cm}
+\begin{align}
+\label{eq:factorization-two}
+ {N_0} - {N_D}=N_r&=N_r^{\nicefrac{1}{2}}\,I\,N_r^{\nicefrac{1}{2}}\\
+ &= A^*TA.
+\end{align}
+ %not delete line
+ 
+\vspace{-0.4cm}
 {\footnotesize
 The spectral decomposition of compact, self-adjoint, and positive operators yields to}
 {\small
