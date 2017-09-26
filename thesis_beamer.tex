@@ -1,4 +1,5 @@
 \documentclass[10pt,xcolor={dvipsnames}]{beamer}
+% \documentclass[10pt]{beamer}
 % \documentclass[10pt,handout]{beamer}
 \usetheme[secheader]{Boadilla}
 \usecolortheme[named=purple]{structure}
@@ -13,10 +14,12 @@
 \definecolor{paleaqua}{rgb}{0.74, 0.83, 0.9}
 \definecolor{bubbles}{rgb}{0.91, 1.0, 1.0}
 
-\usefonttheme{professionalfonts}
+
+% \usefonttheme{professionalfonts}
 % \usefonttheme{serif}
-% \usepackage{fontspec}
-% \setmainfont{Helvetica Neue}
+% \usepackage{fontspec} % error
+% \setmainfont{Helvetica Neue} % mac
+% \setmainfont{Consolas}
 
 \usepackage{listings}% http://ctan.org/pkg/listings
 \usepackage{bera}
@@ -38,7 +41,7 @@
 \usepackage[italian, english]{babel}
 
 \usepackage[utf8]{inputenc} % needed for bibtex
-\usepackage{fontenc}
+% \usepackage{fontenc}
 \usepackage{mathrsfs}
 \usepackage{amsthm}
 \usepackage{amsmath}
@@ -56,6 +59,8 @@
 % \usepackage[usenames,dvipsnames]{xcolor} % before tikz, options for more colors
 \definecolor{light-gray}{gray}{0.95}
 \definecolor{dark-gray}{gray}{0.65}
+\colorlet{purple1}{purple!40}
+\colorlet{purple2}{purple!70}
 
 % \usepackage[sort, numbers]{natbib}
 % \setcitestyle{square}
@@ -111,6 +116,22 @@
 \newcommand\Fontvi{\fontsize{6}{2}\selectfont}
 \newcommand\smallscriptsize{\fontsize{6}{2}\selectfont}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\let\textmdorig\textmd
+\let\textscorig\textsc
+\let\textttorig\texttt
+\usefonttheme{professionalfonts}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+
+\renewcommand<>{\textmd}[1]{%
+  \only#2{\textmdorig{#1}}%
+}
+\renewcommand<>{\textsc}[1]{%
+  \only#2{\textscorig{#1}}%
+}
+\renewcommand<>{\texttt}[1]{%
+  \only#2{\textttorig{#1}}%
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % plots
@@ -158,6 +179,7 @@
 \usepackage{smartdiagram}
 \usesmartdiagramlibrary{additions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -286,6 +308,7 @@
 %%%%%%%%%%%%%%%%%
 \begin{frame}[t]
  \frametitle{The Inverse Inclusion Problem}
+ \vspace{-0.8cm}
   \begin{columns}
    \begin{column}{0.5\textwidth}
    \begin{center}
@@ -352,14 +375,16 @@
 \onslide<3->{
 %   \vspace{0.5cm}
 \parallelcontent
-{Dirichlet--to--Neumann map
-\begin{align*}
- \Lambda_D: H^{\nicefrac{1}{2}}(\partial\Omega)&\to H^{ \nicefrac{-1}{2}}(\partial\Omega)\\     
- g&\mapsto \partial_\nu u|_{\partial\Omega}
-\end{align*}}
+{Dirichlet--to--Neumann map:
+\begin{flalign*}
+ \Lambda_D: H^{\nicefrac{1}{2}}(\partial\Omega)&\to H^{ \nicefrac{-1}{2}}(\partial\Omega)&&\\     
+ g&\mapsto \partial_\nu u|_{\partial\Omega}&&
+\end{flalign*}}
 {
-Neumann--to--Dirichlet maps\\
-$N:  H^{\nicefrac{-1}{2}}(\partial\Omega)\to H^{ \nicefrac{1}{2}}(\partial\Omega)$    
+Neumann--to--Dirichlet maps
+\begin{flalign*}
+N:  H^{\nicefrac{-1}{2}}(\partial\Omega)\to H^{ \nicefrac{1}{2}}(\partial\Omega) &&
+\end{flalign*}
   \[
 \begin{aligned}
  \divergence(\nabla v) &= 0&
@@ -400,10 +425,9 @@ map.
 %%%%%%%%%%%%%%%%
 \begin{frame}[fragile]
  \frametitle{Contents}
- \begin{block}
- {Let {\color{blue} $z$} the {\color{blue}sampling point}.}
-\end{block}
-
+%  \begin{block}
+%  {Let {\color{blue} $z$} the {\color{blue}sampling point}.}
+% \end{block}
 % \smartdiagramset{
 % set color list={blue!50!cyan,green!60!lime,orange!50!red},
 % priority arrow width=0.5cm,
@@ -415,13 +439,20 @@ map.
 %       \only<3->{Write your document},
 %       Finetune the layout}
  \begin{tikzpicture}[
-%     node distance = 7mm and 9mm,
+%     node distance = 1mm and 6mm,
    MN/.style args = {#1/#2}{
             draw=#1,% line color
-            top color=#2!10,
+            top color=#2!20,
             bottom color=#2!80,
             rounded corners, thick,
             text width=27mm, minimum height=13mm, inner sep=1mm, 
+            align=flush center},
+   MN_large/.style args = {#1/#2}{
+            draw=#1,% line color
+            top color=#2!20,
+            bottom color=#2!80,
+            rounded corners, thick,
+            text width=47mm, minimum height=13mm, inner sep=1mm, 
             align=flush center},
       line/.style = {line width=2mm,
             draw=#1,%line color
@@ -430,6 +461,39 @@ map.
             },
         ds/.style = {drop shadow}
                     ]
+                    
+%---
+% {\rotatebox{0}{Pfeil mit Text}};
+% \linespread{0.9}
+%---
+\node (t1) []  at (2.6,5.8){\color{purple} Let ${\color{blue}z}$ be the {\color{blue}sampling point}};
+\draw[fill,gray!15] (0.3,3) rectangle (11.4,5.5);
+\node (t1) []  at (1.9,5.2){\footnotesize Numerical algorithms};
+
+{\footnotesize
+\node (n1) [MN=purple/purple1]  at (2,7){\color{purple}\scshape Linear sampling \\ method};
+\node (n2) [MN=purple/purple1,right=of n1]    {\color{purple}\scshape Reciprocity gap\\ method};
+\node (n3) [MN=purple/purple1,right=of n2]    {\color{purple}\scshape Factorization\\ method};
+}
+%---
+\onslide<1->{
+{\footnotesize
+\node (n4) [MN_large=purple/purple1, minimum width=7cm
+            ]  at (4,4){\color{purple} Tikhonov regularization \\ $Kx = y_z$};
+\node (n5) [MN=purple/purple1]  at (9.85,4)  {\color{purple} Range criterion};
+}
+}
+\onslide<1->{
+{\footnotesize
+\draw[fill,gray!30] (0.3,1) rectangle (11.4,3);
+\node (t1) []  at (1.65,2.7){\footnotesize Numerical results};
+
+% \node (n6) [MN=purple/purple, minimum width=10cm, textwidth=10cm]  at (6,1){num};
+}
+}
+\onslide<1->{
+\draw[line width=2mm, draw=purple, {Triangle[length=2.8mm,width=4mm,fill=purple]}-{Triangle[length=2.8mm,width=4mm,fill=purple]}]   (n1) edge (n2);
+}
 \node [
   fill=dark-gray,
   draw=dark-gray, 
@@ -437,35 +501,12 @@ map.
   rotate=-90, 
   font=\sffamily,
   minimum width=1ex,
-  minimum height=6cm,
-] at (0,4){ };
-                    
-%---
-% {\rotatebox{0}{Pfeil mit Text}};
-% \linespread{0.9}
-%---
-{\footnotesize
-\node (n1) [MN=blue/blue]  at (2,5){Linear sampling method\\ $Kx=y_z$};
-\node (n2) [MN=blue/blue,right=of n1]    {Reciprocity gap method};
-\node (n3) [MN=blue/blue,right=of n2]    {Factorization};
-}
-\draw[fill,blue] (-0.5ex,5.2) rectangle (0.5ex,5);
-%---
-\onslide<1->{
-{\footnotesize
-\node (n4) [MN=blue/blue, minimum width=6cm]  at (4,3){reg};
-\node (n5) [MN=blue/blue]  at (10,3)  {Range};
-}
-\draw[fill,blue] (-0.5ex,3.2) rectangle (0.5ex,3);
-}
-\onslide<1->{
-{\footnotesize
-\node (n6) [MN=blue/blue, minimum width=10cm]  at (6,1){num};
-}
-}
-\onslide<1->{
-\draw[line width=2mm, draw=blue, {Triangle[length=2.8mm,width=4mm,fill=blue]}-{Triangle[length=2.8mm,width=4mm,fill=blue]}]   (n1) edge (n2);
-}
+  minimum height=7.5cm,
+] at (0,4.5){ };
+\draw[fill,purple] (-0.5ex,4.2) rectangle (0.5ex,4);
+\draw[fill,purple] (-0.5ex,7.2) rectangle (0.5ex,7);
+\draw[fill,purple] (-0.5ex,2.2) rectangle (0.5ex,2);
+
 \end{tikzpicture}                       
 %  \begin{center}
 % % \smartdiagram[descriptive diagram]{
@@ -1084,7 +1125,7 @@ substituting $y$ with $y^\delta$ yields to}
 %  \end{align}
 $\alpha(\delta)$ is the unique zero of $\Delta_N(\alpha)$
 }}
-% \vspace{-0.25cm}
+\vspace{-0.3cm}
 % \parallelcontent
 % {
 \begin{equation}
@@ -1109,7 +1150,7 @@ $\alpha(\delta)$ is the unique zero of $\Delta_N(\alpha)$
 \end{block}
 \onslide<8->{
 \tikz[remember picture, overlay]{
-\draw[purple,very thick] (0,0.6) rectangle (12.2,1.1);}}
+\draw[purple,very thick] (0,0.65) rectangle (12.2,1.3);}}
 % \begin{center}
 % \vspace{-2cm}
 %  \begin{tikz}
@@ -1346,6 +1387,19 @@ Shape and size approximations for an elliptic sharp inclusion, with $\alpha=\mat
 $\alpha=\mathrm{1e}{-10}$, $\alpha=\mathrm{1e}{-13}$ respectively, and $m=30$ in FM.
 
 \end{frame}
+% %%%%%%%%%%%%%%%%%%%
+\begin{frame}
+ \frametitle{}
+{
+\includegraphics[width=.48\textwidth]{fig/first_compare_rg_kite0_alpha1e-10_no120nd100nb120_radius4}
+}
+{
+\includegraphics[width=.48\textwidth]{fig/first_compare_rg_kite0_alpha1e-10_no120nd100nb120_radius6}
+}\\
+Reconstruction of a kite shaped inclusion by the Reciprocity Gap Method, 
+with $\partial\Omega=\partial B(0; 3)$, and two different test functions' domains,
+$\partial B=\partial B(0;4)$, $\partial B=\partial B(0;6)$, respectively.
+\end{frame}
 %%%%%%%%%%%%%%%%%%%
 \begin{frame}
  \frametitle{}
@@ -1359,7 +1413,7 @@ $\alpha=\mathrm{1e}{-10}$, $\alpha=\mathrm{1e}{-13}$ respectively, and $m=30$ in
 \includegraphics[width=.30\textwidth]{fig/first_compare_fm_two_ellipse0_m040}
 }\\
 Factorization Method for $m=30$, $m=40$, respectively. The linear regression of the
-eigenvalues $\log\lambda_j$ of the map $N_r$ in Figure \ref{subfig:eig_two_ellipse} suggests $m=40$ as the best choice.
+eigenvalues $\log\lambda_j$ of the map $N_r$ suggests $m=40$ as the best choice.
 \end{frame}
 %%%%%%%%%%%%%%%%%%%
 % \begin{frame}
@@ -1378,17 +1432,38 @@ eigenvalues $\log\lambda_j$ of the map $N_r$ in Figure \ref{subfig:eig_two_ellip
 % eigenvalues $\log\lambda_j$ of the map $N_r$ in Figure \ref{subfig:eig_three_ellipse} suggests  $m=30$ as the best choice.
 % \end{frame}
 % %%%%%%%%%%%%%%%%%%%
-% \begin{frame}
-%  \frametitle{}
-% \end{frame}
+\begin{frame}
+ \frametitle{}
+ {
+\includegraphics[width=.48\textwidth]{fig/noise_lsm_ellipse_noisel0e+00_noiselK1e-02.eps}
+}
+{
+\includegraphics[width=.48\textwidth]{fig/noise_lsm_ellipse_noisel0e+00_noiselK1e-03.eps}
+}
+Linear Sampling Method applied to the relative map $N_r$ containing random noise 
+$N_r^{\delta_N}$, with $\delta_N=\mathrm{1e}{-2}$, $\delta_N=\mathrm{1e}{-3}$ respectively.
+\end{frame}
 % %%%%%%%%%%%%%%%%%%%
-% \begin{frame}
-%  \frametitle{}
-% \end{frame}
-% %%%%%%%%%%%%%%%%%%%
-% \begin{frame}
-%  \frametitle{}
-% \end{frame}
+\begin{frame}
+ \frametitle{}
+{
+\includegraphics[width=.30\textwidth, height=0.30\textwidth]{fig/noise_fm_ellipse_m012_eig_noiselK1e-03}
+}
+{
+\includegraphics[width=.30\textwidth]{fig/noise_fm_ellipse_m010_noisel0e+00_noiselK1e-03}
+}
+{
+\includegraphics[width=.30\textwidth]{fig/noise_fm_ellipse_m012_noisel0e+00_noiselK1e-03}
+}
+% {
+% \includegraphics[width=.50\textwidth]{fig/noise_fm_ellipse_m014_noisel0e+00_noiselK1e-03}
+% }
+Factorization Method for different values of the truncation parameter $m=10$, $m=12$,
+% $m=14$ 
+for the eigenvalues of the relative map $N_r$ containing noise $N_r^{\delta_N}$ 
+with $\delta_N=\mathrm{1e}{-3}$. In the first figure the plot of $\log\lambda_j$ from
+the map $N_r$ with noise in \`{}o\'{}, without noise in \`{}x\'{}, respectively.
+\end{frame}
 % %%%%%%%%%%%%%%%%%%%
 % \begin{frame}
 %  \frametitle{}

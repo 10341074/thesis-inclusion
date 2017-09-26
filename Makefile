@@ -9,7 +9,7 @@ build: thesis.tex sources.bib
 	pdflatex $<
 	pdflatex $<
 distclean:
-	-rm *~ *.aux *.log *.nav *.out *.snm *.toc *.bbl *.blg *.backup *.bcf *.xml *.lof *.lot
+	-rm *~ *.aux *.log *.nav *.out *.snm *.toc *.bbl *.blg *.backup *.bcf *.xml *.lof *.lot *.vrb
 clean: distclean
 	-rm *.pdf *.dvi
 bibtex: sources.bib
