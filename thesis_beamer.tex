@@ -284,15 +284,25 @@
 %       \large
         
 
-        \vspace{0.4cm}
+        \vspace{0.6cm}
         \Large
         \textsc{Numerical Reconstruction of Inclusions in Electrical Conductors}
+        \vspace{1.2cm}
+        \begin{columns}
+        \begin{column}{0.5\textwidth}
         
-        \vspace{0.3cm}
-%         \begin{flushleft}
-%         \footnotesize
-%         Relatore: Prof. Michele Di Cristo         
-%         \end{flushleft}
+        \begin{flushleft}
+        \scriptsize
+        Relatore: Prof. Michele Di Cristo         
+        \end{flushleft}
+        \begin{flushright}
+        \scriptsize
+        \vspace{-0.4cm}
+        Laurea di: \\
+        {Giacomo Milan}         
+        \end{flushright}
+        \end{column}
+        \end{columns}
 % %         \vspace{0.2cm}
 %         \begin{flushright}
 %         \footnotesize
@@ -466,9 +476,9 @@ map.
 % {\rotatebox{0}{Pfeil mit Text}};
 % \linespread{0.9}
 %---
-\node (t1) []  at (2.6,5.8){\color{purple} Let ${\color{blue}z}$ be the {\color{blue}sampling point}};
 \draw[fill,gray!15] (0.3,3) rectangle (11.4,5.5);
 \node (t1) []  at (1.9,5.2){\footnotesize Numerical algorithms};
+\node (t1) []  at (2.35,4.8){\footnotesize \color{purple} Let ${\color{blue}z}$ be the {\color{blue}sampling point}};
 
 {\footnotesize
 \node (n1) [MN=purple/purple1]  at (2,7){\color{purple}\scshape Linear sampling \\ method};
@@ -479,14 +489,14 @@ map.
 \onslide<1->{
 {\footnotesize
 \node (n4) [MN_large=purple/purple1, minimum width=7cm
-            ]  at (4,4){\color{purple} Tikhonov regularization \\ $Kx = y_z$};
+            ]  at (4,4){\color{purple} Tikhonov regularization \\ {\normalsize $Kx = y_z$}};
 \node (n5) [MN=purple/purple1]  at (9.85,4)  {\color{purple} Range criterion};
 }
 }
 \onslide<1->{
 {\footnotesize
 \draw[fill,gray!30] (0.3,1) rectangle (11.4,3);
-\node (t1) []  at (1.65,2.7){\footnotesize Numerical results};
+\node (t1) []  at (2.95,2.1){\footnotesize Numerical results and final comments};
 
 % \node (n6) [MN=purple/purple, minimum width=10cm, textwidth=10cm]  at (6,1){num};
 }
@@ -1372,7 +1382,7 @@ then we compare the slopes of the straight lines
 % \end{frame}
 %%%%%%%%%%%%%%%%%%%
 \begin{frame}
- \frametitle{}
+ \frametitle{Linear Sampling Method}
 {
 \includegraphics[width=.30\textwidth]{fig/one_ellipse_lsm_ellipse2_alpha1e-06_no100nd80}
 }
@@ -1384,12 +1394,12 @@ then we compare the slopes of the straight lines
 }
 \\
 Shape and size approximations for an elliptic sharp inclusion, with $\alpha=\mathrm{1e}{-6}$, 
-$\alpha=\mathrm{1e}{-10}$, $\alpha=\mathrm{1e}{-13}$ respectively, and $m=30$ in FM.
+$\alpha=\mathrm{1e}{-10}$, $\alpha=\mathrm{1e}{-13}$ respectively.
 
 \end{frame}
 % %%%%%%%%%%%%%%%%%%%
 \begin{frame}
- \frametitle{}
+ \frametitle{Reciprocity Gap method}
 {
 \includegraphics[width=.48\textwidth]{fig/first_compare_rg_kite0_alpha1e-10_no120nd100nb120_radius4}
 }
@@ -1402,19 +1412,34 @@ $\partial B=\partial B(0;4)$, $\partial B=\partial B(0;6)$, respectively.
 \end{frame}
 %%%%%%%%%%%%%%%%%%%
 \begin{frame}
- \frametitle{}
+ \frametitle{Factorization method}
 {
-\includegraphics[width=.30\textwidth, height=.30\textwidth]{fig/first_compare_fm_two_ellipse_m040_eig}
+\includegraphics[width=.30\textwidth, height = 0.30\textwidth]{fig/first_compare_fm_three_ellipse_m030_eig}
 }
 {
-\includegraphics[width=.30\textwidth]{fig/first_compare_fm_two_ellipse0_m030}
+\includegraphics[width=.30\textwidth]{fig/first_compare_fm_three_ellipse0_m030}
 }
 {
-\includegraphics[width=.30\textwidth]{fig/first_compare_fm_two_ellipse0_m040}
+\includegraphics[width=.30\textwidth]{fig/first_compare_fm_three_ellipse0_m040}
 }\\
 Factorization Method for $m=30$, $m=40$, respectively. The linear regression of the
-eigenvalues $\log\lambda_j$ of the map $N_r$ suggests $m=40$ as the best choice.
+eigenvalues $\log\lambda_j$ of the map $N_r$ suggests $m=30$ as the best choice.
 \end{frame}
+%%%%%%%%%%%%%%%%%%%
+% \begin{frame}
+%  \frametitle{}
+% {
+% \includegraphics[width=.30\textwidth, height=.30\textwidth]{fig/first_compare_fm_two_ellipse_m040_eig}
+% }
+% {
+% \includegraphics[width=.30\textwidth]{fig/first_compare_fm_two_ellipse0_m030}
+% }
+% {
+% \includegraphics[width=.30\textwidth]{fig/first_compare_fm_two_ellipse0_m040}
+% }\\
+% Factorization Method for $m=30$, $m=40$, respectively. The linear regression of the
+% eigenvalues $\log\lambda_j$ of the map $N_r$ suggests $m=40$ as the best choice.
+% \end{frame}
 %%%%%%%%%%%%%%%%%%%
 % \begin{frame}
 %  \frametitle{}
@@ -1433,8 +1458,8 @@ eigenvalues $\log\lambda_j$ of the map $N_r$ suggests $m=40$ as the best choice.
 % \end{frame}
 % %%%%%%%%%%%%%%%%%%%
 \begin{frame}
- \frametitle{}
- {
+ \frametitle{Noise in Linear Sampling method}
+{
 \includegraphics[width=.48\textwidth]{fig/noise_lsm_ellipse_noisel0e+00_noiselK1e-02.eps}
 }
 {
@@ -1443,9 +1468,27 @@ eigenvalues $\log\lambda_j$ of the map $N_r$ suggests $m=40$ as the best choice.
 Linear Sampling Method applied to the relative map $N_r$ containing random noise 
 $N_r^{\delta_N}$, with $\delta_N=\mathrm{1e}{-2}$, $\delta_N=\mathrm{1e}{-3}$ respectively.
 \end{frame}
+\begin{frame}
+ \frametitle{Morozov Discrepancy principle}
+ {
+\includegraphics[width=.30\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_it_alpha_0}
+}
+{
+\includegraphics[width=.30\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_it_alpha_19}
+}
+{
+\includegraphics[width=.30\textwidth]{fig/discrepancy_lsm_two_ellipse_delta1e-60_alpha_it_alpha_19}
+}
+Discrepancy principle applied to LSM for a domain with two components, 
+with $\delta=\mathrm{1e}{-6}$. 
+The figures represent the reconstruction after $k=0$, from $k=14$ to $k=19$ iterations. In the
+last figure the plot of the parameter $\alpha$ after $19$ iterations, proving different values
+of the optimal $\alpha$.
+\end{frame}
+
 % %%%%%%%%%%%%%%%%%%%
 \begin{frame}
- \frametitle{}
+ \frametitle{Inverse Crime Effect}
 {
 \includegraphics[width=.30\textwidth, height=0.30\textwidth]{fig/noise_fm_ellipse_m012_eig_noiselK1e-03}
 }
@@ -1473,6 +1516,12 @@ the map $N_r$ with noise in \`{}o\'{}, without noise in \`{}x\'{}, respectively.
 %  \frametitle{}
 % \end{frame}
 %%%%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%
+
 \begin{frame}<0>[noframenumbering]
  \frametitle{Linear sampling method: the map}
 %  In the inverse inclusion problem, a crucial role is played by the 
@@ -1850,7 +1899,7 @@ $$
 
 \end{frame}
 
-\end{document}
+% \end{document}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
  \begin{equation}
   (({N_D} - {N_0})f,f) = ( Af,TAf) \geq c\|Af\|^2_{L^2(D;\,\mathbb{R}^2)} > 0 \quad \forall f\in L^2_0(\partial \Omega) \quad f\neq0.
